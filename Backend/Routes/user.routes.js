@@ -6,8 +6,8 @@ const usercontroller = require("../Controllers/user.controller");
 router.get("/", function (req, res) {
     res.send("Hello from user route /");
 })
-
-router.get('/register', [
+// users/register
+router.post('/register', [
     body('userName')
         .notEmpty().withMessage('Username is required.')
         .isLength({ min: 3, max: 20 }).withMessage('Username must be between 3 and 20 characters.'),
@@ -24,6 +24,12 @@ router.get('/register', [
         .notEmpty().withMessage('Password is required.')
         .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.'),
 ], usercontroller.registerUser)
+
+// users/login
+router.post('/login', [
+    body('email').isEmail().withMessage("Invalid Email"),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+], usercontroller.loginUser)
 
 
 module.exports = router;
