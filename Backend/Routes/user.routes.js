@@ -1,0 +1,29 @@
+const express = require("express");
+const router = express.Router();
+const { body } = require('express-validator');
+const usercontroller = require("../Controllers/user.controller");
+
+router.get("/", function (req, res) {
+    res.send("Hello from user route /");
+})
+
+router.get('/register', [
+    body('userName')
+        .notEmpty().withMessage('Username is required.')
+        .isLength({ min: 3, max: 20 }).withMessage('Username must be between 3 and 20 characters.'),
+    body('fullName.firstName')
+        .notEmpty().withMessage('First name is required.')
+        .isLength({ min: 3 }).withMessage('First name must be at least 3 characters long.'),
+    body('fullName.lastName')
+        .optional()
+        .isLength({ min: 3 }).withMessage('Last name must be at least 3 characters long.'),
+    body('email')
+        .notEmpty().withMessage('Email is required.')
+        .isEmail().withMessage('Invalid email address.'),
+    body('password')
+        .notEmpty().withMessage('Password is required.')
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.'),
+], usercontroller.registerUser)
+
+
+module.exports = router;
