@@ -78,3 +78,9 @@ module.exports.getUserProfile = async (req, res) => {
     const user = req.user;
     return res.status(200).json(user);
 }
+
+//this controller function will logout the user:
+module.exports.logoutUser = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: "User Logout successful" });
+}
