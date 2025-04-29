@@ -21,6 +21,16 @@ const tradeSchema = new mongoose.Schema({
         required: [true, "Quantity is required."],
         min: [1, "Quantity must be at least 1."],
     },
+    type: {
+        type: String,
+        enum: ['long', 'short'],
+        required: true,
+    },
+    entryType: {
+        type: String,
+        enum: ['buy', 'sell'], // What was the first action: a buy or a sell?
+        required: true,
+    },
     buyPrice: {
         type: Number,
         default: null,
