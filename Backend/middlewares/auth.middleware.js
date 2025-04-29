@@ -1,4 +1,5 @@
 const userModel = require("../models/user.model");
+const BlacklistTokenModel = require("../models/blacklistToken.model");
 const jwt = require('jsonwebtoken');
 
 // this middleware will check if the user is authenticated or not
@@ -9,6 +10,14 @@ module.exports.authUser = async (req, res, next) => {
     //if token is not found it will return unauthorized:
     if (!token) {
         console.log("token not found")
+        return res.status(401).json({ message: "Unauthorized" })
+    }
+
+    //check if token is blacklisted:
+    const isTokenBlacklisted = await BlacklistTokenModel.findOne({ token: token });
+    // console.log(isTokenBlacklisted)
+    if (isTokenBlacklisted) {
+        console.log("blacklisted token")
         return res.status(401).json({ message: "Unauthorized" })
     }
     try {
