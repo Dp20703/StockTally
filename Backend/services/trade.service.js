@@ -46,3 +46,28 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
         throw new Error(error.message);
     }
 }
+
+// update a trade
+module.exports.updateTrade = async (tradeId, tradeData) => {
+    try {
+        const trade = await tradeModel.findById(tradeId);
+        if (!trade) {
+            throw new Error('Trade not found');
+        }
+        const { profit, finalProfit, ...restOfTradeData } = tradeData;
+        Object.keys(restOfTradeData).forEach(key => {
+            if (trade[key] !== undefined) {
+                trade[key] = restOfTradeData[key];
+            }
+        });
+        // Recalculate profit after the update
+        trade.calculateProfit();
+        // Save the updated trade
+        await trade.save();
+        return trade;
+
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message || 'Error updating trade');
+    }
+}

@@ -60,7 +60,7 @@ module.exports.getAllTrades = async (req, res) => {
 module.exports.closeTrade = async (req, res) => {
     try {
         const { closePrice, closeDate, closeQuantity } = req.body;
-        const {tradeId} = req.params;
+        const { tradeId } = req.params;
 
         const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity);
 
@@ -73,5 +73,24 @@ module.exports.closeTrade = async (req, res) => {
         console.log("Error in closeTrade controller:", error);
         res.status(500).json({ error: error.message });
 
+    }
+}
+
+// this controller function will udpate a trade:
+module.exports.updateTrade = async (req, res) => {
+    try {
+        const { tradeId } = req.params;
+        const tradeData = req.body;
+        const updatedTrade = await tradeService.updateTrade(tradeId, tradeData);
+        return res.status(200).json({
+            success: true,
+            message: 'Trade updated successfully',
+            data: updatedTrade,
+        });
+
+    }
+    catch (error) {
+        console.log("Error in updateTrade controller:", error);
+        res.status(500).json({ error: error.message });
     }
 }
