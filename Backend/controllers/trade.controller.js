@@ -94,3 +94,22 @@ module.exports.updateTrade = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+// this controller function will delete a trade:
+module.exports.deleteTrade = async (req, res) => {
+    const { tradeId } = req.params;
+
+    try {
+        // Use tradeId in the condition to delete the trade
+        const deletedTrade = await tradeModel.deleteOne({ _id: tradeId });
+
+        if (!deletedTrade.deletedCount) {
+            return res.status(404).json({ message: "Trade not found" });
+        }
+
+        res.status(200).json({ message: "Trade deleted successfully", deletedTrade: deletedTrade });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message || 'Error deleting trade' });
+    }
+}

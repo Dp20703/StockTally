@@ -40,4 +40,8 @@ router.put('/update/:tradeId', authMiddleware.authUser, [
     body('sellPrice').optional().isFloat({ min: 0 }).withMessage('Sell Price must be valid and greater than zero.'),
     body('sellDate').optional().isISO8601().toDate().withMessage('Valid Sell date is required.')
 ], validateRequest, tradeController.updateTrade);
+
+
+// trades/delete/:tradeId
+router.delete('/delete/:tradeId', authMiddleware.authUser, tradeController.deleteTrade);
 module.exports = router;
