@@ -4,9 +4,6 @@ const { body } = require('express-validator');
 const userController = require("../Controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 
-router.get("/", function (req, res) {
-    res.send("Hello from user route /");
-})
 // users/register
 router.post('/register', [
     body('userName')
