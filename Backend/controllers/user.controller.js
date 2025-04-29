@@ -2,7 +2,7 @@ const userService = require('../services/user.service');
 const userModel = require('../models/user.model');
 const { validationResult } = require('express-validator');
 
-//register user
+//this controller function will register the user using required fields:
 module.exports.registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -43,7 +43,7 @@ module.exports.registerUser = async (req, res) => {
 
 }
 
-//login user
+// this controller function will login the user using email and password:
 module.exports.loginUser = async (req, res) => {
     //check errors in the data using express-validator:
     const errors = validationResult(req);
@@ -71,4 +71,10 @@ module.exports.loginUser = async (req, res) => {
         console.error('Login Error:', error);
         res.status(400).json({ error: error.message });
     }
+}
+
+//this controller function will get the user profile using user's id:
+module.exports.getUserProfile = async (req, res) => {
+    const user = req.user;
+    return res.status(200).json(user);
 }
