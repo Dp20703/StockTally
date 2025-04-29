@@ -23,21 +23,21 @@ const tradeSchema = new mongoose.Schema({
     },
     buyPrice: {
         type: Number,
-        required: [true, "Buy price is required."],
-        min: [0, "Buy price must be greater than zero."]
+        default: null,
+        min: 0,
     },
     buyDate: {
         type: Date,
-        required: [true, "Buy date is required."],
+        default: null,
     },
     sellPrice: {
         type: Number,
-        default: null, // Initially null, to be updated after the sell
-        min: [0, "Sell price must be greater than zero."]
+        default: null,
+        min: 0,
     },
     sellDate: {
         type: Date,
-        default: null, // Initially null, to be updated after the sell
+        default: null,
     },
     status: {
         type: String,
@@ -58,7 +58,7 @@ const tradeSchema = new mongoose.Schema({
     }
 });
 
-// Middleware to update the "updatedAt" field before saving
+// Update updatedAt before save
 tradeSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();
@@ -66,9 +66,11 @@ tradeSchema.pre('save', function (next) {
 
 // Instance method to calculate profit when the trade is closed
 tradeSchema.methods.calculateProfit = function () {
-    if (this.status === 'closed' && this.sellPrice !== null && this.buyPrice !== null) {
-        // Profit = (Sell Price - Buy Price) * Quantity
+    if (this.status === 'closed' && this.buyPrice !== null && this.sellPrice !== null) {
         this.profit = (this.sellPrice - this.buyPrice) * this.quantity;
+        if (this.type === 'short') {
+            this.profit *= -1; // Reverse for short selling
+        }
     }
 };
 
@@ -76,12 +78,19 @@ tradeSchema.methods.calculateProfit = function () {
 tradeSchema.statics.closeTrade = async function (tradeId, sellPrice, sellDate) {
     const trade = await this.findById(tradeId);
     if (!trade) throw new Error('Trade not found');
+    if (trade.status === 'closed') throw new Error('Trade already closed');
 
-    if (trade.status === 'closed') throw new Error('Trade is already closed');
+    if (trade.entryType === 'buy') {
+        if (trade.buyPrice === null) throw new Error('Buy price not set');
+        trade.sellPrice = closingPrice;
+        trade.sellDate = closingDate;
+    } else {
+        if (trade.sellPrice === null) throw new Error('Sell price not set');
+        trade.buyPrice = closingPrice;
+        trade.buyDate = closingDate;
+    }
 
-    // Set the sell details
-    trade.sellPrice = sellPrice;
-    trade.sellDate = sellDate;
+    // Update trade status
     trade.status = 'closed';
 
     // Calculate the profit
