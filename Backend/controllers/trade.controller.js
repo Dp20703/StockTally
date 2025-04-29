@@ -4,10 +4,10 @@ const tradeModel = require("../models/trade.model");
 // this controller function will create a trade:
 module.exports.createTrade = async (req, res) => {
     try {
-        const { stockName, stockSymbol, quantity, type, entryType, price, date } = req.body;
+        const { stockName, stockSymbol, originalQuantity, type, entryType, price, date } = req.body;
 
         // Create the trade data object
-        const tradeData = { stockName, stockSymbol, quantity, type, entryType };
+        const tradeData = { stockName, stockSymbol, originalQuantity, type, entryType };
 
         // Validate entryType and type in the controller
         if (!['buy', 'sell'].includes(entryType)) {
@@ -39,8 +39,6 @@ module.exports.createTrade = async (req, res) => {
     }
 };
 
-
-
 // this controller function will fetch all trades of a user:
 module.exports.getAllTrades = async (req, res) => {
     try {
@@ -55,5 +53,25 @@ module.exports.getAllTrades = async (req, res) => {
     } catch (error) {
         console.log("Error is getAllTrades controller:", error);
         res.status(500).json({ error: error.message });
+    }
+}
+
+// this controller function will close a trade:
+module.exports.closeTrade = async (req, res) => {
+    try {
+        const { closePrice, closeDate, closeQuantity } = req.body;
+        const {tradeId} = req.params;
+
+        const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity);
+
+        res.status(200).json({
+            message: "Trade closed successfully",
+            trade: closeTrade
+        })
+
+    } catch (error) {
+        console.log("Error in closeTrade controller:", error);
+        res.status(500).json({ error: error.message });
+
     }
 }

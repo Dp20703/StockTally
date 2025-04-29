@@ -3,14 +3,15 @@ const tradeModel = require('../models/trade.model');
 // Create a new trade
 module.exports.createTrade = async (userId, tradeData) => {
     try {
-        const { stockName, stockSymbol, buyPrice, buyDate, sellPrice, sellDate, quantity, entryType, type } = tradeData;
+        const { stockName, stockSymbol, buyPrice, buyDate, sellPrice, sellDate, originalQuantity, entryType, type } = tradeData;
 
         // Prepare the data to save
         let tradeDataToSave = {
             user: userId,
             stockName,
             stockSymbol,
-            quantity,
+            quantity: originalQuantity,
+            originalQuantity,
             type, // 'long' or 'short'
             entryType, // 'buy' or 'sell'
             status: 'open', // Mark trade as open initially
@@ -35,3 +36,13 @@ module.exports.createTrade = async (userId, tradeData) => {
     }
 };
 
+// close a trade
+module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity) => {
+    try {
+        const closedTrade = await tradeModel.closeTrade(tradeId, closePrice, closeDate, closeQuantity)
+        return closedTrade;
+    } catch (error) {
+        console.log("Error in closeTrade service:", error);
+        throw new Error(error.message);
+    }
+}
