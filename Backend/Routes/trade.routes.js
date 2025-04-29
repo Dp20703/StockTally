@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const authMiddelware = require("../middlewares/auth.middleware");
-const {validateRequest} = require('../middlewares/validateRequest');
+const { validateRequest } = require('../middlewares/validateRequest');
 const tradeController = require('../controllers/trade.controller');
 const { body } = require('express-validator')
 
+// trades/create
 router.post('/create', authMiddelware.authUser, [
     body('stockName').notEmpty().withMessage('Stock name is required.'),
     body('stockSymbol').notEmpty().withMessage('Stock symbol is required.'),
@@ -13,5 +14,7 @@ router.post('/create', authMiddelware.authUser, [
     body('buyDate').isISO8601().toDate().withMessage('Valid buy date is required.')
 ], validateRequest, tradeController.createTrade)
 
+// trades/get_all_trades
+router.get('/get_all_trades', authMiddelware.authUser, tradeController.getAllTrades)
 
 module.exports = router;
