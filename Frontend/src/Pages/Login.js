@@ -27,7 +27,7 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const newUser = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
+      const user = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
       toast.success("Login successfully", {
         position: "top-right",
         autoClose: 1000,
@@ -35,7 +35,8 @@ const Login = () => {
           navigate('/profile')
         }
       })
-      console.log("newUser:", newUser);
+      console.log("Loggedin user details:", user.data);
+      localStorage.setItem('token', user.data.token);
 
     } catch (error) {
       console.log("Error while login:", error);
