@@ -1,11 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import Home from './Pages/Home';
-import Login from './Pages/Login';
-import Signup from './Pages/Signup';
-import Profile from './Pages/Profile';
-import Logout from './Pages/Logout';
+import Home from './Pages/users/Home';
+import Login from './Pages/users/Login';
+import Signup from './Pages/users/Signup';
+import Profile from './Pages/users/Profile';
+import Logout from './Pages/users/Logout';
+import Dashboard from './Pages/trade/Dashboard';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path='/signup' element={<Signup />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/logout' element={<Logout />} />
+          <Route path='/trade/dashboard' element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -18,8 +18,11 @@ const Profile = () => {
         fetchData()
     }, [])
     return (
-        <div className="container">
-            <div className="card m-auto text-center mt-5" style={{ width: '18rem' }}>
+        <div className="container mt-5">
+            <div className="buttons">
+                <Link to='/trade/dashboard' className="btn btn-info">View Dashboard</Link>
+            </div>
+            <div className="card m-auto text-center " style={{ width: '18rem' }}>
                 <img src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`} className="card-img-top" alt="..." />
                 <div className="card-body">
                     <h5 className="card-title">{userdata.userName}</h5>
