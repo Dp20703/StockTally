@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import CreateTradeModal from '../../components/CreateTradeModal'
+import AllTrades from '../../components/AllTrades';
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false);
@@ -18,6 +19,7 @@ const Dashboard = () => {
           <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
         </div>
       </div>
+        <AllTrades />
 
     </>
   )
