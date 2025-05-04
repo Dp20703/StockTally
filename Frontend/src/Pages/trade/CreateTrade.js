@@ -34,6 +34,7 @@ const CreateTrade = ({ setModal }) => {
                 autoClose: 1000,
                 onClose: () => {
                     navigate('/trade/dashboard')
+                    window.location.reload()
                 }
             })
             console.log("newTrade:", newTrade);

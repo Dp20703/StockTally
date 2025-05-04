@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+
+
 const AllTrades = () => {
     const navigate = useNavigate();
     const [data, setData] = useState([])
@@ -19,6 +21,11 @@ const AllTrades = () => {
     useEffect(() => {
         fetchData()
     }, [])
+    const handleDeleteSuccess = (tradeId) => {
+        // Update the state after a trade is deleted
+        const updatedTrades = data.filter(trade => trade._id !== tradeId);
+        setData(updatedTrades);
+    };
 
     const deleteTrade = (tradeId) => {
         axios.delete(`${process.env.REACT_APP_BACKEND_URL}/trades/delete/${tradeId}`, {
@@ -31,7 +38,8 @@ const AllTrades = () => {
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
-                    navigate('/trade/dashboard')
+                    navigate('/trade/dashboard');
+                    handleDeleteSuccess(tradeId)
                 }
             })
         }).catch((err) => {
@@ -91,7 +99,15 @@ const AllTrades = () => {
                                             <td>{trade.profit}</td>
                                             <td>{trade.finalProfit}</td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>
-                                            <td><button onClick={() => {
+                                            <td><button className='btn btn-warning' onClick={() => {
+                                                deleteTrade(trade._id)
+                                            }}>Update</button></td>
+
+                                            <td><button className='btn btn-dark' onClick={() => {
+                                                deleteTrade(trade._id)
+                                            }}>Close</button></td>
+
+                                            <td><button className='btn btn-danger' onClick={() => {
                                                 deleteTrade(trade._id)
                                             }}>Delete</button></td>
                                         </tr>
