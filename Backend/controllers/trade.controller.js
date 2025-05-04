@@ -28,7 +28,7 @@ module.exports.createTrade = async (req, res) => {
         }
 
         // Call service to create the trade
-        const trade = await tradeService.createTrade(req.user._id, tradeData);
+        const trade = await tradeService.createTrade(req.user, tradeData);
 
         // Return success response
         res.status(201).json({ success: true, message: 'Trade created successfully', trade });

@@ -1,13 +1,13 @@
 const tradeModel = require('../models/trade.model');
 
 // Create a new trade
-module.exports.createTrade = async (userId, tradeData) => {
+module.exports.createTrade = async (user, tradeData) => {
     try {
         const { stockName, stockSymbol, buyPrice, buyDate, sellPrice, sellDate, originalQuantity, entryType, type } = tradeData;
 
         // Prepare the data to save
         let tradeDataToSave = {
-            user: userId,
+            user: user._id,
             stockName,
             stockSymbol,
             quantity: originalQuantity,
@@ -28,6 +28,8 @@ module.exports.createTrade = async (userId, tradeData) => {
 
         // Create and save the new trade
         const newTrade = await tradeModel.create(tradeDataToSave);
+        user.trades.push(newTrade._id);
+        await user.save();
         return newTrade;
 
     } catch (error) {

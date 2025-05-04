@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    trades: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'trade'
+    }],
     createdAt: {
         type: Date,
         default: Date.now
@@ -71,4 +75,4 @@ userSchema.methods.comparePassword = async function (password) {
 
 const user = mongoose.model("user", userSchema);
 
-module.exports=user;
+module.exports = user;
