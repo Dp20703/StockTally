@@ -30,12 +30,12 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
         e.preventDefault();
         console.log('TradeData:', tradeData);
         try {
-            const newTrade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/create`, tradeData, {
+            const newTrade = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/trades/update/${tradeId}`, tradeData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            toast.success("Create Trade successfully", {
+            toast.success("Trade updated successfully", {
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
@@ -47,37 +47,35 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
             setTradeData({
                 stockName: '',
                 stockSymbol: '',
+                quantity: '',
                 originalQuantity: '',
                 entryType: ['buy', 'sell'],
                 type: ['long', 'short'],
-                price: '',
-                date: '',
+                buyPrice: '',
+                sellPrice: '',
+                buyDate: '',
+                sellDate: '',
             })
             setUpdateModal(false);
 
         } catch (error) {
-            if (error.response) {
-                if (error.response.status === 400) {
-                    toast.error("Please fill in all required fields.");
-                }
-            } else {
-                toast.error("An unexpected error occurred. Try again later.");
+            console.error("Update failed:", error);
+            toast.error("Failed to update trade.", {
+                position: "top-right",
+                autoClose: 1500,
+            });
 
-
-                console.log("Error while creating trade:", error);
-                toast.error("create Trade Failed", {
-                    position: "top-right",
-                    autoClose: 1500,
-                });
-            }
             setTradeData({
                 stockName: '',
                 stockSymbol: '',
+                quantity: '',
                 originalQuantity: '',
                 entryType: ['buy', 'sell'],
                 type: ['long', 'short'],
-                price: '',
-                date: '',
+                buyPrice: '',
+                sellPrice: '',
+                buyDate: '',
+                sellDate: '',
             })
         }
     }
@@ -106,12 +104,20 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     <div className='d-flex gap-2 justify-content-center align-content-center w-100'>
 
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                            <label>Enter Stock Price</label>
-                            <input type="number" value={tradeData?.price} onChange={handleChange} min={1} name='price' placeholder='enter stock price' className='form-control' />
+                            <label>Enter Stock Buy Price</label>
+                            <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='enter stock buy price' className='form-control' />
+                        </div>
+                        <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                            <label>Enter Stock Sell Price</label>
+                            <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='enter stock sell price' className='form-control' />
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Stock Quantity</label>
-                            <input type="number" value={tradeData?.originalQuantity} onChange={handleChange} min={1} name='originalQuantity' placeholder='enter stock quantity' className='form-control' />
+                            <input type="number" value={tradeData?.quantity} onChange={handleChange} min={1} name='quantity' placeholder='enter stock quantity' className='form-control' />
+                        </div>
+                        <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                            <label>Enter Stock Original Quantity</label>
+                            <input type="number" value={tradeData?.originalQuantity} onChange={handleChange} min={1} name='originalQuantity' placeholder='enter stock original quantity' className='form-control' />
                         </div>
 
                     </div>
@@ -134,8 +140,12 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                             </select>
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                            <label>Enter Date</label>
-                            <input type="date" min={1} value={tradeData?.buyDate || tradeData?.sellDate} onChange={handleChange} name='date' placeholder='enter date' className='form-control' />
+                            <label>Enter Buy Date</label>
+                            <input type="date" min={1} value={(tradeData?.buyDate || "").slice(0, 10)} onChange={handleChange} name='buyDate' placeholder='enter buy date' className='form-control' />
+                        </div>
+                        <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                            <label>Enter Sell Date</label>
+                            <input type="date" min={1} value={(tradeData?.sellDate || "").slice(0, 10)} onChange={handleChange} name='sellDate' placeholder='enter sell date' className='form-control' />
                         </div>
                     </div>
 

@@ -34,7 +34,7 @@ router.post('/close/:tradeId', authMiddleware.authUser, [
 router.put('/update/:tradeId', authMiddleware.authUser, [
     body('symbolName').optional().notEmpty().withMessage('Stock name is required.'),
     body('symbolSymbol').optional().notEmpty().withMessage('Stock symbol is required.'),
-    body('quantity').optional().isInt({ min: 1 }).withMessage('Quantity must be at least 1.'),
+    body('quantity').optional().notEmpty().withMessage('Quantity is required.'),
     body('originalQuantity').optional().isInt({ min: 1 }).withMessage('originalQuantity must be at least 1.'),
     body('entryType').optional().isIn(['buy', 'sell']).withMessage('Entry type must be either "buy" or "sell".'),
     body('type').optional().isIn(['long', 'short']).withMessage('Type must be either "long" or "short".'),
