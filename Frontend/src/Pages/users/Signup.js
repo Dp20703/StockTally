@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -72,11 +72,10 @@ const Signup = () => {
     return (
         <div className='container vh-100'>
 
-            <div className='d-flex justify-content-center align-content-center flex-column  w-50  p-2 mt-5 m-auto'>
+            <div className='d-flex justify-content-center align-content-center flex-column  w-50  p-2 border border-1 rounded border-gray mt-5 m-auto'>
                 <form>
-                    <h1 className='rounded text-center text-bg-primary fs-2'>Registration form</h1>
-
-                <input type="text" name="userName" className="form-control mb-2" placeholder="enter username" value={data.userName} onChange={handleChange} />
+                    <h1 className='rounded text-center text-bg-primary fs-2 p-2'>Registration form</h1>
+                    <input type="text" name="userName" className="form-control mb-2" placeholder="enter username" value={data.userName} onChange={handleChange} />
                     <div className="fullName d-flex gap-2 form-group mb-2">
                         <input type="text" name="firstName" value={data.fullName.firstName} onChange={handleChange} className="form-control" placeholder="first name" />
                         <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control" placeholder="last name" />
@@ -86,6 +85,7 @@ const Signup = () => {
                     <input type="submit" onClick={submitHandler} value="submit" className='form-control' />
                 </form>
             </div>
+            <div className='fs-5 text-center mt-2 '>Alreay have an account? <Link className='text-decoration-none' to='/login'>Login</Link></div>
         </div>
 
     )
