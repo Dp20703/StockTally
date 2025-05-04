@@ -1,4 +1,5 @@
 const tradeModel = require('../models/trade.model');
+const userModel = require('../models/user.model');
 
 // Create a new trade
 module.exports.createTrade = async (user, tradeData) => {
@@ -42,6 +43,13 @@ module.exports.createTrade = async (user, tradeData) => {
 module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity) => {
     try {
         const closedTrade = await tradeModel.closeTrade(tradeId, closePrice, closeDate, closeQuantity)
+
+        await userModel.findByIdAndUpdate(closedTrade.user, {
+            $pull: { trades: closedTrade._id },
+            $inc: { totalProfit: closedTrade.finalProfit } // ✅ Add profit to totalProfit
+        });
+
+
         return closedTrade;
     } catch (error) {
         console.log("Error in closeTrade service:", error);

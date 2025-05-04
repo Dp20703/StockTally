@@ -68,11 +68,11 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                 <th>Buy Date</th>
                                 <th>Sell Price</th>
                                 <th>Sell Date</th>
-                                <th>Quantity</th>
+                                <th>Currrent Quantity</th>
                                 <th>Original Quantity</th>
                                 <th>Type</th>
                                 <th>EntryType</th>
-                                <th>profit</th>
+                                <th>Profit</th>
                                 <th>Final Profit</th>
                                 <th>Status</th>
                                 <th>Update</th>
@@ -88,16 +88,16 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                             <td>{index + 1}</td>
                                             <td>{trade.stockName}</td>
                                             <td>{trade.stockSymbol}</td>
-                                            <td>{trade.buyPrice}</td>
+                                            <td>₹ {trade.buyPrice}</td>
                                             <td>{trade.buyDate?.split('T')[0]}</td>
-                                            <td>{trade.sellPrice}</td>
+                                            <td>₹ {trade.sellPrice}</td>
                                             <td>{trade.sellDate?.split('T')[0]}</td>
                                             <td>{trade.quantity}</td>
                                             <td>{trade.originalQuantity}</td>
                                             <td>{trade.type}</td>
                                             <td>{trade.entryType}</td>
-                                            <td>{trade.profit}</td>
-                                            <td>{trade.finalProfit}</td>
+                                            <td>₹ {trade.profit}</td>
+                                            <td>₹ {trade.finalProfit}</td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>
 
                                             <td>

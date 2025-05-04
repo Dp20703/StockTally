@@ -102,6 +102,7 @@ tradeSchema.methods.calculateProfit = function (closeQuantity) {
         if (this.status === 'closed') {
             // Finalize the profit calculation when the trade is fully closed
             this.finalProfit = this.profit;
+           
         }
     }
 };
