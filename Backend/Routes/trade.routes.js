@@ -19,6 +19,9 @@ router.post('/create', authMiddleware.authUser, [
 // trades/get_all_trades
 router.get('/get_all_trades', authMiddleware.authUser, tradeController.getAllTrades)
 
+// trades/get_trade
+router.get('/get_trade/:tradeId', authMiddleware.authUser, tradeController.getTrade)
+
 // trades/close/:tradeId
 router.post('/close/:tradeId', authMiddleware.authUser, [
     body('closePrice').isFloat({ min: 0 }).withMessage('Price must be a valid number.'),

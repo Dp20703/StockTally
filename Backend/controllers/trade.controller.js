@@ -56,6 +56,24 @@ module.exports.getAllTrades = async (req, res) => {
     }
 }
 
+// this controller function will fetch the trade of a user using tradeid:
+module.exports.getTrade = async (req, res) => {
+    try {
+        const { tradeId } = req.params;
+        const trade = await tradeModel.find({ _id: tradeId });
+        console.log("Get Trade Controller :", trade);
+        res.status(200).json({
+            success: true,
+            message: 'Fetched trade for the logged-in user',
+            user: req.user,
+            trade
+        });
+    } catch (error) {
+        console.log("Error is get_trade controller:", error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
 // this controller function will close a trade:
 module.exports.closeTrade = async (req, res) => {
     try {

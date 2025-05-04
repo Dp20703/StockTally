@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import CreateTradeModal from '../../components/CreateTradeModal'
 import AllTrades from '../../components/AllTrades';
+import UpdateTradeModal from '../../components/UpdateTradeModal';
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
+  const [tradeId, setTradeId] = useState(null);
+  const handleTradeId = (id) => { setTradeId(id) };
   return (
     <>
       <div className="d-flex justify-content-around align-items-center mb-3 text-center mt-3">
@@ -19,7 +23,10 @@ const Dashboard = () => {
           <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
         </div>
       </div>
-        <AllTrades />
+      <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} />
+      {
+        updateModal && <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />
+      }
 
     </>
   )

@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import UpdateTradeModal from './UpdateTradeModal';
 
 
-
-const AllTrades = () => {
+const AllTrades = ({ setUpdateModal, handleTradeId }) => {
     const navigate = useNavigate();
     const [data, setData] = useState([])
     const fetchData = async () => {
@@ -99,9 +99,15 @@ const AllTrades = () => {
                                             <td>{trade.profit}</td>
                                             <td>{trade.finalProfit}</td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>
-                                            <td><button className='btn btn-warning' onClick={() => {
-                                                deleteTrade(trade._id)
-                                            }}>Update</button></td>
+
+                                            <td>
+                                                <button className='btn btn-warning'
+                                                    onClick={() => {
+                                                        handleTradeId(trade._id);
+                                                        setUpdateModal(true);
+                                                    }
+                                                    }>Update</button>
+                                            </td>
 
                                             <td><button className='btn btn-dark' onClick={() => {
                                                 deleteTrade(trade._id)
@@ -110,6 +116,7 @@ const AllTrades = () => {
                                             <td><button className='btn btn-danger' onClick={() => {
                                                 deleteTrade(trade._id)
                                             }}>Delete</button></td>
+
                                         </tr>
                                     )
                                 })
