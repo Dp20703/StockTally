@@ -1,11 +1,12 @@
 import '../App.css';
+import CreateTrade from '../Pages/trade/CreateTrade';
 
 const CreateTradeModal = ({ setModal }) => {
     return (
-        <div id="modal" onClick={() => setModal(false)}>
-            <div id="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div id="modal" >
+            <div id="modal-content">
                 <span className="close" onClick={() => setModal(false)}>&times;</span>
-                <h2>Create Trade</h2>
+                <CreateTrade setModal={setModal} />
             </div>
         </div>
     );
