@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import UpdateTradeModal from './UpdateTradeModal';
 
 
-const AllTrades = ({ setUpdateModal, handleTradeId }) => {
+const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     const navigate = useNavigate();
     const [data, setData] = useState([])
     const fetchData = async () => {
@@ -109,9 +109,12 @@ const AllTrades = ({ setUpdateModal, handleTradeId }) => {
                                                     }>Update</button>
                                             </td>
 
-                                            <td><button className='btn btn-dark' onClick={() => {
-                                                deleteTrade(trade._id)
-                                            }}>Close</button></td>
+                                            <td> <button className='btn btn-dark'
+                                                onClick={() => {
+                                                    handleTradeId(trade._id);
+                                                    setCloseModal(true);
+                                                }
+                                                }>Close</button></td>
 
                                             <td><button className='btn btn-danger' onClick={() => {
                                                 deleteTrade(trade._id)
