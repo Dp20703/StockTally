@@ -131,3 +131,19 @@ module.exports.deleteTrade = async (req, res) => {
         res.status(500).json({ message: error.message || 'Error deleting trade' });
     }
 }
+
+// this controller function will fetch realtime price of a stock:
+module.exports.getStockPrice = async (req, res) => {
+    try {
+        const { stockSymbol } = req.params;
+        const stockPrice = await tradeService.getStockPrice(stockSymbol);
+        res.status(200).json({
+            success: true,
+            message: 'Fetched stock price',
+            'Stock Price': stockPrice
+        });
+    } catch (error) {
+        console.log("Error in getStockPrice controller:", error);
+        res.status(500).json({ error: error.message });
+    }
+}
