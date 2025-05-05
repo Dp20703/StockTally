@@ -214,33 +214,62 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
             </div>
           </div>
           <hr />
+          {tradeData.status === 'closed' ? (
+            <h2 className='text-center text-bg-danger'>Trade Already Closed</h2>
+          ) : (
+            <>
+              <h5 className='text-danger mt-2'>Close Trade</h5>
+              <hr />
+              <div className="close-trade">
+                <div className='d-flex gap-2 justify-content-center align-content-center w-100'>
 
+                  <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                    <label>Enter Stock Close Price</label>
+                    <input
+                      type="number"
+                      value={closeData.closePrice}
+                      onChange={handleChange}
+                      min={1}
+                      name='closePrice'
+                      placeholder='enter stock close price'
+                      className='form-control'
+                    />
+                  </div>
 
-          <h5 className='text-danger mt-2'>Close Trade</h5>
-          <hr />
-          <div className="close-trade">
-            <div className='d-flex gap-2 justify-content-center align-content-center w-100'>
+                  <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                    <label>Enter Close Date</label>
+                    <input
+                      type="date"
+                      value={closeData.closeDate}
+                      onChange={handleChange}
+                      name='closeDate'
+                      placeholder='enter close date'
+                      className='form-control'
+                    />
+                  </div>
 
-              <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                <label>Enter Stock Close Price</label>
-                <input type="number" value={closeData.closePrice} onChange={handleChange} min={1} name='closePrice' placeholder='enter stock close price' className='form-control' />
+                  <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                    <label>Enter Stock Quantity</label>
+                    <input
+                      type="number"
+                      value={closeData.closeQuantity}
+                      onChange={handleChange}
+                      min={1}
+                      name='closeQuantity'
+                      placeholder='enter stock close quantity'
+                      className='form-control'
+                    />
+                  </div>
+
+                </div>
               </div>
 
-              <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                <label>Enter Close Date</label>
-                <input type="date" value={closeData.closeDate} onChange={handleChange} name='closeDate' placeholder='enter close date' className='form-control' />
+              <div className="w-25 mt-3 m-auto">
+                <button type="submit" onClick={submitHandler} className='btn btn-primary w-100'>Submit</button>
               </div>
+            </>
+          )}
 
-              <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                <label>Enter Stock Quantity</label>
-                <input type="number" value={closeData.closeQuantity} onChange={handleChange} min={1} name='closeQuantity' placeholder='enter stock close quantity' className='form-control' />
-              </div>
-
-            </div>
-          </div>
-          <div className="w-25 mt-3 m-auto">
-            <button type="Submit" onClick={submitHandler} className='btn btn-primary w-100'>Submit</button>
-          </div>
         </form >
       </div >
     </>
