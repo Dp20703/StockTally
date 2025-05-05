@@ -143,7 +143,7 @@ module.exports.getStockPrice = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'Fetched stock price',
-            'Stock Price': stockPrice
+            'price': stockPrice
         });
     } catch (error) {
         console.log("Error in getStockPrice controller:", error);

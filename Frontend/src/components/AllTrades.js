@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import UpdateTradeModal from './UpdateTradeModal';
+import GetStockPrice from '../Utils/GetStockPrice';
 
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
@@ -72,6 +72,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                 <th>Original Quantity</th>
                                 <th>Type</th>
                                 <th>EntryType</th>
+                                <th>Realtime price</th>
                                 <th>Profit</th>
                                 <th>Final Profit</th>
                                 <th>Status</th>
@@ -96,6 +97,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                             <td>{trade.originalQuantity}</td>
                                             <td>{trade.type}</td>
                                             <td>{trade.entryType}</td>
+                                            <td><GetStockPrice stockSymbol={trade.stockSymbol} /></td>
                                             <td>₹ {trade.profit}</td>
                                             <td>₹ {trade.finalProfit}</td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>

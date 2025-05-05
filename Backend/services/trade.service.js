@@ -147,10 +147,13 @@ module.exports.getStockPrice = async (symbol) => {
     };
 
     const url = `https://www.nseindia.com/api/quote-equity?symbol=${symbol.toUpperCase()}`;
-    // console.log("Request URL:", url);
 
     try {
-        const session = axios.create({ headers, withCredentials: true }); // Ensure cookies are handled
+        const session = axios.create({
+            headers,
+            withCredentials: true,
+             timeout: 5000 // 5 seconds timeout to avoid hanging requests
+        });
 
         // First request to initiate session and set cookies
         await session.get("https://www.nseindia.com");
@@ -160,15 +163,16 @@ module.exports.getStockPrice = async (symbol) => {
         console.log("Full Response Data:", response.data);
 
         // Check if we got a valid response and price info
-        if (response.status === 200 && response.data.priceInfo && response.data.priceInfo.lastPrice) {
+        if (response.status === 200 && response.data.priceInfo && typeof response.data.priceInfo.lastPrice === 'number') {
             const price = response.data.priceInfo.lastPrice;
             console.log(`${symbol} current price is:`, price);
             return price;
         } else {
-            throw new Error(`Failed to fetch price. Response doesn't contain valid data.`);
+            throw new Error(`Failed to fetch price for ${symbol}. Response doesn't contain valid data. URL: ${url}`);
         }
     } catch (err) {
         console.error("Error fetching stock price:", err.message);
         throw err; // Rethrow the error to be caught by higher-level handlers
     }
 };
+
