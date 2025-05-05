@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import CalUnRealProfit from './CalUnRealProfit';
 
-const GetStockPrice = ({ stockSymbol }) => {
+const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     const [stockPrice, setStockPrice] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -47,19 +48,25 @@ const GetStockPrice = ({ stockSymbol }) => {
     }, [stockSymbol]);
 
     return (
-        <div>
-            {loading ? (
-                <div>Loading...</div>
-            ) : (
-                <div>
-                    {stockPrice ? (
-                        <div>₹{stockPrice}</div>
-                    ) : (
-                        <div>No price available</div>
-                    )}
-                </div>
-            )}
-        </div>
+        <>
+            <div>
+                {loading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <div>
+                        {stockPrice ? (
+                            <div>₹{stockPrice}</div>
+                        ) : (
+                            <div>No price available</div>
+                        )}
+                    </div>
+                )}
+            </div>
+            <div className='d-none'>
+                <CalUnRealProfit stockPrice={stockPrice} quantity={quantity} buyPrice={buyPrice} sellPrice={sellPrice} />
+            </div>
+        </>
+
     );
 };
 
