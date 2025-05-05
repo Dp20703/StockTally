@@ -43,20 +43,75 @@ module.exports.createTrade = async (user, tradeData) => {
 // close a trade
 module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity) => {
     try {
-        const closedTrade = await tradeModel.closeTrade(tradeId, closePrice, closeDate, closeQuantity)
+        const trade = await tradeModel.findById(tradeId);
+        if (!trade) {
+            throw { message: 'Trade not found', code: 404 };  // Throwing error with status code
+        }
 
-        await userModel.findByIdAndUpdate(closedTrade.user, {
-            $pull: { trades: closedTrade._id },
-            $inc: { totalProfit: closedTrade.finalProfit } // ✅ Add profit to totalProfit
+        if (trade.status === 'closed') {
+            throw { message: 'Trade already closed', code: 406 };
+        }
+
+        if (closeQuantity > trade.quantity) {
+            throw { message: 'Close quantity is greater than trade quantity', code: 405 };
+        }
+
+        if (trade.entryType === 'buy') {
+            if (trade.buyPrice === null) {
+                throw { message: 'Buy price not set', code: 400 };
+            }
+
+            if (['long', 'short'].includes(trade.type)) {
+                trade.sellPrice = closePrice;
+                trade.sellDate = closeDate;
+            } else {
+                throw { message: 'Invalid trade type. Must be "long" or "short".', code: 400 };
+            }
+
+        }
+        else if (trade.entryType === 'sell') {
+            if (trade.sellPrice === null) {
+                throw { message: 'Sell price not set', code: 400 };
+            }
+
+            if (['long', 'short'].includes(trade.type)) {
+                trade.buyPrice = closePrice;
+                trade.buyDate = closeDate;
+            } else {
+                throw { message: 'Invalid trade type. Must be "long" or "short".', code: 400 };
+            }
+
+        } else {
+            throw { message: 'Invalid entry type. Must be "buy" or "sell".', code: 400 };
+        }
+
+        if (closeQuantity < trade.quantity) {
+            trade.quantity -= closeQuantity;
+            trade.status = 'open';
+        } else {
+            trade.quantity = 0;
+            trade.status = 'closed';
+        }
+
+        trade.calculateProfit(closeQuantity);
+        await trade.save();
+
+        await userModel.findByIdAndUpdate(trade.user, {
+            $pull: { trades: trade._id },
+            $inc: { totalProfit: trade.finalProfit }
         });
 
+        console.log("Closed trade Details:", trade);
+        return trade;
 
-        return closedTrade;
-    } catch (error) {
-        console.log("Error in closeTrade service:", error);
-        throw new Error(error.message);
+    } catch (err) {
+        // Make sure to respond with a proper status code
+        console.log("Error in closeTrade service:", err);
+        return { success: false, message: err.message || 'Server error', code: err.code || 500 };
     }
-}
+};
+
+
 
 // update a trade
 module.exports.updateTrade = async (tradeId, tradeData) => {

@@ -82,6 +82,9 @@ module.exports.closeTrade = async (req, res) => {
 
         const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity);
 
+        if (!closeTrade.success) {
+            return res.status(closeTrade.code || 400).json({ message: closeTrade.message });
+        }
         res.status(200).json({
             message: "Trade closed successfully",
             trade: closeTrade

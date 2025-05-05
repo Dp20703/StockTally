@@ -34,42 +34,106 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log('Close trade Data:', closeData);
+
     try {
-      const Trade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/close/${tradeId}`, closeData, {
+      const trade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/close/${tradeId}`, closeData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      toast.success("Trade Closed successfully", {
-        position: "top-right",
-        autoClose: 1000,
-        onClose: () => {
-          navigate('/trade/dashboard')
-          window.location.reload()
-        }
-      })
-      console.log("Trade:", Trade);
+
+      console.log("Response from close route:", trade); // Log the entire response object for better debugging
+
+      // Check if the response status is 200
+      if (trade.status === 200) {
+        toast.success("Trade Closed successfully", {
+          position: "top-right",
+          autoClose: 1000,
+          onClose: () => {
+            navigate('/trade/dashboard');
+            window.location.reload();
+          }
+        });
+      } else {
+        // In case of unexpected success but not status 200, you can log it here
+        toast.error("Unexpected error occurred while closing trade.", {
+          position: "top-right",
+          autoClose: 1000,
+        });
+      }
+
+      console.log("Trade:", trade);
       setCloseData({
         closePrice: '',
         closeDate: '',
         closeQuantity: ''
-      })
-      setCloseModal(false);
-
-    } catch (error) {
-      console.error("Close Trade failed:", error);
-      toast.error("Failed to Close trade.", {
-        position: "top-right",
-        autoClose: 1500,
       });
+      setCloseModal(false);
+    } catch (error) {
+      // Handle different error responses
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            toast.error(error.response.data.message || "Please fill in all required fields.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 405:
+            toast.error(error.response.data.message || "Close Quantity should be less than Current Quantity.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 406:
+            toast.error(error.response.data.message || "Trade is already closed.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 401:
+            toast.error("Unauthorized. Please login again.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 404:
+            toast.error("Trade not found. Please verify the trade ID.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 500:
+            toast.error("Internal Server Error. Please try again later.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          default:
+            toast.error(error.response.data.message || "Failed to Close trade. Please try again.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+        }
+      } else {
+        // Handle cases where there is no response (e.g., network issues)
+        toast.error("Failed to Close trade due to unknown error.", {
+          position: "top-right",
+          autoClose: 1000,
+        });
+      }
 
+      console.error("Close Trade failed:", error);
       setCloseData({
         closePrice: '',
         closeDate: '',
         closeQuantity: ''
-      })
+      });
     }
-  }
+  };
+
+
 
 
   return (
