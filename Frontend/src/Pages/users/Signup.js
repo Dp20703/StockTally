@@ -72,17 +72,38 @@ const Signup = () => {
     return (
         <div className='container vh-100'>
 
-            <div className='d-flex justify-content-center align-content-center flex-column  w-50  p-2 border border-1 rounded border-gray mt-5 m-auto'>
-                <form>
-                    <h1 className='rounded text-center text-bg-primary fs-2 p-2'>Registration form</h1>
-                    <input type="text" name="userName" className="form-control mb-2" placeholder="enter username" value={data.userName} onChange={handleChange} />
-                    <div className="fullName d-flex gap-2 form-group mb-2">
-                        <input type="text" name="firstName" value={data.fullName.firstName} onChange={handleChange} className="form-control" placeholder="first name" />
-                        <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control" placeholder="last name" />
+            <div className='w-75 p-2 mt-5 m-auto'>
+                <h1 className='rounded text-center text-bg-primary fs-2 p-1 mb-3'>Registration form</h1>
+
+                <form className='border border-1 rounded border-gray p-2'>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="userName" className='form-label mx-1'>Enter username:</label>
+                        <input type="text" name="userName" className="form-control mb-2" placeholder="enter username" value={data.userName} onChange={handleChange} />
                     </div>
-                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='enter email' />
-                    <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control mb-2" placeholder='enter password' />
-                    <input type="submit" onClick={submitHandler} value="submit" className='form-control' />
+
+                    <div className="fullName d-flex justify-content-center align-items-center gap-2 form-group mb-2">
+                        <div className='w-50'>
+                            <label htmlFor="firstName" className='form-label mx-1'>Enter first name:</label>
+                            <input type="text" name="firstName" value={data.fullName.firstName} onChange={handleChange} className="form-control" placeholder="enter first name" />
+                        </div>
+                        <div className='w-50'>
+                            <label htmlFor="lastName" className='form-label mx-1'>Enter last name:</label>
+                            <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control" placeholder="enter last name" />
+                        </div>
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
+                        <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='enter email' />
+                    </div>
+
+                    <div className="form-group mb-3">
+                        <label htmlFor="password" className='form-label mx-1'>Enter password:</label>
+                        <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control mb-2" placeholder='enter your password' />
+                    </div>
+
+                    <input type="submit" onClick={submitHandler} value="Register" className='form-control btn btn-danger mb-2' />
                 </form>
             </div>
             <div className='fs-5 text-center mt-2 '>Alreay have an account? <Link className='text-decoration-none' to='/login'>Login</Link></div>

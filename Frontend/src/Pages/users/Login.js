@@ -54,12 +54,20 @@ const Login = () => {
   return (
     <div className='container vh-100'>
 
-      <div className='d-flex justify-content-center align-content-center flex-column  w-50  p-2 mt-5 m-auto border border-1 rounded border-gray'>
-        <form>
-          <h1 className='rounded text-center text-bg-primary fs-2 p-2'>Login form</h1>
-          <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='enter email' />
-          <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control mb-2" placeholder='enter password' />
-          <input type="submit" onClick={submitHandler} value="submit" className='form-control' />
+      <div className='w-75 p-2 mt-5 m-auto '>
+        <h1 className='rounded text-center text-bg-primary fs-2 p-1 mb-3'>Login form</h1>
+
+        <form className='p-2 border border-1 rounded border-gray'>
+          <div className="form-group mb-3">
+            <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
+            <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='xyz@gmail.com' />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="password" className='form-label mx-1'>Enter password:</label>
+            <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control" placeholder='enter your password' />
+          </div>
+
+          <input type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' />
         </form>
       </div>
       <div className='fs-5 text-center mt-2 '>Don't have an account? <Link className='text-decoration-none' to='/signup'>Register</Link></div>

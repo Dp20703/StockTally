@@ -249,7 +249,7 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
                   </div>
 
                   <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                    <label>Enter Stock Quantity</label>
+                    <label>Enter Stock Close Quantity</label>
                     <input
                       type="number"
                       value={closeData.closeQuantity}
