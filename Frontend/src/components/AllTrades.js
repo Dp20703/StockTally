@@ -61,7 +61,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                 <div>
                     <table className='table table-bordered table-striped table-hover'>
                         <thead>
-                            <tr>
+                            <tr className='text-center'>
                                 <th>No</th>
                                 <th>Stock Name</th>
                                 <th>Stock Symbol</th>
@@ -77,9 +77,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                 <th>Profit</th>
                                 <th>Final Profit</th>
                                 <th>Status</th>
-                                <th>Update</th>
-                                <th>close</th>
-                                <th>Delete</th>
+                                <th colSpan={3}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
