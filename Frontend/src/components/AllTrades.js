@@ -84,7 +84,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                             {
                                 data.map((trade, index) => {
                                     return (
-                                        <tr key={trade._id}>
+                                        <tr key={trade._id} >
                                             <td>{index + 1}</td>
                                             <td>{trade.stockName}</td>
                                             <td>{trade.stockSymbol}</td>
@@ -105,8 +105,13 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                                 />
                                             </td>
 
-                                            <td>₹ {trade.profit}</td>
-                                            <td>₹ {trade.finalProfit}</td>
+                                            {/* <td>₹ {trade.profit}</td> */}
+                                            <td>₹ <span style={{ color: trade.profit < 0 ? 'red' : 'green' }}>
+                                                {trade.profit?.toFixed(2)}
+                                            </span></td>
+                                            <td>₹ <span style={{ color: trade.finalProfit < 0 ? 'red' : 'green' }}>
+                                                {trade.finalProfit?.toFixed(2)}
+                                            </span></td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>
 
                                             <td>
