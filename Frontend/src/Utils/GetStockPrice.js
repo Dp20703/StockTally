@@ -43,16 +43,18 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
             {loading ? (
                 <div>Loading...</div>
             ) : stockPrice ? (
-                <div>
-                    <div>₹{stockPrice}</div>
+                <div className='d-flex justify-content-center  align-items-center gap-3'>
                     <div>
-                        <strong>Unrealized Profit:</strong>
-                        <CalUnRealProfit
-                            stockPrice={stockPrice}
-                            quantity={quantity}
-                            buyPrice={buyPrice}
-                            sellPrice={sellPrice}
-                        />
+                        <strong>Stock Price:</strong>₹{stockPrice}</div>
+                    <div>
+                        <div className=''>
+                            <strong >Unrealized Profit:</strong>
+                            <CalUnRealProfit
+                                stockPrice={stockPrice}
+                                quantity={quantity}
+                                buyPrice={buyPrice}
+                                sellPrice={sellPrice}
+                            /></div>
                     </div>
                 </div>
             ) : (
