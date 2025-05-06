@@ -73,8 +73,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                 <th>Original Quantity</th>
                                 <th>Type</th>
                                 <th>EntryType</th>
-                                <th>Realtime price</th>
-                                <th>Unrealized Profit</th>
+                                <th>Price & Profit</th>
                                 <th>Profit</th>
                                 <th>Final Profit</th>
                                 <th>Status</th>
@@ -99,8 +98,15 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                             <td>{trade.originalQuantity}</td>
                                             <td>{trade.type}</td>
                                             <td>{trade.entryType}</td>
-                                            <td><GetStockPrice stockSymbol={trade.stockSymbol} quantity={trade.quantity} buyPrice={trade?.buyPrice} sellPrice={trade?.sellPrice} /></td>
-                                            <td><CalUnRealProfit  /></td>
+                                            <td>
+                                                <GetStockPrice
+                                                    stockSymbol={trade.stockSymbol}
+                                                    quantity={trade.quantity}
+                                                    buyPrice={trade.buyPrice}
+                                                    sellPrice={trade.sellPrice}
+                                                />
+                                            </td>
+
                                             <td>₹ {trade.profit}</td>
                                             <td>₹ {trade.finalProfit}</td>
                                             <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>

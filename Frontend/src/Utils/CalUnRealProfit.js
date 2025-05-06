@@ -1,16 +1,26 @@
+import { useEffect, useState } from "react";
+
 const CalUnRealProfit = ({ stockPrice, quantity, buyPrice, sellPrice }) => {
-    console.log("stockPrice:", stockPrice, "quantity:", quantity, "buyPrice:", buyPrice, "sellPrice:", sellPrice);
+    const [profit, setProfit] = useState(null);
 
-    if (stockPrice == null || quantity == null || (buyPrice == null && sellPrice == null)) {
-        return <div>-</div>; // Or show "N/A", "Waiting for data", etc.
-    }
+    useEffect(() => {
+        const stockValue = typeof stockPrice === 'object' && stockPrice !== null
+            ? Number(stockPrice.value)
+            : Number(stockPrice);
 
-    const priceBasis = buyPrice != null ? buyPrice : sellPrice;
-    console.log(("Price basis:", priceBasis));
-    const unrealizedProfit = (stockPrice - priceBasis) * quantity;
-    console.log("Unrealized profit:", unrealizedProfit);
+        const qty = Number(quantity);
+        const priceBasis = buyPrice != null ? Number(buyPrice) : Number(sellPrice);
+        const isValid = !isNaN(stockValue) && !isNaN(qty) && !isNaN(priceBasis);
 
-    return <div>{unrealizedProfit.toFixed(2)}</div>; // Rounded for display
+        if (isValid) {
+            const unrealizedProfit = (stockValue - priceBasis) * qty;
+            setProfit(unrealizedProfit);
+        } else {
+            setProfit(null);
+        }
+    }, [stockPrice, quantity, buyPrice, sellPrice]);
+
+    return <span>{profit != null ? `₹${profit.toFixed(2)}` : "-"}</span>;
 };
 
 export default CalUnRealProfit;

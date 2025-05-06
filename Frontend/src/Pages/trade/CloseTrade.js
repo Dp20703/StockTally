@@ -20,7 +20,7 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
     console.log("Trade detail:", trade);
     setTradeData(trade.data.trade[0]);
   }
-  console.log("in CloseTrade Trade data:", tradeData);
+  // console.log("in CloseTrade Trade data:", tradeData);
   useEffect(() => {
     fetchData()
   }, [])
