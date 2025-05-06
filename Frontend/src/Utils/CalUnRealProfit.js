@@ -20,7 +20,10 @@ const CalUnRealProfit = ({ stockPrice, quantity, buyPrice, sellPrice }) => {
         }
     }, [stockPrice, quantity, buyPrice, sellPrice]);
 
-    return <span>{profit != null ? `₹${profit.toFixed(2)}` : "-"}</span>;
+    // return <span>{profit != null ? `₹${profit.toFixed(2)}` : "-"}</span>;
+    return <span>{profit != null ? <span style={{ color: profit < 0 ? 'red' : 'green' }}>
+        ₹{profit.toFixed(2)}
+    </span> : "-"}</span>;
 };
 
 export default CalUnRealProfit;
