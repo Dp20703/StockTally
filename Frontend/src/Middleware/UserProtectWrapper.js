@@ -18,9 +18,7 @@ const UserProtectWrapper = ({ children }) => {
             .get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                },
-                // Include this if your backend also uses session/cookies
-                withCredentials: true,
+                }
             })
             .then((response) => {
                 if (response.status === 200) {
@@ -29,7 +27,7 @@ const UserProtectWrapper = ({ children }) => {
                 }
             })
             .catch((error) => {
-                console.error("Authorization error:", error);
+                console.error("User Protect Authorization error:", error);
                 localStorage.removeItem("token");
                 navigate("/login");
             });
