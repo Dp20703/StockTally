@@ -35,14 +35,16 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            toast.success("Trade updated successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate('/trade/dashboard')
-                    window.location.reload()
-                }
-            })
+            if (newTrade.status === 200) {
+                toast.success("Trade updated successfully", {
+                    position: "top-right",
+                    autoClose: 1000,
+                    onClose: () => {
+                        navigate('/trade/dashboard')
+                        window.location.reload()
+                    }
+                })
+            }
             console.log("newTrade:", newTrade);
             setTradeData({
                 stockName: '',
@@ -59,11 +61,13 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
             setUpdateModal(false);
 
         } catch (error) {
-            console.error("Update failed:", error);
-            toast.error("Failed to update trade.", {
-                position: "top-right",
-                autoClose: 1500,
-            });
+            if (!error.response.data.success) {
+                console.error("Update failed:", error);
+                toast.error(error.response.data.message || "Failed to update trade.", {
+                    position: "top-right",
+                    autoClose: 1500,
+                });
+            }
 
             setTradeData({
                 stockName: '',

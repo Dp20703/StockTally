@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 const CalUnRealProfit = ({ stockPrice, quantity, buyPrice, sellPrice }) => {
     const [profit, setProfit] = useState(null);
 
+    // Calculate unrealized profit
     useEffect(() => {
         const stockValue = typeof stockPrice === 'object' && stockPrice !== null
             ? Number(stockPrice.value)

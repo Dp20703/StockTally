@@ -6,35 +6,35 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     const [stockPrice, setStockPrice] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchStockPrice = async () => {
-            setLoading(true);
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.log('Token not found. Please log in.');
-                setLoading(false);
-                return;
-            }
-
-            const url = `${process.env.REACT_APP_BACKEND_URL}/trades/price/${stockSymbol}`;
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (response.status === 200) {
-                    setStockPrice(response.data.price);
-                } else {
-                    console.log('Failed to fetch stock price.');
-                }
-            } catch (err) {
-                console.error('Error fetching stock price:', err);
-            }
+    // Fetch stock price
+    const fetchStockPrice = async () => {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('Token not found. Please log in.');
             setLoading(false);
-        };
+            return;
+        }
 
+        const url = `${process.env.REACT_APP_BACKEND_URL}/trades/price/${stockSymbol}`;
+        try {
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                setStockPrice(response.data.price);
+            } else {
+                console.log('Failed to fetch stock price.');
+            }
+        } catch (err) {
+            console.error('Error fetching stock price:', err);
+        }
+        setLoading(false);
+    };
+    useEffect(() => {
         fetchStockPrice();
     }, [stockSymbol]);
 

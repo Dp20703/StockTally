@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GetStockPrice from '../Utils/GetStockPrice';
-import CalUnRealProfit from '../Utils/CalUnRealProfit';
 
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     const navigate = useNavigate();
     const [data, setData] = useState([])
+
+    // Fetch all trades
     const fetchData = async () => {
         const allTrades = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_all_trades`, {
             headers: {
@@ -22,12 +23,15 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     useEffect(() => {
         fetchData()
     }, [])
+
+    // Filter and handle Delete trade
     const handleDeleteSuccess = (tradeId) => {
         // Update the state after a trade is deleted
         const updatedTrades = data.filter(trade => trade._id !== tradeId);
         setData(updatedTrades);
     };
 
+    // Delete Trade
     const deleteTrade = (tradeId) => {
         axios.delete(`${process.env.REACT_APP_BACKEND_URL}/trades/delete/${tradeId}`, {
             headers: {
