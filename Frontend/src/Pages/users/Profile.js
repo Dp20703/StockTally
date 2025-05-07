@@ -1,18 +1,30 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Profile = () => {
     const [userdata, setUserdata] = useState({})
+    const navigate = useNavigate();
     const fetchData = async () => {
-        const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+        try {
+            const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log('user data:', user);
+            console.log("User profile details:", user.data);
+            setUserdata(user.data);
+            console.log("userdata:", userdata);
+        }
+        catch (error) {
+            if (error.response.status == 401) {
+                console.log("Unauthorized");
+                return navigate('/login');
             }
-        });
-        console.log("User profile details:", user.data);
-        setUserdata(user.data);
-        console.log("userdata:", userdata);
+            console.log("Error while fetching user data:", error);
+            return navigate('/login');
+        }
     }
     useEffect(() => {
         fetchData()

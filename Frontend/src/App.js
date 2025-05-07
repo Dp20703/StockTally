@@ -8,6 +8,7 @@ import Profile from './Pages/users/Profile';
 import Logout from './Pages/users/Logout';
 import Dashboard from './Pages/trade/Dashboard';
 import CreateTrade from './Pages/trade/CreateTrade';
+import UserProtectWrapper from './Middleware/UserProtectWrapper';
 
 const App = () => {
   return (
@@ -20,6 +21,10 @@ const App = () => {
           <Route path='/signup' element={<Signup />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/logout' element={<Logout />} />
+          <Route path='/profile' element={<><Profile /></>} />
+          <Route path='/logout' element={<UserProtectWrapper><Logout /></UserProtectWrapper>} />
+          <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard /></UserProtectWrapper>} />
+          <Route path='/trade/create' element={<UserProtectWrapper><CreateTrade /></UserProtectWrapper>} />
           <Route path='/trade/dashboard' element={<Dashboard />} />
           <Route path='/trade/create' element={<CreateTrade />} />
         </Routes>

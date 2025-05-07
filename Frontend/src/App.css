@@ -25,3 +25,33 @@
   font-size: 24px;
   color: #000;
 }
+
+/* Navbar */
+.nav {
+  background-color: whitesmoke;
+  border: 1px solid gray;
+  font-family: "Poppins dark";
+}
+/*.nav .logo{
+   background-image: url('../public/images/StockTally.png');
+  object-fit: cover;
+  object-position: center;
+  height: 50px;
+  width: 50px;
+  
+} */
+.nav .links {
+  transition: 0.5s ease;
+
+  
+  .li {
+    text-decoration: none;
+    color: rgb(2, 7, 91);
+    &:hover {
+      /* color: white; */
+      transform: scale(1.1);
+      text-decoration: underline;
+      /* background-color: rgb(2, 7, 91); */
+    }
+  }
+}
