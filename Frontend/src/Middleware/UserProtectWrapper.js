@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
@@ -9,9 +10,17 @@ const UserProtectWrapper = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
+        const toastId = "login-required";
         if (!token) {
-            navigate("/login");
-            return;
+
+            toast.error("Please login first", {
+                toastId, // prevents duplicate toasts
+                position: "top-right",
+                autoClose: 1000,
+                onClose: () => {
+                    navigate("/login");
+                }
+            });
         }
 
         axios
@@ -22,7 +31,7 @@ const UserProtectWrapper = ({ children }) => {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    console.log("User profile fetched successfully.");
+                    console.log("Authorizated user");
                     setIsLoading(false);
                 }
             })

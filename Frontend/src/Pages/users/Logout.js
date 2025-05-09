@@ -14,18 +14,37 @@ const Logout = () => {
         }).then((response) => {
             if (response.status === 200) {
                 localStorage.removeItem("token");
-                toast.error("User Logged out Successfully");
                 console.log("User Logged out Successfully");
-                navigate("/login");
+                toast.error("User Logged out Successfully",
+                    {
+                        position: "top-right",
+                        autoClose: 1000,
+                        onClose: () => {
+                            navigate("/login");
+                        }
+                    }
+                );
             }
         }).catch((error) => {
             if (error.response) {
                 if (error.response.status === 401) {
                     localStorage.removeItem("token");
-                    toast.error("Session expired, please login again.");
-                    navigate("/login");
+                    toast.error("Session expired, please login again.",
+                        {
+                            position: "top-right",
+                            autoClose: 1000,
+                            onClose: () => {
+                                navigate("/login");
+                            }
+                        }
+                    );
                 } else {
-                    alert("Error logging out");
+                    toast.error("Error logging out",
+                        {
+                            position: "top-right",
+                            autoClose: 1000,
+                        }
+                    );
                 }
             }
         })

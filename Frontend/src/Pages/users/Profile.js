@@ -1,11 +1,26 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Profile = () => {
     const [userdata, setUserdata] = useState({})
     const navigate = useNavigate();
     const fetchData = async () => {
+        const token = localStorage.getItem("token");
+
+        const toastId = "login-required";
+        if (!token) {
+
+            toast.error("Please login first", {
+                toastId, // prevents duplicate toasts
+                position: "top-right",
+                autoClose: 1000,
+                onClose: () => {
+                    navigate("/login");
+                }
+            });
+        }
         try {
             const user = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
                 headers: {
@@ -31,16 +46,21 @@ const Profile = () => {
     }, [])
     return (
         <div className="container mt-5">
-            <div className="buttons">
-                <Link to='/trade/dashboard' className="btn btn-info">View Dashboard</Link>
-            </div>
-            <div className="card m-auto text-center " style={{ width: '18rem' }}>
-                <img src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`} className="card-img-top" alt="..." />
-                <div className="card-body">
-                    <h5 className="card-title">{userdata.userName}</h5>
-                    <p className="card-text">{userdata.fullName?.firstName + " " + userdata.fullName?.lastName}</p>
-                    <p className="card-text">{userdata.email}</p>
-                    <Link to='/logout' className="btn btn-danger">Logout</Link>
+            <div className='d-flex justify-content-center'>
+                <div>
+                    <Link to='/trade/dashboard' className="btn btn-info">View Dashboard</Link>
+                </div>
+                <div className="card m-auto text-center " style={{ width: '18rem' }}>
+                    <img src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`} className="card-img-top" alt="..." />
+                    <div className="card-body">
+                        <h5 className="card-title">{userdata.userName}</h5>
+                        <p className="card-text">{userdata.fullName?.firstName + " " + userdata.fullName?.lastName}</p>
+                        <p className="card-text">{userdata.email}</p>
+                        <Link to='/logout' className="btn btn-danger">Logout</Link>
+                    </div>
+                </div>
+                <div>
+                    <Link to={'/'} className="btn btn-success" >Home</Link>
                 </div>
             </div>
         </div>

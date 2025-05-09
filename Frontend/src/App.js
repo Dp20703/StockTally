@@ -23,8 +23,7 @@ const App = () => {
           <Route path='/logout' element={<Logout />} />
           <Route path='/profile' element={<UserProtectWrapper><Profile /></UserProtectWrapper>} />
           <Route path='/logout' element={<UserProtectWrapper><Logout /></UserProtectWrapper>} />
-          <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard/></UserProtectWrapper>} />
-          <Route path='/trade/create' element={<UserProtectWrapper><CreateTrade /></UserProtectWrapper>} />
+          <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard /></UserProtectWrapper>} />
         </Routes>
       </BrowserRouter>
     </>
