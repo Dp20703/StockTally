@@ -1,16 +1,19 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useTrades } from '../../context/TradeContext';
+
 
 const CreateTrade = ({ setModal }) => {
+    const { fetchTrades } = useTrades();
     const navigate = useNavigate();
     const [tradeData, setTradeData] = useState({
         stockName: '',
         stockSymbol: '',
         originalQuantity: '',
-        entryType: ['buy', 'sell'],
-        type: ['long', 'short'],
+        entryType: '',
+        type: '',
         price: '',
         date: '',
     })
@@ -21,6 +24,7 @@ const CreateTrade = ({ setModal }) => {
     }
 
     const submitHandler = async (e) => {
+
         e.preventDefault();
         console.log('TradeData:', tradeData);
         try {
@@ -33,8 +37,8 @@ const CreateTrade = ({ setModal }) => {
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
-                    navigate('/trade/dashboard')
-                    window.location.reload()
+                    navigate('/trade/dashboard');
+                    fetchTrades();
                 }
             })
             console.log("newTrade:", newTrade);

@@ -3,32 +3,22 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GetStockPrice from '../Utils/GetStockPrice';
+import { useTrades } from '../context/TradeContext';
 
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
+    const { trades, fetchTrades, setTrades } = useTrades();
     const navigate = useNavigate();
-    const [data, setData] = useState([])
-
-    // Fetch all trades
-    const fetchData = async () => {
-        const allTrades = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_all_trades`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        // console.log("User all trades details:", allTrades.data);
-        setData(allTrades.data.trades);
-    }
-    console.log("allTrades data:", data);
+    console.log("allTrades data:", trades);
     useEffect(() => {
-        fetchData()
+        fetchTrades()
     }, [])
 
     // Filter and handle Delete trade
     const handleDeleteSuccess = (tradeId) => {
         // Update the state after a trade is deleted
-        const updatedTrades = data.filter(trade => trade._id !== tradeId);
-        setData(updatedTrades);
+        const updatedTrades = trades.filter(trade => trade._id !== tradeId);
+        setTrades(updatedTrades);
     };
 
     // Delete Trade
@@ -86,7 +76,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                         </thead>
                         <tbody>
                             {
-                                data.map((trade, index) => {
+                                trades.map((trade, index) => {
                                     return (
                                         <tr key={trade._id} >
                                             <td>{index + 1}</td>
@@ -109,14 +99,15 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                                 />
                                             </td>
 
-                                            {/* <td>₹ {trade.profit}</td> */}
                                             <td>₹ <span style={{ color: trade.profit < 0 ? 'red' : 'green' }}>
                                                 {trade.profit?.toFixed(2)}
                                             </span></td>
                                             <td>₹ <span style={{ color: trade.finalProfit < 0 ? 'red' : 'green' }}>
                                                 {trade.finalProfit?.toFixed(2)}
                                             </span></td>
-                                            <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>{trade.status}</td>
+                                            <td className={trade.status === 'open' ? 'text-bg-success' : 'text-bg-danger'}>
+                                                {trade.status}
+                                            </td>
 
                                             <td>
                                                 <button className='btn btn-warning'
@@ -127,16 +118,24 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                                     }>Update</button>
                                             </td>
 
-                                            <td> <button className='btn btn-dark'
-                                                onClick={() => {
-                                                    handleTradeId(trade._id);
-                                                    setCloseModal(true);
-                                                }
-                                                }>Close</button></td>
+                                            <td>
+                                                <button className='btn btn-dark'
+                                                    onClick={
+                                                        () => {
+                                                            handleTradeId(trade._id);
+                                                            setCloseModal(true);
+                                                        }
+                                                    }>Close
+                                                </button></td>
 
-                                            <td><button className='btn btn-danger' onClick={() => {
-                                                deleteTrade(trade._id)
-                                            }}>Delete</button></td>
+                                            <td>
+                                                <button className='btn btn-danger' onClick={
+                                                    () => {
+                                                        deleteTrade(trade._id)
+                                                    }}>
+                                                    Delete
+                                                </button>
+                                            </td>
 
                                         </tr>
                                     )

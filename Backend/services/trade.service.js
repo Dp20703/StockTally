@@ -127,7 +127,7 @@ module.exports.updateTrade = async (tradeId, tradeData) => {
             }
         });
         // Recalculate profit after the update
-        trade.calculateProfit();
+        // trade.calculateProfit();
         // Save the updated trade
         await trade.save();
         return trade;

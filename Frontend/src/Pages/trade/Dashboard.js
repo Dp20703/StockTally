@@ -24,6 +24,7 @@ const Dashboard = () => {
           <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
         </div>
       </div>
+      {/* All Trades */}
       <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} />
       {/* Create Trade Modal */}
       {modal && <CreateTradeModal setModal={setModal} />}
