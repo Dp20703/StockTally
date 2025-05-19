@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const CloseTrade = ({ setCloseModal, tradeId }) => {
-  console.log("TradeId:", tradeId);
+  const navigate = useNavigate();
   const [tradeData, setTradeData] = useState([])
   const [closeData, setCloseData] = useState({
     closePrice: '',
@@ -17,14 +17,12 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
-    console.log("Trade detail:", trade);
     setTradeData(trade.data.trade[0]);
   }
-  // console.log("in CloseTrade Trade data:", tradeData);
   useEffect(() => {
     fetchData()
   }, [])
-  const navigate = useNavigate();
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +31,6 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log('Close trade Data:', closeData);
 
     try {
       const trade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/close/${tradeId}`, closeData, {
@@ -41,8 +38,6 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-
-      console.log("Response from close route:", trade); // Log the entire response object for better debugging
 
       // Check if the response status is 200
       if (trade.status === 200) {
@@ -55,14 +50,11 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
           }
         });
       } else {
-        // In case of unexpected success but not status 200, you can log it here
         toast.error("Unexpected error occurred while closing trade.", {
           position: "top-right",
           autoClose: 1000,
         });
       }
-
-      console.log("Trade:", trade);
       setCloseData({
         closePrice: '',
         closeDate: '',
@@ -132,9 +124,6 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
       });
     }
   };
-
-
-
 
   return (
     <>

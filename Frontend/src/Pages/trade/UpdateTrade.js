@@ -8,18 +8,17 @@ import { useTrades } from '../../context/TradeContext'
 const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const navigate = useNavigate();
     const { fetchTrades } = useTrades();
-    
     const [tradeData, setTradeData] = useState([])
+    
     const fetchData = async () => {
         const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
-        console.log("Trade detail:", trade);
         setTradeData(trade.data.trade[0]);
     }
-      useEffect(() => {
+    useEffect(() => {
         fetchData();
     }, [])
 
@@ -42,7 +41,6 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     autoClose: 1000,
                     onClose: () => {
                         navigate('/trade/dashboard')
-                        window.location.reload()
                     }
                 })
             }
@@ -53,7 +51,6 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                 });
                 setUpdateModal(false);
             }
-            console.log("newTrade:", newTrade);
 
             setTradeData({
                 stockName: '',

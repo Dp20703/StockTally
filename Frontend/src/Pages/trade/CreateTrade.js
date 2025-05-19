@@ -83,7 +83,7 @@ const CreateTrade = ({ setModal }) => {
 
     return (
         <>
-            <div className="createForm">
+            <div>
                 <form >
                     <h2>Enter Trade Details</h2>
                     <hr />
