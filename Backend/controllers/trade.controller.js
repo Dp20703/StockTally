@@ -124,6 +124,10 @@ module.exports.deleteTrade = async (req, res) => {
         // Use tradeId in the condition to delete the trade
         const deletedTrade = await tradeModel.deleteOne({ _id: tradeId });
 
+        // Remove the trade ID from user's trades
+        req.user.trades.pull(tradeId);
+        await req.user.save();
+
         if (!deletedTrade.deletedCount) {
             return res.status(404).json({ message: "Trade not found" });
         }

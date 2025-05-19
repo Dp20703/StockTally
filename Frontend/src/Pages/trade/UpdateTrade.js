@@ -1,10 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useTrades } from '../../context/TradeContext'
+
 
 const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     console.log("TradeId:", tradeId);
+    const { fetchTrades } = useTrades();
+
     const [tradeData, setTradeData] = useState([])
     const fetchData = async () => {
         const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
@@ -17,7 +21,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     }
     console.log("in UpdateTrade Trade data:", tradeData);
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, [])
     const navigate = useNavigate();
 
@@ -45,7 +49,15 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     }
                 })
             }
+            else {
+                toast.error("Unexpected error occurred while updating trade.", {
+                    position: "top-right",
+                    autoClose: 1000,
+                });
+                setUpdateModal(false);
+            }
             console.log("newTrade:", newTrade);
+
             setTradeData({
                 stockName: '',
                 stockSymbol: '',
@@ -67,6 +79,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     position: "top-right",
                     autoClose: 1500,
                 });
+                setUpdateModal(false);
             }
 
             setTradeData({
@@ -82,6 +95,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                 sellDate: '',
             })
         }
+        fetchTrades();
     }
 
 

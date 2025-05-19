@@ -152,7 +152,7 @@ module.exports.getStockPrice = async (symbol) => {
         const session = axios.create({
             headers,
             withCredentials: true,
-             timeout: 5000 // 5 seconds timeout to avoid hanging requests
+            timeout: 5000 // 5 seconds timeout to avoid hanging requests
         });
 
         // First request to initiate session and set cookies

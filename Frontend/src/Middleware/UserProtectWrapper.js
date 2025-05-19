@@ -34,7 +34,19 @@ const UserProtectWrapper = ({ children }) => {
                     console.log("Authorizated user");
                     setIsLoading(false);
                 }
-            })
+                else if (response.status === 401) {
+                    console.log("Unauthorized user");
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
+                else {
+                    console.log("Unauthorized user");
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
+
+            }
+            )
             .catch((error) => {
                 console.error("User Protect Authorization error:", error);
                 localStorage.removeItem("token");
