@@ -1,52 +1,23 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import GetStockPrice from '../Utils/GetStockPrice';
 import { useTrades } from '../context/TradeContext';
-
+import { deleteTrade } from './DeleteTrade';
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
-    const { trades, fetchTrades, setTrades } = useTrades();
+    const { trades, fetchTrades } = useTrades();
     const navigate = useNavigate();
-    console.log("allTrades data:", trades);
-    useEffect(() => {
-        fetchTrades()
-    }, [])
-
-    // Filter and handle Delete trade
-    const handleDeleteSuccess = (tradeId) => {
-        // Update the state after a trade is deleted
-        const updatedTrades = trades.filter(trade => trade._id !== tradeId);
-        setTrades(updatedTrades);
-    };
 
     // Delete Trade
-    const deleteTrade = (tradeId) => {
-        axios.delete(`${process.env.REACT_APP_BACKEND_URL}/trades/delete/${tradeId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(() => {
-            console.log("Trade Deleted Successfully")
-            toast.success("Trade Deleted Successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate('/trade/dashboard');
-                    handleDeleteSuccess(tradeId)
-                }
-            })
-        }).catch((err) => {
-            console.log("Error while deleting trade:", err);
-            toast.error("Failed to delete a trade",
-                {
-                    position: "top-right",
-                    autoClose: 1500,
-                }
-            )
-        })
+    const handleDelete = (tradeId) => {
+        deleteTrade(tradeId, navigate);
     }
+
+    // Fetch all trades
+    useEffect(() => {
+        fetchTrades()
+    }, [handleDelete])
+
 
     return (
         <>
@@ -131,7 +102,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                             <td>
                                                 <button className='btn btn-danger' onClick={
                                                     () => {
-                                                        deleteTrade(trade._id)
+                                                        handleDelete(trade._id)
                                                     }}>
                                                     Delete
                                                 </button>

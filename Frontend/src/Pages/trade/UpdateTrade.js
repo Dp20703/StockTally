@@ -6,9 +6,9 @@ import { useTrades } from '../../context/TradeContext'
 
 
 const UpdateTrade = ({ setUpdateModal, tradeId }) => {
-    console.log("TradeId:", tradeId);
+    const navigate = useNavigate();
     const { fetchTrades } = useTrades();
-
+    
     const [tradeData, setTradeData] = useState([])
     const fetchData = async () => {
         const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
@@ -19,11 +19,9 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
         console.log("Trade detail:", trade);
         setTradeData(trade.data.trade[0]);
     }
-    console.log("in UpdateTrade Trade data:", tradeData);
-    useEffect(() => {
+      useEffect(() => {
         fetchData();
     }, [])
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,7 +30,6 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        console.log('TradeData:', tradeData);
         try {
             const newTrade = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/trades/update/${tradeId}`, tradeData, {
                 headers: {
@@ -101,7 +98,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     return (
         <>
-            <div className="createForm">
+            <div>
                 <form >
                     <h2 className='text-center'>Enter Trade Update Details</h2>
                     <hr />
