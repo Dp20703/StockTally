@@ -9,7 +9,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const navigate = useNavigate();
     const { fetchTrades } = useTrades();
     const [tradeData, setTradeData] = useState([])
-    
+
     const fetchData = async () => {
         const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
             headers: {
@@ -89,7 +89,9 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                 sellDate: '',
             })
         }
-        fetchTrades();
+        finally {
+            fetchTrades();
+        }
     }
 
 

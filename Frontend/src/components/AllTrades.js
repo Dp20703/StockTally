@@ -11,17 +11,18 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     // Delete Trade
     const handleDelete = (tradeId) => {
         deleteTrade(tradeId, navigate);
+         fetchTrades()
     }
 
     // Fetch all trades
     useEffect(() => {
         fetchTrades()
-    }, [handleDelete])
+    }, [])
 
 
     return (
         <>
-            <div className="container mt-5" id="allTrades">
+            <div className="mx-3 overflow-hidden mt-2" id="allTrades">
                 <h1 className='text-center'>All Trades Deatails</h1>
                 <div>
                     <table className='table table-bordered table-striped table-hover'>

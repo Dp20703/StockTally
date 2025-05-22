@@ -14,13 +14,8 @@ export const TradeProvider = ({ children }) => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         });
-        console.log("User all trades details:", allTrades.data);
         setTrades(allTrades.data.trades || []);
     }
-    console.log("allTrades :", trades);
-    useEffect(() => {
-        fetchTrades();
-    }, [])
 
     return <TradeContext.Provider value={{ trades, setTrades, fetchTrades }}>
         {children}
