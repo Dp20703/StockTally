@@ -1,4 +1,3 @@
-import '../App.css';
 import CreateTrade from '../Pages/trade/CreateTrade';
 
 const CreateTradeModal = ({ setModal }) => {

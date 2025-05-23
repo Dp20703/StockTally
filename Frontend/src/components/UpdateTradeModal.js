@@ -1,5 +1,4 @@
 import UpdateTrade from '../Pages/trade/UpdateTrade';
-import '../App.css'
 
 const UpdateTradeModal = ({ tradeId, setUpdateModal }) => {
     console.log("tradeId:", tradeId);

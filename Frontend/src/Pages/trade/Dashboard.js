@@ -13,14 +13,14 @@ const Dashboard = () => {
   const handleTradeId = (id) => { setTradeId(id) };
 
   return (
-    <>
-      <div className="d-flex justify-content-around align-items-center mb-3 text-center mt-3">
+    <div id='dashboard'>
+      <div className="d-flex justify-content-around align-items-center mb-3 text-center pt-4">
 
         <button onClick={() => setModal(true)} className="btn btn-primary">
           + New Trade
         </button>
 
-        <h2 className='text-center'>Dashboard</h2>
+        <h2 className='text-center text-bg-warning w-50 rounded'>Dashboard</h2>
         <div className='d-flex  gap-2'>
           <Link to={'/'} className="btn btn-success" >Home</Link>
           <Link to={'/profile'} className="btn btn-info" >Profile</Link>
@@ -40,7 +40,7 @@ const Dashboard = () => {
       {/* Close Trade Modal */}
       {closeModal && <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />}
 
-    </>
+    </div>
   )
 }
 

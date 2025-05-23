@@ -43,7 +43,6 @@
 .nav .links {
   transition: 0.5s ease;
 
-  
   .li {
     text-decoration: none;
     color: rgb(2, 7, 91);
@@ -54,4 +53,15 @@
       /* background-color: rgb(2, 7, 91); */
     }
   }
+}
+
+/* Dashboard */
+#dashboard {
+  height: 100dvh;
+  background-image: url("../public/images/image7.jpg");
+  object-position: center;
+  background-size: 100%;
+  background-repeat: none;
+  object-fit: cover;
+  border: 0.5px solid #718ba6;
 }

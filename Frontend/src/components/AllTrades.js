@@ -22,10 +22,10 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
 
     return (
         <>
-            <div className="mx-3 overflow-hidden mt-2" id="allTrades">
-                <h1 className='text-center'>All Trades Deatails</h1>
-                <div>
-                    <table className='table table-bordered table-striped table-hover'>
+            <div className="mx-3 overflow-hidden mt-5" id="allTrades">
+                <h1 className='text-center text-light rounded mb-3'>All Trades Details</h1>
+                <div className='table-responsive rounded-3 border border-light overflow-hidden'>
+                    <table className='table table-bordered table-striped mb-0 table-dark'>
                         <thead>
                             <tr className='text-center'>
                                 <th>No</th>
@@ -91,7 +91,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                                             </td>
 
                                             <td>
-                                                <button className='btn btn-dark'
+                                                <button className='btn btn-light'
                                                     onClick={
                                                         () => {
                                                             handleTradeId(trade._id);
