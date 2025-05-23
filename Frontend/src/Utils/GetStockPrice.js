@@ -30,7 +30,7 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
                 console.log('Failed to fetch stock price.');
             }
         } catch (err) {
-            console.error('Error fetching stock price:', err);
+            return err
         }
         setLoading(false);
     };

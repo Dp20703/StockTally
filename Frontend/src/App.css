@@ -60,7 +60,7 @@
   min-height: 100dvh;
   background-image: url("../public/images/image7.jpg");
   object-position: center;
-  background-size: 100%;
+  background-size: cover;
   background-repeat: no-repeat;
   object-fit: cover;
   border: 0.5px solid #718ba6;
@@ -71,7 +71,7 @@
   min-height: 100dvh;
   background-image: url("../public/images/image7.jpg");
   object-position: center;
-  background-size: 100%;
+  background-size: cover;
   background-repeat: no-repeat;
   object-fit: cover;
   border: 0.5px solid #718ba6;

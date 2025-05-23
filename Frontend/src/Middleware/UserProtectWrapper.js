@@ -2,19 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+    const { auth, loading } = useAuth();
+    console.log("from auth :", auth, loading);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        const toastId = "login-required";
-        if (!token) {
+        if (!loading && !auth) {
 
             toast.error("Please login first", {
-                toastId, // prevents duplicate toasts
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
@@ -22,39 +20,9 @@ const UserProtectWrapper = ({ children }) => {
                 }
             });
         }
+    }, [auth, loading, navigate]);
 
-        axios
-            .get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-            .then((response) => {
-                if (response.status === 200) {
-                    console.log("Authorizated user");
-                    setIsLoading(false);
-                }
-                else if (response.status === 401) {
-                    console.log("Unauthorized user");
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }
-                else {
-                    console.log("Unauthorized user");
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }
-
-            }
-            )
-            .catch((error) => {
-                console.error("User Protect Authorization error:", error);
-                localStorage.removeItem("token");
-                navigate("/login");
-            });
-    }, [navigate]);
-
-    if (isLoading) {
+    if (loading) {
         return <>Loading...</>;
     }
 
