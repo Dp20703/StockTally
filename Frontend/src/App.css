@@ -57,7 +57,18 @@
 
 /* Dashboard */
 #dashboard {
-  height: 100dvh;
+  min-height: 100dvh;
+  background-image: url("../public/images/image7.jpg");
+  object-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  object-fit: cover;
+  border: 0.5px solid #718ba6;
+}
+
+/* Profile */
+#profile {
+  min-height: 100dvh;
   background-image: url("../public/images/image7.jpg");
   object-position: center;
   background-size: 100%;

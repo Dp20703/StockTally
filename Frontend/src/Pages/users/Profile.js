@@ -45,26 +45,47 @@ const Profile = () => {
         fetchData()
     }, [])
     return (
-        <div className="container mt-5">
-            <div className='d-flex justify-content-center'>
+        <div className="pt-3 h-100" id='profile'>
+            <div className='d-flex justify-content-between px-5 mt-2'>
                 <div>
                     <Link to='/trade/dashboard' className="btn btn-info">View Dashboard</Link>
                 </div>
-                <div className="card m-auto text-center " style={{ width: '18rem' }}>
-                    <img src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`} className="card-img-top" alt="..." />
-                    <div className="card-body">
-                        <h5 className="card-title">{userdata.userName}</h5>
-                        <p className="card-text">{userdata.fullName?.firstName + " " + userdata.fullName?.lastName}</p>
-                        <p className="card-text">{userdata.email}</p>
-                        <Link to='/logout' className="btn btn-danger">Logout</Link>
-                    </div>
-                </div>
+
                 <div>
-                    <Link to={'/'} className="btn btn-success" >Home</Link>
+                    <Link to={'/'} className="btn btn-success mx-2" >Home</Link>
+                       <Link to='/logout' className="btn btn-danger my-2   ">Logout</Link>
+                </div>
+            </div>
+            <div>
+                <div style={{ background: '#13162F',color:'white', backgroundPosition: 'center', backgroundSize: "cover",border:'.5px solid white' }} className="card m-auto text-center w-50 rounded-5 overflow-hidden">
+                    <img
+                        src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                        className=" w-50 m-auto rounded-circle mt-3 "
+                        style={{ height: "25rem", objectFit: 'cover', objectPosition: 'center', border: '1px solid #37A5F5', boxShadow: "0 0 8px 4px #37A5F5" }}
+                        alt="..." />
+                    <div className="card-body">
+                        <p className="card-title">
+                            <i className="ri-shield-user-fill fs-4" />
+                            &nbsp; <span className='fs-4'>{userdata.userName}</span>
+                        </p>
+                        <p className="card-title">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i className="ri-user-fill fs-5" />
+                            &nbsp;
+                            <span className='fs-6'>
+                                {userdata.fullName?.firstName + " " + userdata.fullName?.lastName}
+                            </span>
+                        </p>
+                        <p className="card-title">
+                            <i className="ri-mail-fill fs-5" />
+                            &nbsp;
+                            <span className='fs-6'>
+                                {userdata.email}</span></p>
+                     
+                    </div>
                 </div>
             </div>
         </div>
-
     )
 }
 
