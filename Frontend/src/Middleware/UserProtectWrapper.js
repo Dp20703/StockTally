@@ -8,21 +8,26 @@ const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
     const { auth, loading } = useAuth();
     console.log("from auth :", auth, loading);
+    const [verify, setVerify] = useState(false);
+
 
     useEffect(() => {
-        if (!loading && !auth) {
-
-            toast.error("Please login first", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate("/login");
-                }
-            });
-        }
+        if (!loading)
+            if (!auth) {
+                toast.error("Please login first", {
+                    position: "top-right",
+                    autoClose: 1000,
+                    onClose: () => {
+                        navigate("/login");
+                    }
+                });
+            }
+            else {
+                setVerify(true);
+            }
     }, [auth, loading, navigate]);
 
-    if (loading) {
+    if (loading || !verify) {
         return <>Loading...</>;
     }
 

@@ -7,21 +7,7 @@ import { Auth, useAuth } from '../../context/AuthContext'
 const Profile = () => {
     const { user, auth, loading } = useAuth();
     console.log("from auth :", user, auth, loading);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!loading && !auth) {
-            toast.error("Please login first", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => navigate("/login"),
-            });
-        }
-    }, [auth, loading, navigate]);
-
-    if (loading || !auth) {
-        return <div className='text-center mt-5'>Loading profile...</div>
-    }
+   
     return (
         <div className="pt-3 h-100" id='profile'>
             <div className='d-flex justify-content-between px-5 mt-2'>
