@@ -11,7 +11,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     // Delete Trade
     const handleDelete = (tradeId) => {
         deleteTrade(tradeId, navigate);
-         fetchTrades()
+        fetchTrades()
     }
 
     // Fetch all trades
@@ -25,8 +25,8 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
             <div className="mx-3 overflow-hidden mt-3" id="allTrades">
                 <h1 className='text-center text-light rounded mb-3'>All Trades Details</h1>
                 <div className='table-responsive rounded-3 border border-light overflow-hidden mb-5'>
-                    <table className='table table-bordered table-striped mb-0 table-dark'>
-                        <thead>
+                    <table className='table table-bordered table-hover mb-0 table-dark ' >
+                        <thead className='table-primary'>
                             <tr className='text-center'>
                                 <th>No</th>
                                 <th>Stock Name</th>
