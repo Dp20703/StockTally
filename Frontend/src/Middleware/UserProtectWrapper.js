@@ -12,23 +12,22 @@ const UserProtectWrapper = ({ children }) => {
 
 
     useEffect(() => {
-        if (!loading)
-            if (!auth) {
-                toast.error("Please login first", {
-                    position: "top-right",
-                    autoClose: 1000,
-                    onClose: () => {
-                        navigate("/login");
-                    }
-                });
-            }
-            else {
-                setVerify(true);
-            }
+        if (!loading && !auth) {
+            toast.error("Please login first", {
+                position: "top-right",
+                autoClose: 1000,
+                onClose: () => {
+                    navigate("/login");
+                }
+            });
+        }
+        else {
+            setVerify(true);
+        }
     }, [auth, loading, navigate]);
 
-    if (loading || !verify) {
-        return <>Loading...</>;
+    if (!verify || loading || !auth) {
+        return <div className="text-center mt-2">Loading...</div>;
     }
 
     return <>{children}</>;

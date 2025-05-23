@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
         fetchUser()
     }, [])
 
-
     return <AuthContext.Provider value={{ user, auth,loading  }}>
         {children}
     </AuthContext.Provider>

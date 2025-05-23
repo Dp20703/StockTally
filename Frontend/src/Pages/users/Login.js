@@ -22,7 +22,6 @@ const Login = () => {
     }
     else {
       setData({ ...data, [name]: value })
-      console.log("Data :", data);
     }
   }
   const submitHandler = async (e) => {
@@ -36,11 +35,9 @@ const Login = () => {
           navigate('/profile')
         }
       })
-      console.log("Loggedin user details:", user.data);
       localStorage.setItem('token', user.data.token);
 
     } catch (error) {
-      console.log("Error while login:", error);
       toast.error("Login Failed", {
         position: "top-right",
         autoClose: 1500,

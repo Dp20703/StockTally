@@ -1,13 +1,9 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { Auth, useAuth } from '../../context/AuthContext'
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'
 
 const Profile = () => {
-    const { user, auth, loading } = useAuth();
-    console.log("from auth :", user, auth, loading);
-   
+    const { user } = useAuth();
+
     return (
         <div className="pt-3 h-100" id='profile'>
             <div className='d-flex justify-content-between px-5 mt-2'>
