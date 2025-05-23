@@ -128,12 +128,11 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
   return (
     <>
       <div >
-        <form >
+        <form>
           <h2 className='text-center'>Enter Trade Close Details</h2>
           <hr />
           <h5 className='text-success'>Open Trade</h5>
           <hr />
-
           <div className="open-trade">
             <div className='d-flex gap-2 justify-content-center align-content-center w-100 z-3'>
 

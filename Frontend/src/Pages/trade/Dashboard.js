@@ -13,7 +13,7 @@ const Dashboard = () => {
   const handleTradeId = (id) => { setTradeId(id) };
 
   return (
-    <div id='dashboard'>
+    <div id='dashboard' className='overflow-hidden min-vh-100'>
       <div className="d-flex justify-content-around align-items-center mb-3 text-center pt-4">
 
         <button onClick={() => setModal(true)} className="btn btn-primary">

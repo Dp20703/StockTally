@@ -22,9 +22,9 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
 
     return (
         <>
-            <div className="mx-3 overflow-hidden mt-5" id="allTrades">
+            <div className="mx-3 overflow-hidden mt-3" id="allTrades">
                 <h1 className='text-center text-light rounded mb-3'>All Trades Details</h1>
-                <div className='table-responsive rounded-3 border border-light overflow-hidden'>
+                <div className='table-responsive rounded-3 border border-light overflow-hidden mb-5'>
                     <table className='table table-bordered table-striped mb-0 table-dark'>
                         <thead>
                             <tr className='text-center'>

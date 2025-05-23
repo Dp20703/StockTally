@@ -1,12 +1,10 @@
 import UpdateTrade from '../Pages/trade/UpdateTrade';
 
 const UpdateTradeModal = ({ tradeId, setUpdateModal }) => {
-    console.log("tradeId:", tradeId);
-
     return (
         <div id="modal" >
-            <div id="modal-content">
-                <span className="close" onClick={() => setUpdateModal(false)}>&times;</span>
+            <div id="modal-content" className='text-bg-dark'>
+                <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
                 <UpdateTrade tradeId={tradeId} setUpdateModal={setUpdateModal} />
             </div>
         </div>
