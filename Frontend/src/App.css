@@ -59,10 +59,8 @@
 #dashboard {
   min-height: 100dvh;
   background-image: url("../public/images/image7.jpg");
-  object-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  object-fit: cover;
   border: 0.5px solid #718ba6;
 }
 
@@ -75,4 +73,36 @@
   background-repeat: no-repeat;
   object-fit: cover;
   border: 0.5px solid #718ba6;
+}
+
+/* login */
+.login {
+  overflow: hidden;
+  width: 100%;
+  padding: 4% 16%;
+  background-color: #e9edf9;
+  min-height: 100dvh;
+}
+.wrapper {
+  border-radius: 4%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 10px 2px gray;
+}
+.poster {
+  width: 50%;
+}
+.poster img {
+  width: 100%;
+  min-height: 80dvh;
+  object-fit: cover;
+  object-position: center;
+}
+.loginForm {
+  padding: 10% 5%;
+  min-height: 80dvh;
+  width: 50%;
+  background-color: #ffffff;
 }

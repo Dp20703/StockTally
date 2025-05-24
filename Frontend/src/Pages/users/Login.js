@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
@@ -52,24 +52,30 @@ const Login = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <div className='container vh-100'>
-        <div className='w-75 p-2 mt-5 m-auto '>
-          <h1 className='rounded text-center text-bg-primary fs-2 p-1 mb-3'>Login form</h1>
+      <div className="login">
+        <div className="wrapper">
+          <div className="poster">
+            <img src="../images/bull5.jpg" alt="..." />
+          </div>
+          <div className='loginForm'>
+            <div>
+              <h1 className='rounded text-center text-bg-primary fs-2 p-1 mb-3'>Login Account</h1>
+              <form className='p-2 rounded'>
+                <div className="form-group mb-3">
+                  <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
+                  <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='xyz@gmail.com' />
+                </div>
+                <div className="form-group mb-3">
+                  <label htmlFor="password" className='form-label mx-1'>Enter password:</label>
+                  <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control" placeholder='enter your password' />
+                </div>
 
-          <form className='p-2 border border-1 rounded border-gray'>
-            <div className="form-group mb-3">
-              <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
-              <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='xyz@gmail.com' />
+                <input type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' />
+              </form>
             </div>
-            <div className="form-group mb-3">
-              <label htmlFor="password" className='form-label mx-1'>Enter password:</label>
-              <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control" placeholder='enter your password' />
-            </div>
-
-            <input type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' />
-          </form>
+            <div className='fs-5 text-center mt-2 '>Don't have an account? <Link className='text-decoration-none' to='/signup'>Register</Link></div>
+          </div>
         </div>
-        <div className='fs-5 text-center mt-2 '>Don't have an account? <Link className='text-decoration-none' to='/signup'>Register</Link></div>
       </div>
     </>
 
