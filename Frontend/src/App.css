@@ -80,7 +80,7 @@
   overflow: hidden;
   width: 100%;
   padding: 4% 16%;
-  background-color: #e9edf9;
+  background-color: #ccddef;
   min-height: 100dvh;
 }
 .wrapper {
@@ -93,15 +93,15 @@
 }
 .poster {
   width: 50%;
+  overflow:hidden;
 }
 .poster img {
   width: 100%;
-  min-height: 80dvh;
-  object-fit: cover;
+  min-height: 81dvh;
+  object-fit:cover;
   object-position: center;
 }
 .loginForm {
-  padding: 10% 5%;
   min-height: 80dvh;
   width: 50%;
   background-color: #ffffff;

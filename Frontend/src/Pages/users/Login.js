@@ -54,12 +54,11 @@ const Login = () => {
       {/* <Navbar /> */}
       <div className="login">
         <div className="wrapper">
-          <div className="poster">
-            <img src="../images/bull5.jpg" alt="..." />
-          </div>
-          <div className='loginForm'>
+
+          <div className='loginForm' style={{ padding: '8rem 3rem' }}>
             <div>
-              <h1 className='rounded text-center text-bg-primary fs-2 p-1 mb-3'>Login Account</h1>
+              <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Login Account</h1>
+
               <form className='p-2 rounded'>
                 <div className="form-group mb-3">
                   <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
@@ -73,7 +72,13 @@ const Login = () => {
                 <input type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' />
               </form>
             </div>
-            <div className='fs-5 text-center mt-2 '>Don't have an account? <Link className='text-decoration-none' to='/signup'>Register</Link></div>
+
+            <div className='fs-5 text-center mt-2 '>Don't have an account? <Link className='text-decoration-none' to='/signup'>Register</Link>
+            </div>
+          </div>
+
+          <div className="poster">
+            <img src="../images/bull2.jpg" alt="..." />
           </div>
         </div>
       </div>
