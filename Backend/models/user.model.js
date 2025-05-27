@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'trade'
     }],
+    watchlists: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'watchlist'
+    }],
     createdAt: {
         type: Date,
         default: Date.now
