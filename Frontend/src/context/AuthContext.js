@@ -6,31 +6,38 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [auth, setAuth] = useState(false);
+    const [auth, setAuth] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("No token");
+                }
+
                 const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${token}`
                     }
-                });;
+                });
+
                 setUser(res.data);
                 setAuth(true);
             } catch (error) {
                 console.log("Error in authContext:", error.message);
-                setAuth(false)
-            }
-            finally {
+                setAuth(false);
+            } finally {
                 setLoading(false);
+                console.log("Auth loading complete:", { auth, user });
             }
         };
-        fetchUser()
-    }, [])
+        fetchUser();
+    }, []);
 
-    return <AuthContext.Provider value={{ user, auth,loading  }}>
+
+    return <AuthContext.Provider value={{ user, auth, loading }}>
         {children}
     </AuthContext.Provider>
 }

@@ -9,6 +9,7 @@ import Logout from './Pages/users/Logout';
 import Dashboard from './Pages/trade/Dashboard';
 import CreateTrade from './Pages/trade/CreateTrade';
 import UserProtectWrapper from './Middleware/UserProtectWrapper';
+import Watchlist from './Pages/trade/Watchlist';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/profile' element={<UserProtectWrapper><Profile /></UserProtectWrapper>} />
           <Route path='/logout' element={<UserProtectWrapper><Logout /></UserProtectWrapper>} />
           <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard /></UserProtectWrapper>} />
+          <Route path='/trade/watchlist' element={<UserProtectWrapper><Watchlist /></UserProtectWrapper>} />
         </Routes>
       </BrowserRouter>
     </>

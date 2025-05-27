@@ -28,14 +28,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const user = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
+      localStorage.setItem('token', user.data.token);
       toast.success("Login successfully", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 2000,
         onClose: () => {
           navigate('/profile')
         }
       })
-      localStorage.setItem('token', user.data.token);
 
     } catch (error) {
       toast.error("Login Failed", {

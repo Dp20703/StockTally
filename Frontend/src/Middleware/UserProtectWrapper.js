@@ -1,18 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 
 const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
     const { auth, loading } = useAuth();
-    console.log("from auth :", auth, loading);
-    const [verify, setVerify] = useState(false);
 
-
+    console.log("auth:", auth, "loading:", loading);
     useEffect(() => {
-        if (!loading && !auth) {
+        if (!loading && auth === false) {
             toast.error("Please login first", {
                 position: "top-right",
                 autoClose: 1000,
@@ -21,12 +18,9 @@ const UserProtectWrapper = ({ children }) => {
                 }
             });
         }
-        else {
-            setVerify(true);
-        }
     }, [auth, loading, navigate]);
 
-    if (!verify || loading || !auth) {
+    if (loading || auth === null) {
         return <div className="text-center mt-2">Loading...</div>;
     }
 

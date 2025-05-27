@@ -19,11 +19,14 @@ const Dashboard = () => {
         <button onClick={() => setModal(true)} className="btn btn-primary">
           + New Trade
         </button>
+        <Link to={'/trade/watchlist'} className="btn btn-info">
+          Watchlist
+        </Link>
 
         <h2 className='text-center text-bg-warning w-50 rounded'>Dashboard</h2>
         <div className='d-flex  gap-2'>
-          <Link to={'/'} className="btn btn-success" >Home</Link>
-          <Link to={'/profile'} className="btn btn-info" >Profile</Link>
+          <Link to={'/'} className="btn btn-success">Home</Link>
+          <Link to={'/profile'}  style={{backgroundColor: '#F39F2B'}} className="btn btn-info border-0" >Profile</Link>
           <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
         </div>
       </div>
