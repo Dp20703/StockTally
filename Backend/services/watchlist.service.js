@@ -1,5 +1,19 @@
-const userModel = require('../models/user.model');
 const watchlistModel = require('../models/watchlist.model');
+
+// Create watchlist
+module.exports.createWatchlist = async ({ watchlistName, user }) => {
+
+    const watchlist = new watchlistModel({ watchlistName, user: user._id });
+    await watchlist.save();
+
+    // Link watchlist to user if not already linked
+    if (!user.watchlists.includes(watchlist._id)) {
+        user.watchlists.push(watchlist._id);
+        await user.save();
+    }
+
+    return watchlist;
+}
 
 // Add symbol to watchlist
 module.exports.addSymbol = async ({ cleanSymbol, stockName, watchlistName, user }) => {

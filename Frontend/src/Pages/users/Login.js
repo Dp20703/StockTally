@@ -35,7 +35,7 @@ const Login = () => {
       if (auth === true) {
         toast.success("Login successfully", {
           position: "top-right",
-          autoClose: 2000,
+          autoClose: 1000,
           onClose: () => {
             navigate('/profile')
           }

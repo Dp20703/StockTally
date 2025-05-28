@@ -1,4 +1,4 @@
-import CreateTrade from '../Pages/trade/CreateTrade';
+import CreateTrade from '../../Pages/trade/CreateTrade';
 
 const CreateTradeModal = ({ setModal }) => {
     return (

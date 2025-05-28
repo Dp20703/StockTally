@@ -2,6 +2,39 @@ const watchlistService = require('../services/watchlist.service');
 const watchlistModel = require('../models/watchlist.model');
 const userModel = require('../models/user.model');
 
+// create watchlist
+module.exports.createWatchlist = async (req, res) => {
+    const { watchlistName } = req.body;
+
+    if (!watchlistName || typeof watchlistName !== 'string' || watchlistName.trim() === '') {
+        return res.status(400).json({ error: 'Watchlist name is required and cannot be empty.' });
+    }
+
+    try {
+        const existingWatchlist = await watchlistModel.findOne({ watchlistName, user: req.user._id });
+
+        if (existingWatchlist) {
+            return res.status(409).json({ message: 'Watchlist with this name already exists.' }); // 409 = Conflict
+        }
+
+        const watchlist = await watchlistService.createWatchlist({ watchlistName, user: req.user });
+
+        return res.status(200).json({
+            success: true,
+            message: 'Watchlist created successfully',
+            watchlist
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            error: 'Failed to create watchlist',
+            details: error.message
+        });
+    }
+};
+
+
+
 // add symbol to watchlist
 module.exports.addSymbol = async (req, res) => {
     const { stockSymbol, stockName, watchlistName } = req.body;

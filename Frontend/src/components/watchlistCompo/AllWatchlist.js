@@ -15,7 +15,6 @@ const AllWatchlist = () => {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log("watchlist response:", res.data);
       setWatchlists(res.data);
     }
     fetchWatchlist();
@@ -71,11 +70,11 @@ const AllWatchlist = () => {
                               })
                             ) :
                               (
-                                <td colSpan="4" className="text-center text-bg-danger">
-                                  No stock
-                                </td>
-
-                              )
+                                <tr>
+                                  <td colSpan="4" className="text-center text-bg-danger">
+                                    No stock
+                                  </td>
+                                </tr>)
                           }
 
                         </tbody>

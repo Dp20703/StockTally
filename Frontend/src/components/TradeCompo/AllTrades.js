@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import GetStockPrice from '../Utils/GetStockPrice';
-import { useTrades } from '../context/TradeContext';
+import GetStockPrice from '../../Utils/GetStockPrice';
+import { useTrades } from '../../context/TradeContext';
 import { deleteTrade } from './DeleteTrade';
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {

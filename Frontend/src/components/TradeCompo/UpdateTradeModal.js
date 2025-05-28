@@ -1,4 +1,4 @@
-import UpdateTrade from '../Pages/trade/UpdateTrade';
+import UpdateTrade from '../../Pages/trade/UpdateTrade';
 
 const UpdateTradeModal = ({ tradeId, setUpdateModal }) => {
     return (

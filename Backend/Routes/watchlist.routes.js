@@ -5,6 +5,9 @@ const watchlistController = require('../controllers/watchlist.controller');
 const { body } = require('express-validator');
 const { validateRequest } = require('../middlewares/validateRequest');
 
+//create wablist [ /watchlist/create ]
+router.post('/create', authMiddleware.authUser, watchlistController.createWatchlist);
+
 // Add to watchlist => [ /watchlist/add ]
 router.post('/add', authMiddleware.authUser, [
     body('stockName').notEmpty().withMessage('Stock name is required.'),

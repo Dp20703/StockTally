@@ -7,9 +7,8 @@ import Signup from './Pages/users/Signup';
 import Profile from './Pages/users/Profile';
 import Logout from './Pages/users/Logout';
 import Dashboard from './Pages/trade/Dashboard';
-import CreateTrade from './Pages/trade/CreateTrade';
 import UserProtectWrapper from './Middleware/UserProtectWrapper';
-import Watchlist from './Pages/trade/Watchlist';
+import Watchlist from './Pages/watchlist/Watchlist';
 
 const App = () => {
   return (
