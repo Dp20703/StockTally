@@ -1,18 +1,26 @@
 import React from 'react'
 import AllWatchlist from '../../components/watchlistCompo/AllWatchlist'
+import { Link } from 'react-router-dom'
 
 const Watchlist = () => {
   return (
-    <div className='min-vh-100 min-vw-100 bg-black'>
-      <div className="d-flex flex-column align-items-center justify-content-center w-100">
-        <div className='mx-5 mt-5'>
+    <div className='min-vh-100 min-vw-100 bg-dark overflow-hidden'>
+
+      <div className="d-flex py-2 pt-3  justify-content-between align-items-center w-100">
+        <div className='mx-3'>
           <button onClick={() => (true)} className="btn btn-primary">
             + New Watchlist
           </button>
         </div>
-        <div className='mx-5 mt-5 w-100 '>
-          <AllWatchlist />
+        <div>
+          <Link to='/trade/dashboard' className="btn btn-info mx-2">Dashboard</Link>
+          <Link to='/profile' className="btn btn-success mx-2">Profile</Link>
+          <Link to='/logout' className="btn btn-danger mx-2">Logout</Link>
         </div>
+      </div>
+
+      <div className='w-100'>
+        <AllWatchlist />
       </div>
     </div>
   )

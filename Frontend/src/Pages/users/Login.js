@@ -3,9 +3,12 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
+import { useAuth } from '../../context/AuthContext'
+
 
 const Login = () => {
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -29,13 +32,15 @@ const Login = () => {
     try {
       const user = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
       localStorage.setItem('token', user.data.token);
-      toast.success("Login successfully", {
-        position: "top-right",
-        autoClose: 2000,
-        onClose: () => {
-          navigate('/profile')
-        }
-      })
+      if (auth === true) {
+        toast.success("Login successfully", {
+          position: "top-right",
+          autoClose: 2000,
+          onClose: () => {
+            navigate('/profile')
+          }
+        })
+      }
 
     } catch (error) {
       toast.error("Login Failed", {

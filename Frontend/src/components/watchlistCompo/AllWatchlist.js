@@ -22,53 +22,74 @@ const AllWatchlist = () => {
   }, [])
   return (
     <>
-      <div className='mb-5 text-center fs-1 text-bg-warning w-50 m-auto rounded-2'>
-        AllWatchlist
-      </div>
+      <div className='py-3'>
+        <div className='mb-5 text-center fs-1 text-bg-warning w-75 m-auto rounded-2'>
+          AllWatchlist
+        </div>
 
-      <div className='d-flex justify-content-center gap-3 flex-wrap w-100'>
-        {
-          watchlists.map((elem, idx) => {
-
-            return <div key={elem._id}>
-              <div className="text-bg-secondary rounded-2 overflow-hidden">
-
-                <h1 className='text-bg-success text-nowrap px-2 mb-0 py-1 fs-2'>
-                  <span className=' text-dark px-2'>{idx + 1}. </span>
-                  {elem.watchlistName}
-                  <span>
-                    <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" />
-                    <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" />
-                  </span>
+        <div className='d-flex justify-content-center gap-3 flex-wrap w-100'>
+          {
+            watchlists.length === 0 ? (
+              <div className="rounded-2 overflow-hidden">
+                <h1 className='text-bg-dark text-center text-nowrap px-2 mb-0 py-1 fs-2'>
+                  No watchlists
                 </h1>
-
-                <Table responsive className='table mb-0 table-hover table-dark  table-bordered'>
-                  <thead className='table-secondary'>
-                    <tr>
-                      <th>#</th>
-                      <th>Stock name</th>
-                      <th>Stock symbol</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      elem.stocks.map((stock, idx) => {
-                        return <tr key={idx}>
-                          <td>{idx + 1}</td>
-                          <td>{stock.stockName}</td>
-                          <td>{stock.stockSymbol}</td>
-                          <td>{stock.price}</td>
-                        </tr>
-                      })
-                    }
-                  </tbody>
-                </Table>
-
               </div>
-            </div>
-          })
-        }
+            ) :
+              (
+                watchlists.map((watchlist, idx) => {
+                  return <div key={watchlist._id}>
+                    <div className="text-bg-secondary rounded-2 overflow-hidden">
+                      <h1 className='text-bg-success text-nowrap px-2 mb-0 py-1 fs-2'>
+                        <span className=' text-dark px-2'>{idx + 1}. </span>
+                        {watchlist.watchlistName}
+                        <span>
+                          <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" />
+                          <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" />
+                        </span>
+                      </h1>
+
+                      <Table responsive className='table mb-0 table-hover table-dark  table-bordered'>
+                        <thead className='table-secondary'>
+                          <tr>
+                            <th>#</th>
+                            <th>Stock name</th>
+                            <th>Stock symbol</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            watchlist.stocks && watchlist.stocks.length > 0 ? (
+                              watchlist.stocks.map((stock, idx) => {
+                                return <tr key={idx}>
+                                  <td>{idx + 1}</td>
+                                  <td>{stock.stockName}</td>
+                                  <td>{stock.stockSymbol}</td>
+                                  <td>{stock.price}</td>
+                                </tr>
+                              })
+                            ) :
+                              (
+                                <td colSpan="4" className="text-center text-bg-danger">
+                                  No stock
+                                </td>
+
+                              )
+                          }
+
+                        </tbody>
+                      </Table>
+
+                    </div>
+                  </div>
+                }
+                )
+
+              )
+          }
+
+        </div>
       </div>
     </>
   )
