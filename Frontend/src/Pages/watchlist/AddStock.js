@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-const AddStock = ({ setAddStockModal, watchlistId }) => {
+import axios from 'axios';
+import { toast } from 'react-toastify';
+const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
     const [stocks, setStocks] = useState([{ stockName: '', stockSymbol: '' }]);
 
 
@@ -25,7 +27,33 @@ const AddStock = ({ setAddStockModal, watchlistId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Submitted Stocks:", stocks);
-        // Call API or logic here
+
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/watchlist/add`, {
+            stocks, watchlistId
+        }, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(
+            () => {
+                toast.success("Stocks Added successfully", {
+                    position: "top-right",
+                    autoClose: 1000,
+                    onClose: () => {
+                        setAddStockModal(false);
+                    }
+                })
+                setUpdateModal(false);
+            }
+        )
+            .catch((err) => {
+                console.log("err:", err)
+                toast.error("Failed to add stocks", {
+                    position: "top-right",
+                    autoClose: 1000
+                })
+                setAddStockModal(false);
+            })
     };
 
     return (
@@ -33,10 +61,14 @@ const AddStock = ({ setAddStockModal, watchlistId }) => {
             <div className='w-50  border border-secondary rounded-3 p-3' style={{ height: 'fit-content' }}>
                 <div>
                     <Form className="mx-auto mt-4" style={{ maxWidth: '80%' }}>
-                        <h3 className="text-center mb-4">Add Stocks</h3>
+                        <h3 className="text-center mb-4">Add Stocks
+                            <span className="close fs-2 text-light"
+                                onClick={() => setAddStockModal(false)} >
+                                &times;
+                            </span></h3>
 
                         <div className='hide-scrollbar' style={{ maxHeight: '15rem', overflowY: 'auto' }}>
-                            {stocks.map((stock, index) => (
+                            {stocks?.map((stock, index) => (
                                 <div key={index} className="bg-light p-3 mb-3 border rounded shadow-sm position-relative">
                                     <Button
                                         variant="outline-danger"
@@ -82,8 +114,8 @@ const AddStock = ({ setAddStockModal, watchlistId }) => {
 
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
 
     )
 }

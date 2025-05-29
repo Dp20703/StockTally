@@ -17,11 +17,15 @@ router.get("/get/:id", authMiddleware.authUser, watchlistController.getWatchlist
 // Delete Watchlist => [ /watchlist/delete/:id ]
 router.delete('/delete/:id', authMiddleware.authUser, watchlistController.deleteWatchlist);
 
-// AddSymbol to watchlist => [ /watchlist/add ]
+// 
+// 
+// Add stocks to watchlist => [ /watchlist/add ]
 router.post('/add', authMiddleware.authUser, [
-    body('stockName').notEmpty().withMessage('Stock name is required.'),
-    body('stockSymbol').notEmpty().withMessage('Stock symbol is required.'),
-], validateRequest, watchlistController.addSymbol);
+    body('watchlistId').notEmpty().withMessage('Watchlist ID is required.').isString().withMessage('Watchlist ID must be a string.'),
+    body('stocks').isArray({ min: 1 }).withMessage('Stocks must be a non-empty array.'),
+    body('stocks.*.stockName').notEmpty().withMessage('Stock name is required for each stock.'),
+    body('stocks.*.stockSymbol').notEmpty().withMessage('Stock symbol is required for each stock.')
+], validateRequest, watchlistController.addStocks);
 
 // Delete Stock => [ /watchlist/:watchlistId/delete/stock/:stockId ]
 router.delete('/:watchlistId/delete/stock/:stockId', authMiddleware.authUser, watchlistController.deleteStock);

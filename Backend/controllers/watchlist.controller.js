@@ -70,30 +70,31 @@ module.exports.deleteWatchlist = async (req, res) => {
     }
 }
 
+// add stocks to watchlist
+module.exports.addStocks = async (req, res) => {
 
-// add symbol to watchlist
-module.exports.addSymbol = async (req, res) => {
-    const { stockSymbol, stockName, watchlistName } = req.body;
+    const { stocks, watchlistId } = req.body;
 
-    if (!stockSymbol || typeof stockSymbol !== 'string' || stockSymbol.trim() === '') {
-        return res.status(400).json({ error: 'Sybmol is required and cannot be empty.' })
+    if (!Array.isArray(stocks) || stocks.length === 0) {
+        res.status(400).json({ error: 'Stocks must be a not-empty array.' })
     }
-    if (!watchlistName || typeof watchlistName !== 'string' || watchlistName.trim() === '') {
-        return res.status(400).json({ error: 'Watchlist name is required and cannot be empty.' })
+
+    if (!watchlistId || typeof watchlistId !== 'string' || watchlistId.trim() === '') {
+        res.status(400).json({ error: 'WatchlistId is required and cannot be empty.' })
     }
     try {
-        const cleanSymbol = stockSymbol.trim().toUpperCase();
-
-        const watchlist = await watchlistService.addSymbol({ cleanSymbol, stockName, watchlistName, user: req.user });
-
-        res.json({ success: true, message: 'Symbol added to watchlist successfully', watchlist })
+        const updatedWatchlist = await watchlistService.addStocks({
+            watchlistId: watchlistId.trim(),
+            stocks,
+            user: req.user
+        })
+        res.status(200).json({ success: true, message: 'stocks added to watchlist successfully', watchlist: updatedWatchlist })
     }
     catch (error) {
-        console.log("Error is add to watchlist:", error);
-        res.status(500).json({ error: 'Failed to save symbol', details: error.message })
+        console.log("Error is adding stocks to watchlist:", error);
+        res.status(500).json({ error: 'Failed to save stocks', details: error.message })
     }
 }
-
 
 // delete stock
 module.exports.deleteStock = async (req, res) => {

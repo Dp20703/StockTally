@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import AddStockModal from '../../components/watchlistCompo/AddStockModal';
 import AddStock from './AddStock';
 
 const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
@@ -80,62 +79,96 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                 setUpdateModal(false);
             })
     }
+
+    const handleDeleteStock = (stockId) => {
+        axios.delete(`${process.env.REACT_APP_BACKEND_URL}/watchlist/${watchlistId}/delete/stock/${stockId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(() => {
+            toast.success("Stock deleted successfully", {
+                position: "top-right",
+                autoClose: 1000,
+                onClose: () => {
+                    setUpdateWatchlist({ ...updateWatchlist, stocks: updateWatchlist.stocks.filter(stock => stock._id !== stockId) });
+                }
+            })
+        })
+            .catch((err) => {
+                console.log("err:", err)
+                toast.error("Failed to delete stock", {
+                    position: "top-right",
+                    autoClose: 1000
+                })
+            })
+    }
     return (
         <>
-            <div>
-                <h1 className='text-center fs-2'>Update Watchlist</h1>
-            </div>
-            <div>
-                <Form className='border border-secondary rounded-3 p-3 mt-3'>
-                    <Form.Group className="mb-3" controlId="formBasicInput">
-                        <Form.Label>Enter watchlist name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter watchlist name" onChange={handleChange} value={updateWatchlist.watchlistName || ''} name='watchlistName' />
-                    </Form.Group>
+            <div style={{ maxHeight: '100vh' }}>
+                <div>
+                    <h1 className='text-center fs-2'>Update Watchlist</h1>
+                </div>
+                <div>
+                    <Form className='border border-secondary rounded-3 p-3 mt-3'>
+                        <div style={{ overflowY: 'scroll', maxHeight: '60vh' }}>
+                            <Form.Group className="mb-3 mx-3" controlId="formBasicInput">
+                                <Form.Label>Enter watchlist name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter watchlist name" onChange={handleChange} value={updateWatchlist.watchlistName || ''} name='watchlistName' />
+                            </Form.Group>
 
-                    {
-                        updateWatchlist.stocks == 0 ? (
-                            <div className='d-flex justify-content-around align-items-center py-2'>
-                                <p className='text-danger fw-bold'>No stocks added</p>
-                                <Button className='float-end btn btn-primary' onClick={() => {
-                                    setAddStockModal(true)
-                                    // setUpdateModal(false)
-                                }
-                                }>Add stocks</Button>
-                            </div>
-                        ) :
-                            (
-                                <>
-                                    <Form.Group className="mb-3" controlId="formBasicInput">
-                                        {
-                                            updateWatchlist.stocks?.map((stock, idx) => {
-                                                return <div key={idx} className='mb-2'>
-                                                    <Form.Label>Enter stock name</Form.Label>
-                                                    <Form.Control type="text" placeholder="Enter stock name" onChange={(e) => handleStockChange(e, idx)} value={stock.stockName || ''} name='stockName' />
-                                                </div>
-                                            })
-                                        }
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" controlId="formBasicInput">
-                                        {
-                                            updateWatchlist.stocks?.map((stock, idx) => {
-                                                return <div key={idx} className='mb-2'>
-                                                    <Form.Label>Enter Stock symbol</Form.Label>
-                                                    <Form.Control type="text" placeholder="Enter stock symbol" onChange={(e) => handleStockChange(e, idx)} value={stock.stockSymbol || ''} name='stockSymbol' />
-                                                </div>
-                                            })
-                                        }
-                                    </Form.Group>
-                                </>
-                            )
-                    }
-                    <Button type='sumbit' variant="success" className='d-block m-auto' onClick={handleSubmit}>
-                        Update Watchlist
-                    </Button>
-                </Form >
-            </div >
-            <div>
+                            {
+                                updateWatchlist.stocks == 0 ? (
+                                    <p className='text-center text-danger fw-bold mx-3'>No stocks added</p>
+                                ) :
+                                    (
+                                        <>
+                                            <Form.Group className="mb-3" controlId="formBasicInput">
+                                                {
+                                                    updateWatchlist.stocks?.map((stock, idx) => (
+                                                        <div key={idx} className='mb-4 border rounded p-3 shadow-sm mx-3'>
+                                                            <div className='d-flex align-items-center justify-content-between pb-2'>
+                                                                <Form.Label className="fw-bold">Stock #{idx + 1}</Form.Label>
+                                                                <i className="ri-delete-bin-6-fill fs-5 text-dark bg-light rounded-circle px-1 " onClick={() => handleDeleteStock(stock._id)} />
+                                                            </div>
+
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter stock name"
+                                                                onChange={(e) => handleStockChange(e, idx)}
+                                                                value={stock.stockName || ''}
+                                                                name='stockName'
+                                                                className='mb-2'
+                                                            />
+
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter stock symbol"
+                                                                onChange={(e) => handleStockChange(e, idx)}
+                                                                value={stock.stockSymbol || ''}
+                                                                name='stockSymbol'
+                                                            />
+
+                                                        </div>
+                                                    ))
+                                                }
+                                            </Form.Group>
+                                        </>
+                                    )
+                            }
+                        </div>
+                        <div className='d-flex justify-content-center align-items-center gap-5 mt-5'>
+                            <Button type='sumbit' variant="success" onClick={handleSubmit}>
+                                Update Watchlist
+                            </Button>
+                            <Button variant='primary' onClick={() => {
+                                setAddStockModal(true)
+                            }
+                            }>Add stocks</Button>
+                        </div>
+                    </Form >
+                </div >
                 {
-                    addStockModal && <AddStock watchlistId={watchlistId} setAddStockModal={setAddStockModal} />
+                    addStockModal && <AddStock watchlistId={watchlistId} setAddStockModal={setAddStockModal} setUpdateModal={setUpdateModal} />
                 }
             </div>
         </>
