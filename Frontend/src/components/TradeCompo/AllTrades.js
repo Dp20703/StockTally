@@ -48,7 +48,11 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
                         </thead>
                         <tbody>
                             {
-                                trades.map((trade, index) => {
+                                trades.length === 0 ? (
+                                    <tr className='text-center '>
+                                        <td colSpan={16} className='py-3'>No trades found</td>
+                                    </tr>
+                                ) : trades.map((trade, index) => {
                                     return (
                                         <tr key={trade._id} >
                                             <td>{index + 1}</td>

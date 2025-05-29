@@ -68,12 +68,12 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
                 watchlists.map((watchlist, idx) => {
                   return <div key={watchlist._id}>
                     <div className="text-bg-secondary rounded-2 overflow-hidden">
-                      <h1 className='text-bg-success text-nowrap px-2 mb-0 py-1 fs-2'>
+                      <h1 className='text-bg-success text-nowrap mb-0 py-1 fs-2'>
                         <span className=' text-dark px-2'>{idx + 1}. </span>
                         {watchlist.watchlistName}
                         <span>
-                          <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" onClick={() => handleDelete(watchlist._id)} />
-                          <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" onClick={() => { setUpdateModal(true); setWatchlistId(watchlist._id) }} />
+                          <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-2 my-2" onClick={() => handleDelete(watchlist._id)} />
+                          <i className="ri-edit-box-line fs-5 text-dark float-end mx-2 my-2" onClick={() => { setUpdateModal(true); setWatchlistId(watchlist._id) }} />
                         </span>
                       </h1>
 
@@ -100,10 +100,11 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
                             ) :
                               (
                                 <tr>
-                                  <td colSpan="4" className="text-center text-bg-danger">
-                                    No stock
+                                  <td colSpan={4} className="text-center text-bg-danger">
+                                    No stocks
                                   </td>
-                                </tr>)
+                                </tr>
+                              )
                           }
 
                         </tbody>

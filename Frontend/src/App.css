@@ -3,18 +3,18 @@
   position: fixed;
   height: 100%;
   width: 100%;
-  z-index: 999;
+  z-index: 5;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
+  backdrop-filter: blur(2px);
 }
 
 #modal-content {
   width: 70%;
-  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
@@ -93,16 +93,42 @@
 }
 .poster {
   width: 50%;
-  overflow:hidden;
+  overflow: hidden;
 }
 .poster img {
   width: 100%;
   min-height: 81dvh;
-  object-fit:cover;
+  object-fit: cover;
   object-position: center;
 }
 .loginForm {
   min-height: 81dvh;
   width: 50%;
   background-color: #ffffff;
+}
+
+/* AddStockModal */
+#addStock {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  border: 1px solid black;
+}
+
+/* Hide scrollbar */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; 
 }

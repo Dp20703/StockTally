@@ -1,20 +1,20 @@
 import React from 'react'
-import UpdateWatchlist from '../../Pages/watchlist/UpdateWatchlist'
+import AddStock from '../../Pages/watchlist/AddStock'
 
-const UpdateWatchlistModal = ({ setUpdateModal, watchlistId }) => {
+const AddStockModal = ({ setAddStockModal, watchlistId }) => {
     return (
         <div>
             <div id="modal">
                 <div id="modal-content" className='text-bg-dark'>
                     <span id='close' className='close fs-2 text-light'
-                        onClick={() => setUpdateModal(false)} >
+                        onClick={() => setAddStockModal(false)} >
                         &times;
                     </span>
-                    <UpdateWatchlist setUpdateModal={setUpdateModal} watchlistId={watchlistId} />
+                    <AddStock setAddStockModal={setAddStockModal} watchlistId={watchlistId} />
                 </div>
             </div>
         </div>
     )
 }
 
-export default UpdateWatchlistModal
+export default AddStockModal
