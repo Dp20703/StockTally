@@ -78,7 +78,6 @@ module.exports.addSymbol = async ({ cleanSymbol, stockName, watchlistName, user 
     }
 };
 
-
 // update watchlist
 module.exports.updateWatchlist = async ({ watchlistName, stocks, id }) => {
     // Update watchlist name if provided

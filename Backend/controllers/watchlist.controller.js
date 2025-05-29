@@ -33,31 +33,6 @@ module.exports.createWatchlist = async (req, res) => {
     }
 };
 
-
-
-// add symbol to watchlist
-module.exports.addSymbol = async (req, res) => {
-    const { stockSymbol, stockName, watchlistName } = req.body;
-
-    if (!stockSymbol || typeof stockSymbol !== 'string' || stockSymbol.trim() === '') {
-        return res.status(400).json({ error: 'Sybmol is required and cannot be empty.' })
-    }
-    if (!watchlistName || typeof watchlistName !== 'string' || watchlistName.trim() === '') {
-        return res.status(400).json({ error: 'Watchlist name is required and cannot be empty.' })
-    }
-    try {
-        const cleanSymbol = stockSymbol.trim().toUpperCase();
-
-        const watchlist = await watchlistService.addSymbol({ cleanSymbol, stockName, watchlistName, user: req.user });
-
-        res.json({ success: true, message: 'Symbol added to watchlist successfully', watchlist })
-    }
-    catch (error) {
-        console.log("Error is add to watchlist:", error);
-        res.status(500).json({ error: 'Failed to save symbol', details: error.message })
-    }
-}
-
 // get watchlist
 module.exports.getWatchlist = async (req, res) => {
     const user = await userModel.findById(req.user._id);
@@ -94,6 +69,31 @@ module.exports.deleteWatchlist = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+
+// add symbol to watchlist
+module.exports.addSymbol = async (req, res) => {
+    const { stockSymbol, stockName, watchlistName } = req.body;
+
+    if (!stockSymbol || typeof stockSymbol !== 'string' || stockSymbol.trim() === '') {
+        return res.status(400).json({ error: 'Sybmol is required and cannot be empty.' })
+    }
+    if (!watchlistName || typeof watchlistName !== 'string' || watchlistName.trim() === '') {
+        return res.status(400).json({ error: 'Watchlist name is required and cannot be empty.' })
+    }
+    try {
+        const cleanSymbol = stockSymbol.trim().toUpperCase();
+
+        const watchlist = await watchlistService.addSymbol({ cleanSymbol, stockName, watchlistName, user: req.user });
+
+        res.json({ success: true, message: 'Symbol added to watchlist successfully', watchlist })
+    }
+    catch (error) {
+        console.log("Error is add to watchlist:", error);
+        res.status(500).json({ error: 'Failed to save symbol', details: error.message })
+    }
+}
+
 
 // delete stock
 module.exports.deleteStock = async (req, res) => {
