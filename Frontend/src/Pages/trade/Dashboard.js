@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import CreateTradeModal from '../../components/CreateTradeModal'
-import AllTrades from '../../components/AllTrades';
-import UpdateTradeModal from '../../components/UpdateTradeModal';
-import CloseTradeModal from '../../components/CloseTradeModal';
+import CreateTradeModal from '../../components/TradeCompo/CreateTradeModal'
+import AllTrades from '../../components/TradeCompo/AllTrades';
+import UpdateTradeModal from '../../components/TradeCompo/UpdateTradeModal';
+import CloseTradeModal from '../../components/TradeCompo/CloseTradeModal';
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false);
@@ -26,7 +26,7 @@ const Dashboard = () => {
         <h2 className='text-center text-bg-warning w-50 rounded'>Dashboard</h2>
         <div className='d-flex  gap-2'>
           <Link to={'/'} className="btn btn-success">Home</Link>
-          <Link to={'/profile'}  style={{backgroundColor: '#F39F2B'}} className="btn btn-info border-0" >Profile</Link>
+          <Link to={'/profile'} style={{ backgroundColor: '#F39F2B' }} className="btn btn-info border-0" >Profile</Link>
           <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
         </div>
       </div>

@@ -27,6 +27,7 @@ const CreateWatchlist = ({ setModal }) => {
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
+                    window.location.reload();
                     navigate('/trade/watchlist');
                 }
             })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
+import { toast } from 'react-toastify';
 
 const AllWatchlist = () => {
   const [watchlists, setWatchlists] = useState([]);
@@ -19,6 +20,34 @@ const AllWatchlist = () => {
     }
     fetchWatchlist();
   }, [])
+
+  const handleDelete = (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error("No token");
+    }
+    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/watchlist/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(() => {
+        toast.success("Watchlist deleted successfully", {
+          position: "top-right",
+          autoClose: 1000,
+          onClose: () => {
+            setWatchlists(watchlists.filter(watchlist => watchlist._id !== id));
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        toast.error("Failed to delete watchlist", {
+          position: "top-right",
+          autoClose: 1000
+        })
+      })
+  }
   return (
     <>
       <div className='py-3'>
@@ -43,7 +72,7 @@ const AllWatchlist = () => {
                         <span className=' text-dark px-2'>{idx + 1}. </span>
                         {watchlist.watchlistName}
                         <span>
-                          <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" />
+                          <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" onClick={() => handleDelete(watchlist._id)} />
                           <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" />
                         </span>
                       </h1>
