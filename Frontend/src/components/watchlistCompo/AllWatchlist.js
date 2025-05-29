@@ -3,7 +3,7 @@ import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { toast } from 'react-toastify';
 
-const AllWatchlist = () => {
+const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
   const [watchlists, setWatchlists] = useState([]);
   useEffect(() => {
     const fetchWatchlist = async () => {
@@ -73,7 +73,7 @@ const AllWatchlist = () => {
                         {watchlist.watchlistName}
                         <span>
                           <i className="ri-delete-bin-6-line fs-5 text-dark float-end mx-1 my-2" onClick={() => handleDelete(watchlist._id)} />
-                          <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" />
+                          <i className="ri-edit-box-line fs-5 text-dark float-end mx-1 my-2" onClick={() => { setUpdateModal(true); setWatchlistId(watchlist._id) }} />
                         </span>
                       </h1>
 

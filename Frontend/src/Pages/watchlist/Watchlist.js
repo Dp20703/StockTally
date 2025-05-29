@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import AllWatchlist from '../../components/watchlistCompo/AllWatchlist'
 import { Link } from 'react-router-dom'
 import CreateWatchlistModal from '../../components/watchlistCompo/CreateWatchlistModal';
+import UpdateWatchlistModal from '../../components/watchlistCompo/UpdateWatchlistModal';
 
 const Watchlist = () => {
+  const [watchlistId, setWatchlistId] = useState(null);
   const [modal, setModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
   return (
     <div className='min-vh-100 min-vw-100 bg-dark overflow-hidden'>
 
@@ -22,11 +25,15 @@ const Watchlist = () => {
       </div>
 
       <div className='w-100'>
-        <AllWatchlist />
+        <AllWatchlist setUpdateModal={setUpdateModal} setWatchlistId={setWatchlistId} />
       </div>
 
       {
         modal && <CreateWatchlistModal setModal={setModal} />
+      }
+
+      {
+        updateModal && <UpdateWatchlistModal setUpdateModal={setUpdateModal} watchlistId={watchlistId} />
       }
     </div>
   )

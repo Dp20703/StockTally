@@ -77,3 +77,38 @@ module.exports.addSymbol = async ({ cleanSymbol, stockName, watchlistName, user 
         throw error;
     }
 };
+
+
+// update watchlist
+module.exports.updateWatchlist = async ({ watchlistName, stocks, id }) => {
+    // Update watchlist name if provided
+    if (watchlistName) {
+        await watchlistModel.findByIdAndUpdate(
+            id,
+            { $set: { watchlistName } },
+            { new: true }
+        );
+    }
+
+    // Update each stock individually by stockId
+    if (Array.isArray(stocks)) {
+        for (const stock of stocks) {
+            const { stockId, stockName, stockSymbol } = stock;
+
+            if (stockId && (stockName || stockSymbol)) {
+                const stockUpdate = {};
+                if (stockName) stockUpdate["stocks.$.stockName"] = stockName;
+                if (stockSymbol) stockUpdate["stocks.$.stockSymbol"] = stockSymbol.trim().toUpperCase();
+
+                await watchlistModel.findOneAndUpdate(
+                    { _id: id, "stocks._id": stockId },
+                    { $set: stockUpdate },
+                    { new: true }
+                );
+            }
+        }
+    }
+
+    const updatedWatchlist = await watchlistModel.findById(id);
+    return updatedWatchlist;
+}

@@ -74,7 +74,11 @@ const Login = () => {
                   <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control" placeholder='enter your password' />
                 </div>
 
-                <input type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' />
+                <button type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' >
+                  {
+                    auth === true ? 'Login' : 'Loading...'
+                  }
+                </button>
               </form>
             </div>
 

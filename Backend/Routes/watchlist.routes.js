@@ -17,6 +17,9 @@ router.post('/add', authMiddleware.authUser, [
 // Get watchlist => [ /watchlist/get ]
 router.get("/get", authMiddleware.authUser, watchlistController.getWatchlist)
 
+// Get watchlist by id => [ /watchlist/get/:id ]
+router.get("/get/:id", authMiddleware.authUser, watchlistController.getWatchlistById)
+
 // Delete Watchlist => [ /watchlist/delete/:id ]
 router.delete('/delete/:id', authMiddleware.authUser, watchlistController.deleteWatchlist);
 

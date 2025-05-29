@@ -65,6 +65,16 @@ module.exports.getWatchlist = async (req, res) => {
     res.json(items)
 }
 
+//get watchlist by id
+module.exports.getWatchlistById = async (req, res) => {
+    const { id } = req.params;
+    const watchlist = await watchlistModel.findById(id).lean();
+    if (!watchlist) {
+        return res.status(404).json({ error: 'Watchlist not found' });
+    }
+    res.json(watchlist);
+}
+
 // delete watchlist
 module.exports.deleteWatchlist = async (req, res) => {
     const { id } = req.params;
@@ -114,32 +124,21 @@ module.exports.deleteStock = async (req, res) => {
 // udpate watchlist 
 module.exports.udpateWatchlist = async (req, res) => {
     const { id } = req.params;
-    const { watchlistName, stockName, stockSymbol, newStockSymbol } = req.body;
-    console.log("new symbol:", newStockSymbol)
-    let update = {};
-    if (watchlistName) update.watchlistName = watchlistName;
-    if (stockName) update["stocks.$.stockName"] = stockName;
-    if (newStockSymbol) update["stocks.$.stockSymbol"] = newStockSymbol.trim().toUpperCase();
+    const { watchlistName, stocks } = req.body;
 
     try {
-        let result;
 
-        if (watchlistName && !stockName && !newStockSymbol && !stockSymbol) {
-            result = await watchlistModel.findOneAndUpdate({ _id: id },
-                { $set: update }, { new: true });
-        }
-        else {
-            result = await watchlistModel.findOneAndUpdate({ _id: id, 'stocks.stockSymbol': stockSymbol },
-                { $set: update }, { new: true })
-        }
-        if (!result) {
-            res.status(404).json({ message: 'watchlist or stock not found' })
-        }
+        const updatedWatchlist = await watchlistService.updateWatchlist({ watchlistName, stocks, id });
 
-        res.json({ message: 'watchlist updated', udpated: result })
+        res.json({ message: "Watchlist updated", updated: updatedWatchlist });
 
     } catch (error) {
-        res.status(500).json({ erorr: "Failed to update watchlist ", details: error.message })
+        console.error("Update Error:", error);
+        res.status(500).json({
+            error: "Failed to update watchlist",
+            details: error.message
+        });
     }
+};
 
-}
+
