@@ -28,7 +28,6 @@ module.exports.loginUser = async (email, password) => {
     //selecting the password:
     //user from login service:
     const user = await userModel.findOne({ email }).select('+password');
-    console.log("user from login service:", user);
 
     //if user is not found it will return invalid email or password:
     if (!user) {

@@ -1,26 +1,40 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
-    const { auth, loading } = useAuth();
+    const [auth, setAuth] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const { setUser } = useAuth();
 
-    console.log("auth:", auth, "loading:", loading);
+    const token = localStorage.getItem("token");
+
     useEffect(() => {
-        if (!loading && auth === false) {
-            toast.error("Please login first", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate("/login");
-                }
-            });
+        if (!token) {
+            navigate("/login");
         }
-    }, [auth, loading, navigate]);
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((response) => {
+            if (response.status === 200) {
+                setLoading(false);
+                setUser(response.data);
+                console.log("User profile got successfully in authContext:", response.data);
+            }
+        }).catch((err) => {
+            console.log("Error while getting user profile:", err);
+            localStorage.removeItem("token");
+            navigate("/login");
+        });
+    }, []);
 
-    if (loading || auth === null) {
+
+
+    if (loading) {
         return <div className="text-center mt-2">Loading...</div>;
     }
 

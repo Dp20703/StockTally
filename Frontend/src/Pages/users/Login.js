@@ -8,7 +8,6 @@ import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
   const navigate = useNavigate();
-  const { auth } = useAuth();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -32,16 +31,13 @@ const Login = () => {
     try {
       const user = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
       localStorage.setItem('token', user.data.token);
-      if (auth === true) {
-        toast.success("Login successfully", {
-          position: "top-right",
-          autoClose: 1000,
-          onClose: () => {
-            navigate('/profile')
-          }
-        })
-      }
-
+      toast.success("Login successfully", {
+        position: "top-right",
+        autoClose: 1000,
+        onClose: () => {
+          navigate('/profile')
+        }
+      })
     } catch (error) {
       toast.error("Login Failed", {
         position: "top-right",
@@ -75,9 +71,7 @@ const Login = () => {
                 </div>
 
                 <button type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-danger mb-2' >
-                  {
-                    auth === true ? 'Login' : 'Loading...'
-                  }
+                  Login
                 </button>
               </form>
             </div>

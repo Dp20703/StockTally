@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 
 const Profile = () => {
     const { user } = useAuth();
+    console.log("user from profile:", user);
 
     return (
         <div className="pt-3 h-100" id='profile'>
