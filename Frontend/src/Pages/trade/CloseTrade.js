@@ -22,7 +22,7 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
   useEffect(() => {
     fetchData()
   }, [])
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,25 +60,13 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
         closeDate: '',
         closeQuantity: ''
       });
-      setCloseModal(false);
+      // setCloseModal(false);
     } catch (error) {
       // Handle different error responses
       if (error.response) {
         switch (error.response.status) {
           case 400:
             toast.error(error.response.data.message || "Please fill in all required fields.", {
-              position: "top-right",
-              autoClose: 1000,
-            });
-            break;
-          case 405:
-            toast.error(error.response.data.message || "Close Quantity should be less than Current Quantity.", {
-              position: "top-right",
-              autoClose: 1000,
-            });
-            break;
-          case 406:
-            toast.error(error.response.data.message || "Trade is already closed.", {
               position: "top-right",
               autoClose: 1000,
             });
@@ -95,14 +83,26 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
               autoClose: 1000,
             });
             break;
+          case 405:
+            toast.error(error.response.data.error || "Trade is already closed.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
+          case 406:
+            toast.error(error.response.data.error || "Close Quantity should be less than Current Quantity.", {
+              position: "top-right",
+              autoClose: 1000,
+            });
+            break;
           case 500:
-            toast.error("Internal Server Error. Please try again later.", {
+            toast.error(error.response.data.error || "Internal Server Error. Please try again later.", {
               position: "top-right",
               autoClose: 1000,
             });
             break;
           default:
-            toast.error(error.response.data.message || "Failed to Close trade. Please try again.", {
+            toast.error(error.response.data.error || "Failed to Close trade. Please try again.", {
               position: "top-right",
               autoClose: 1000,
             });
