@@ -1,22 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
+import NavbarCompo from '../../components/Navbar';
 
 const Profile = () => {
     const { user } = useAuth();
     return (
-        <div className="pt-3 h-100" id='profile'>
-            <div className='d-flex justify-content-between px-5 mt-2'>
-                <div>
-                    <Link to='/trade/dashboard' className="btn btn-info">View Dashboard</Link>
-                </div>
-
-                <div>
-                    <Link to={'/'} className="btn btn-success mx-2" >Home</Link>
-                    <Link to='/logout' className="btn btn-danger my-2   ">Logout</Link>
-                </div>
-            </div>
-
-            <div>
+        <div id='dashboard'>
+            <NavbarCompo/>
+            <div className='mt-5'>
                 <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black text-center w-50 rounded-5 overflow-hidden">
                     <img
                         src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}

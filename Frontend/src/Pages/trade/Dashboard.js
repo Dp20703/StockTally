@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import CreateTradeModal from '../../components/TradeCompo/CreateTradeModal'
 import AllTrades from '../../components/TradeCompo/AllTrades';
 import UpdateTradeModal from '../../components/TradeCompo/UpdateTradeModal';
 import CloseTradeModal from '../../components/TradeCompo/CloseTradeModal';
+import NavbarCompo from '../../components/Navbar';
 
 const Dashboard = () => {
   const [modal, setModal] = useState(false);
@@ -14,21 +14,12 @@ const Dashboard = () => {
 
   return (
     <div id='dashboard' className='overflow-hidden min-vh-100'>
-      <div className="d-flex justify-content-around align-items-center mb-3 text-center pt-4">
-
-        <button onClick={() => setModal(true)} className="btn btn-primary">
+      <NavbarCompo />
+      <div className="mb-3 mt-4 w-100">
+        <button onClick={() => setModal(true)} className="btn btn-primary mx-5 float-start">
           + New Trade
         </button>
-        <Link to={'/trade/watchlist'} className="btn btn-info">
-          Watchlist
-        </Link>
-
-        <h2 className='text-center text-bg-warning w-50 rounded'>Dashboard</h2>
-        <div className='d-flex  gap-2'>
-          <Link to={'/'} className="btn btn-success">Home</Link>
-          <Link to={'/profile'} style={{ backgroundColor: '#F39F2B' }} className="btn btn-info border-0" >Profile</Link>
-          <Link to={'/logout'} className="btn btn-danger" >Logout</Link>
-        </div>
+        <h2 className='text-center m-auto text-bg-warning w-50 rounded'>Dashboard</h2>
       </div>
 
       {/* All Trades */}

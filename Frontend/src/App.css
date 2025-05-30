@@ -61,15 +61,6 @@
   background-color: #0f1113;
   border: 0.5px solid #718ba6;
 }
-
-/* Profile */
-#profile {
-  min-height: 100dvh;
-  background-color: #0f1113;
-  object-fit: cover;
-  border: 0.5px solid #718ba6;
-}
-
 /* login */
 .login {
   overflow: hidden;

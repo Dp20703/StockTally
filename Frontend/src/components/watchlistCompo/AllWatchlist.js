@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
   const [watchlists, setWatchlists] = useState([]);
+
   useEffect(() => {
     const fetchWatchlist = async () => {
       const token = localStorage.getItem('token');
@@ -51,10 +52,6 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
   return (
     <>
       <div className='py-3'>
-        <div className='mb-5 text-center fs-1 text-bg-warning w-75 m-auto rounded-2'>
-          AllWatchlist
-        </div>
-
         <div className='d-flex justify-content-center gap-3 flex-wrap w-100'>
           {
             watchlists.length === 0 ? (
@@ -114,10 +111,8 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
                   </div>
                 }
                 )
-
               )
           }
-
         </div>
       </div>
     </>

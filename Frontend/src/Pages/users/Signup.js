@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../../components/Navbar';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -72,7 +71,6 @@ const Signup = () => {
     }
     return (
         <>
-            {/* <Navbar /> */}
             <div className="login">
                 <div className="wrapper">
                     <div className="poster">
