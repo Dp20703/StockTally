@@ -26,7 +26,6 @@ const Signup = () => {
         }
         else {
             setData({ ...data, [name]: value })
-            console.log("Data :", data);
         }
     }
     const submitHandler = async (e) => {
@@ -45,18 +44,23 @@ const Signup = () => {
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 400) {
-                    toast.error("Please fill in all required fields.");
-                } else if (error.response.status === 409) {
+                    toast.error("Please fill in all required fields.",
+                        {
+                            position: "top-right",
+                            autoClose: 1500,
+                        })
+                }
+                else if (error.response.status === 409) {
                     toast.error("Email already exists. Try another.");
-                } else {
+                }
+                else if (error.response.status === 410) {
+                    toast.error("Username already exists. Try another.");
+                }
+                else {
                     toast.error("An unexpected error occurred. Try again later.");
                 }
             }
             console.log("Error while registration:", error);
-            toast.error("Registration Failed", {
-                position: "top-right",
-                autoClose: 1500,
-            });
             setData({
                 userName: '',
                 fullName: {

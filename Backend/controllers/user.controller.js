@@ -1,22 +1,21 @@
 const userService = require('../services/user.service');
 const userModel = require('../models/user.model');
-const { validationResult } = require('express-validator');
 const BlacklistTokenModel = require('../models/blacklistToken.model');
 
 //this controller function will register the user using required fields:
 module.exports.registerUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        res.status(400).json({ errors: errors.array() });
-    }
     try {
         // Extract user details
         const { userName, fullName, email, password } = req.body;
 
         // Check if user already exist
-        const isUserAlreadyExist = await userModel.findOne({ email });
+        const isUserAlreadyExist = await userModel.findOne({ email, userName });
         if (isUserAlreadyExist) {
             return res.status(409).json({ message: 'User already exist' })
+        }
+        const isUserNameAlreadyExist = await userModel.findOne({userName });
+        if (isUserNameAlreadyExist) {
+            return res.status(410).json({ message: 'User already exist' })
         }
 
         //converting the password into hashPassword:
@@ -30,14 +29,14 @@ module.exports.registerUser = async (req, res) => {
             email,
             password: hashPassword
         });
-        console.log("Created user in registerUser Controller:", user)
+        console.log("user:", user);
 
         //generating a token using user's id: 
         const token = await user.generateAuthToken();
-        console.log("Token:", token)
         res.status(200).json({ message: 'User registered successfully', token, user });
 
     } catch (error) {
+        console.log("Error is register_user controller:", error);
         res.status(500).json({ error: error.message });
     }
 
@@ -46,17 +45,8 @@ module.exports.registerUser = async (req, res) => {
 
 // this controller function will login the user using email and password:
 module.exports.loginUser = async (req, res) => {
-    //check errors in the data using express-validator:
-    const errors = validationResult(req);
-
-    //if there are errors it will return the errors:
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    try {
         //extracting email and password from the request body:
         const { email, password } = req.body;
-        console.log(email, password);
         //login user using userService:
         const { user, token } = await userService.loginUser(email, password);
         //set the token as a cookie
@@ -67,11 +57,6 @@ module.exports.loginUser = async (req, res) => {
 
         //return the response
         res.status(200).json({ message: "Login successful", token, user });
-
-    } catch (error) {
-        console.error('Login Error:', error);
-        res.status(400).json({ error: error.message });
-    }
 }
 
 //this controller function will get the user profile using user's id:

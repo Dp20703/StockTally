@@ -4,8 +4,10 @@ const userModel = require('../models/user.model');
 module.exports.createUser = async ({ userName, firstName, lastName, email, password }) => {
     console.log("User service function for create user");
     if (!userName || !firstName || !lastName || !email || !password) {
+        console.log('All fields are required');
         throw new Error('All fields are required');
     }
+    console.log("user:", userName, firstName, lastName, email, password);
     const user = await userModel.create({
         userName,
         fullName: {
@@ -16,6 +18,7 @@ module.exports.createUser = async ({ userName, firstName, lastName, email, passw
         password,
         totalProfit: 0
     })
+    console.log("user:", user);
     return user;
 }
 
@@ -31,17 +34,18 @@ module.exports.loginUser = async (email, password) => {
 
     //if user is not found it will return invalid email or password:
     if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" })
+        throw new Error('Invalid email or password');
     }
 
     //comparing the password:
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-        return res.status(401).json({ message: "Invalid email or password" });
+        //if password is not match it will return invalid email or password:
+        throw new Error('Invalid email or password');
     }
     //generating a token:
     const token = user.generateAuthToken();
-    console.log("token from login function:", token);
+
     //returning the user and token:
     return { user, token }
 }

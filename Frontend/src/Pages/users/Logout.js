@@ -27,18 +27,8 @@ const Logout = () => {
             }
         }).catch((error) => {
             if (error.response) {
-                if (error.response.status === 401) {
+                if (error.response.status === 500) {
                     localStorage.removeItem("token");
-                    toast.error("Session expired, please login again.",
-                        {
-                            position: "top-right",
-                            autoClose: 1000,
-                            onClose: () => {
-                                navigate("/login");
-                            }
-                        }
-                    );
-                } else {
                     toast.error("Error logging out",
                         {
                             position: "top-right",
