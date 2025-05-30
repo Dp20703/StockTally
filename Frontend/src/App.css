@@ -58,19 +58,14 @@
 /* Dashboard */
 #dashboard {
   min-height: 100dvh;
-  background-image: url("../public/images/image7.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: #0f1113;
   border: 0.5px solid #718ba6;
 }
 
 /* Profile */
 #profile {
   min-height: 100dvh;
-  background-image: url("../public/images/image7.jpg");
-  object-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: #0f1113;
   object-fit: cover;
   border: 0.5px solid #718ba6;
 }
@@ -130,5 +125,5 @@
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }

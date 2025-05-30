@@ -9,7 +9,7 @@ const Watchlist = () => {
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   return (
-    <div className='min-vh-100 min-vw-100 bg-dark overflow-hidden'>
+    <div className='min-vh-100 min-vw-100 overflow-hidden' style={{ backgroundColor: '0f1113' }}>
 
       <div className="d-flex py-2 pt-3  justify-content-between align-items-center w-100">
         <div className='mx-3'>

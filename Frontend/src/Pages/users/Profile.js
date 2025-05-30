@@ -3,8 +3,6 @@ import { useAuth } from '../../context/AuthContext'
 
 const Profile = () => {
     const { user } = useAuth();
-    console.log("user from profile:", user);
-
     return (
         <div className="pt-3 h-100" id='profile'>
             <div className='d-flex justify-content-between px-5 mt-2'>
@@ -19,7 +17,7 @@ const Profile = () => {
             </div>
 
             <div>
-                <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto text-center w-50 rounded-5 overflow-hidden">
+                <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black text-center w-50 rounded-5 overflow-hidden">
                     <img
                         src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
                         className=" w-50 m-auto rounded-circle mt-3 "
