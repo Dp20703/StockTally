@@ -23,8 +23,6 @@ module.exports.addStocks = async ({ watchlistId, stocks, user }) => {
         user: user._id,
     });
 
-    console.log("watchlist:", watchlist);
-    console.log("user:", user);
     if (!watchlist) {
         throw new Error('watchlist not found.')
     }
@@ -34,13 +32,30 @@ module.exports.addStocks = async ({ watchlistId, stocks, user }) => {
         stockName: stock.stockName?.trim(),
         stockSymbol: stock.stockSymbol?.trim().toUpperCase(),
     }));
+    console.log("cleanedStocks:", cleanedStocks);
 
+    // Create a Set of existing stock symbols
+    const existingStocks = new Set(
+        watchlist.stocks.map(stock => stock.stockSymbol)
+    )
+    console.log("existingStocks:", existingStocks);
+    
+    const availableSlots = 10 - watchlist.stocks.length;
+
+    if (availableSlots <= 0) {
+        throw new Error('Watchlist already contains the maximum of 10 stocks.');
+    }
+    // Filter only unique new stocks
+    const uniqueStocks = cleanedStocks.filter(
+        stock => !existingStocks.has(stock.stockSymbol)
+    )
+
+    console.log("uniqueStocks:", uniqueStocks);
     // Push new stocks into the existing array
-    watchlist.stocks.push(...cleanedStocks);
-
-    // Save updated watchlist
-    await watchlist.save();
-    return watchlist;
+    if (uniqueStocks.length > 0) {
+        watchlist.stocks.push(...uniqueStocks);
+        await watchlist.save();
+    }
 };
 
 // update watchlist

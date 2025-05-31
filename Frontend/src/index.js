@@ -8,13 +8,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { TradeProvider } from './context/TradeContext';
 import 'remixicon/fonts/remixicon.css';
 import { AuthProvider } from './context/AuthContext';
+import { WatchlistProvider } from './context/WatchlistContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
       <TradeProvider>
-        <App />
+        <WatchlistProvider>
+          <App />
+        </WatchlistProvider>
       </TradeProvider>
     </AuthProvider>
   </React.StrictMode>

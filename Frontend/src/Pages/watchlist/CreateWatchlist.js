@@ -4,52 +4,53 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useWatchlists } from '../../context/WatchlistContext';
 
 
 const CreateWatchlist = ({ setModal }) => {
     const navigate = useNavigate();
     const [watchlist, setWatchlist] = useState('');
-    console.log('watchlist:', watchlist);
-
+    const { fetchWatchlist } = useWatchlists();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const watchlistName = watchlist.trim();
+        const trimmedName = watchlist.trim();
+        if (!trimmedName) {
+            toast.warn("Watchlist name cannot be empty", { autoClose: 1000 });
+            return;
+        }
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/watchlist/create`, { watchlistName: watchlistName }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+            await axios.post(
+                `${process.env.REACT_APP_BACKEND_URL}/watchlist/create`,
+                { watchlistName: trimmedName },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
                 }
-            });
-            console.log('response:', res.data);
-
-            toast.success("Watchlist created successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    window.location.reload();
-                    navigate('/trade/watchlist');
-                }
-            })
+            );
+            fetchWatchlist?.();
             setWatchlist('');
             setModal(false);
-        }
-        catch (err) {
+            toast.success("Watchlist created successfully", {
+                autoClose: 1000,
+                onClose: () => navigate('/trade/watchlist'),
+                position: "top-right",
+            });
+        } catch (err) {
             console.error('Error creating watchlist:', err);
-
-            if (err.response && err.response.status === 409) {
-                toast.error("Watchlist already exists", {
-                    position: "top-right",
-                    autoClose: 1000,
-                });
-            } else {
-                toast.error("Failed to create watchlist", {
-                    position: "top-right",
-                    autoClose: 1000,
-                });
-            }
+            const status = err?.response?.status;
+            const message =
+                status === 409
+                    ? "Watchlist already exists"
+                    : "Failed to create watchlist";
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 1000,
+            });
         }
-    }
+    };
+
     return (
         <>
             <h1 className='text-center fs-2'>CreateWatchlist</h1>

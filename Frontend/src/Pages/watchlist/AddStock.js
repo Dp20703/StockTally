@@ -3,8 +3,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useWatchlists } from "../../context/WatchlistContext";
 const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
     const [stocks, setStocks] = useState([{ stockName: '', stockSymbol: '' }]);
+    const { fetchWatchlist } = useWatchlists();
 
 
     const handleChange = (e, index) => {
@@ -44,14 +46,24 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
                     }
                 })
                 setUpdateModal(false);
+                fetchWatchlist();
             }
         )
             .catch((err) => {
-                console.log("err:", err)
-                toast.error("Failed to add stocks", {
-                    position: "top-right",
-                    autoClose: 1000
-                })
+                if (err.response.status === 500) {
+                    toast.error(err.response.data.details
+                        || 'Maximum stocks limit 10 reached', {
+                        position: "top-right",
+                        autoClose: 1000
+                    })
+                }
+                else {
+                    console.log("err:", err)
+                    toast.error("Failed to add stocks", {
+                        position: "top-right",
+                        autoClose: 1000
+                    })
+                }
                 setAddStockModal(false);
             })
     };

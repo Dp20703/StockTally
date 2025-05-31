@@ -16,9 +16,7 @@ router.get("/get/:id", authMiddleware.authUser, watchlistController.getWatchlist
 
 // Delete Watchlist => [ /watchlist/delete/:id ]
 router.delete('/delete/:id', authMiddleware.authUser, watchlistController.deleteWatchlist);
-
-// 
-// 
+ 
 // Add stocks to watchlist => [ /watchlist/add ]
 router.post('/add', authMiddleware.authUser, [
     body('watchlistId').notEmpty().withMessage('Watchlist ID is required.').isString().withMessage('Watchlist ID must be a string.'),

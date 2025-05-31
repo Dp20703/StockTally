@@ -4,12 +4,15 @@ import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import AddStock from './AddStock';
+import { deleteStock } from '../../components/watchlistCompo/DeleteStock';
+import { useWatchlists } from '../../context/WatchlistContext';
 
 const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
     console.log("Watchlist Id:", watchlistId);
 
     const [updateWatchlist, setUpdateWatchlist] = useState({});
     const [addStockModal, setAddStockModal] = useState(false);
+    const { fetchWatchlist } = useWatchlists();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +45,10 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
         }
         FetchWatchlist()
     }, [])
-
+    const handleDeleteStock = (stockId) => {
+        deleteStock(stockId, watchlistId)
+        fetchWatchlist();
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -68,6 +74,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                 })
                 setUpdateWatchlist({});
                 setUpdateModal(false);
+                fetchWatchlist();
             }
         )
             .catch((err) => {
@@ -79,29 +86,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                 setUpdateModal(false);
             })
     }
-
-    const handleDeleteStock = (stockId) => {
-        axios.delete(`${process.env.REACT_APP_BACKEND_URL}/watchlist/${watchlistId}/delete/stock/${stockId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(() => {
-            toast.success("Stock deleted successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    setUpdateWatchlist({ ...updateWatchlist, stocks: updateWatchlist.stocks.filter(stock => stock._id !== stockId) });
-                }
-            })
-        })
-            .catch((err) => {
-                console.log("err:", err)
-                toast.error("Failed to delete stock", {
-                    position: "top-right",
-                    autoClose: 1000
-                })
-            })
-    }
+    
     return (
         <>
             <div style={{ maxHeight: '100vh' }}>
@@ -167,6 +152,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                         </div>
                     </Form >
                 </div >
+
                 {
                     addStockModal && <AddStock watchlistId={watchlistId} setAddStockModal={setAddStockModal} setUpdateModal={setUpdateModal} />
                 }

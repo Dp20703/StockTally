@@ -2,53 +2,21 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
 import { toast } from 'react-toastify';
+import { useWatchlists } from '../../context/WatchlistContext';
+import { deleteWatchlist } from './DeleteWatchlist';
 
 const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
-  const [watchlists, setWatchlists] = useState([]);
+  const { watchlists, fetchWatchlist } = useWatchlists();
 
   useEffect(() => {
-    const fetchWatchlist = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error("No token");
-      }
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/watchlist/get`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setWatchlists(res.data);
-    }
     fetchWatchlist();
   }, [])
 
   const handleDelete = (id) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error("No token");
-    }
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/watchlist/delete/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(() => {
-        toast.success("Watchlist deleted successfully", {
-          position: "top-right",
-          autoClose: 1000,
-          onClose: () => {
-            setWatchlists(watchlists.filter(watchlist => watchlist._id !== id));
-          }
-        })
-      })
-      .catch(err => {
-        console.log(err);
-        toast.error("Failed to delete watchlist", {
-          position: "top-right",
-          autoClose: 1000
-        })
-      })
+    deleteWatchlist(id);
+    fetchWatchlist()
   }
+
   return (
     <>
       <div className='py-3'>
@@ -64,7 +32,9 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
               (
                 watchlists.map((watchlist, idx) => {
                   return <div key={watchlist._id}>
-                    <div className="text-bg-secondary rounded-2 overflow-hidden">
+
+                    <div className="text-bg-secondary rounded-2 overflow-hidden w-100">
+
                       <h1 className='text-bg-success text-nowrap mb-0 py-1 fs-2'>
                         <span className=' text-dark px-2'>{idx + 1}. </span>
                         {watchlist.watchlistName}
