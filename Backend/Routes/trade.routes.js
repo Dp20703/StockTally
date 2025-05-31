@@ -31,18 +31,59 @@ router.post('/close/:tradeId', authMiddleware.authUser, [
 
 
 // trades/update/:tradeId
-router.put('/update/:tradeId', authMiddleware.authUser, [
-    body('symbolName').optional().notEmpty().withMessage('Stock name is required.'),
-    body('symbolSymbol').optional().notEmpty().withMessage('Stock symbol is required.'),
-    body('quantity').optional().notEmpty().withMessage('Quantity is required.'),
-    body('originalQuantity').optional().isInt({ min: 1 }).withMessage('originalQuantity must be at least 1.'),
-    body('entryType').optional().isIn(['buy', 'sell']).withMessage('Entry type must be either "buy" or "sell".'),
-    body('type').optional().isIn(['long', 'short']).withMessage('Type must be either "long" or "short".'),
-    body('buyPrice').optional().isFloat({ min: 0 }).withMessage('Buy Price must be valid and greater than zero.'),
-    body('buyDate').optional().isISO8601().toDate().withMessage('Valid Buy date is required.'),
-    body('sellPrice').optional().isFloat({ min: 0 }).withMessage('Sell Price must be valid and greater than zero.'),
-    body('sellDate').optional().isISO8601().toDate().withMessage('Valid Sell date is required.')
-], validateRequest, tradeController.updateTrade);
+router.put('/update/:tradeId', authMiddleware.authUser, 
+ [
+  body('symbolName')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isString().withMessage('Stock name must be a string.'),
+
+  body('symbolSymbol')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isString().withMessage('Stock symbol must be a string.'),
+
+  body('quantity')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isNumeric().withMessage('Quantity must be a number.'),
+
+  body('originalQuantity')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isInt({ min: 1 }).withMessage('Original quantity must be at least 1.'),
+
+  body('entryType')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isIn(['buy', 'sell']).withMessage('Entry type must be either "buy" or "sell".'),
+
+  body('type')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isIn(['long', 'short']).withMessage('Type must be either "long" or "short".'),
+
+  body('buyPrice')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isFloat({ min: 0 }).withMessage('Buy price must be a valid number greater than or equal to 0.'),
+
+  body('buyDate')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isISO8601().toDate().withMessage('Valid buy date is required.'),
+
+  body('sellPrice')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isFloat({ min: 0 }).withMessage('Sell price must be a valid number greater than or equal to 0.'),
+
+  body('sellDate')
+    .customSanitizer(value => (value === '' || value === null ? undefined : value))
+    .optional()
+    .isISO8601().toDate().withMessage('Valid sell date is required.')
+]
+, validateRequest, tradeController.updateTrade);
 
 
 // trades/delete/:tradeId

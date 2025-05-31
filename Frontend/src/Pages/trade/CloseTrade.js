@@ -115,7 +115,6 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
         closeDate: '',
         closeQuantity: ''
       });
-      setCloseData(false);
     }
   };
 

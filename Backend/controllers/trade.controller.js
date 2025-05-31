@@ -61,7 +61,7 @@ module.exports.getTrade = async (req, res) => {
     try {
         const { tradeId } = req.params;
         const trade = await tradeModel.find({ _id: tradeId });
-        console.log("Get Trade Controller :", trade);
+
         res.status(200).json({
             success: true,
             message: 'Fetched trade for the logged-in user',

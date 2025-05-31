@@ -109,19 +109,21 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
 
 // update a trade
 module.exports.updateTrade = async (tradeId, tradeData) => {
+
     try {
         const trade = await tradeModel.findById(tradeId);
         if (!trade) {
             throw new Error('Trade not found');
         }
+        console.log("in service tradeData:", tradeData);
         const { profit, finalProfit, ...restOfTradeData } = tradeData;
+
+        // Update the trade
         Object.keys(restOfTradeData).forEach(key => {
             if (trade[key] !== undefined) {
                 trade[key] = restOfTradeData[key];
             }
         });
-        // Recalculate profit after the update
-        // trade.calculateProfit();
         // Save the updated trade
         await trade.save();
         return trade;

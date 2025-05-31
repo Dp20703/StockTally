@@ -29,6 +29,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        console.log('TradeData:', tradeData);
         try {
             const newTrade = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/trades/update/${tradeId}`, tradeData, {
                 headers: {
@@ -119,11 +120,13 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Stock Buy Price</label>
-                            <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='enter stock buy price' className='form-control' />
+                            <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='enter stock buy price' className='form-control'
+                                disabled={!tradeData.buyPrice} />
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Stock Sell Price</label>
-                            <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='enter stock sell price' className='form-control' />
+                            <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='enter stock sell price' className='form-control'
+                                disabled={!tradeData.sellPrice} />
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Stock Quantity</label>
@@ -155,11 +158,11 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Buy Date</label>
-                            <input type="date" min={1} value={(tradeData?.buyDate || "").slice(0, 10)} onChange={handleChange} name='buyDate' placeholder='enter buy date' className='form-control' />
+                            <input type="date" min={1} value={(tradeData?.buyDate || "").slice(0, 10)} onChange={handleChange} name='buyDate' placeholder='enter buy date' className='form-control' disabled={!tradeData.buyDate} />
                         </div>
                         <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                             <label>Enter Sell Date</label>
-                            <input type="date" min={1} value={(tradeData?.sellDate || "").slice(0, 10)} onChange={handleChange} name='sellDate' placeholder='enter sell date' className='form-control' />
+                            <input type="date" min={1} value={(tradeData?.sellDate || "").slice(0, 10)} onChange={handleChange} name='sellDate' placeholder='enter sell date' className='form-control' disabled={!tradeData.sellDate} />
                         </div>
                     </div>
 

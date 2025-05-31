@@ -87,20 +87,37 @@ tradeSchema.methods.calculateProfit = function (closeQuantity) {
     if (this.buyPrice !== null && this.sellPrice !== null) {
         let quantitySold = closeQuantity || this.quantity;  // Use passed quantity or full trade quantity
 
+        // Validate numeric inputs
+        if (isNaN(this.buyPrice) || isNaN(this.sellPrice) || isNaN(quantitySold)) {
+            this.profit = 0;
+            this.finalProfit = 0;
+            console.log("Invalid input values");
+            return;
+        }
+
+
         // Calculate profit based on the price difference and quantity sold
-        this.profit = (this.sellPrice - this.buyPrice) * quantitySold;
+        let profit = (this.sellPrice - this.buyPrice) * quantitySold;
 
         // Reverse the profit/loss calculation for short trades
-        if (this.type === 'short') {
-            this.profit *= -1;  // Profit is reversed in short trades
+        if (this.type === 'short' && this.entryType === 'sell') {
+            profit *= -1;  // Profit is reversed in short trades
         }
+
+        // Assign profit
+        this.profit = profit;
 
         // If trade is fully closed, finalize the profit calculation
         if (this.status === 'closed' && this.quantity === 0) {
             // Finalize the profit calculation when the trade is fully closed
-            this.finalProfit = this.profit;
-            this.profit = null;
+            this.finalProfit = profit;
+            this.profit = 0;
         }
+    }
+    else {
+        // Missing required values — set defaults safely
+        this.profit = 0;
+        this.finalProfit = 0;
     }
 };
 
