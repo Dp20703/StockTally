@@ -127,6 +127,22 @@ module.exports.udpateWatchlist = async (req, res) => {
     const { id } = req.params;
     const { watchlistName, stocks } = req.body;
 
+    // Check if the watchlistName is unique
+    const duplicateWatchlist = await watchlistModel.findOne({
+        _id: { $ne: id },
+        user: req.user._id,
+        watchlistName,
+    });
+
+    if (duplicateWatchlist) {
+        return res.status(409).json({ error: 'Watchlist with this name already exists' });
+    }
+    // Check if all stock symbols are unique
+    const symbols = stocks.map(stock => stock.stockSymbol.toUpperCase());
+    const uniqueSymbols = [...new Set(symbols)];
+    if (symbols.length !== uniqueSymbols.length) {
+        return res.status(409).json({ error: 'Stock symbols must be unique' });
+    }
     try {
 
         const updatedWatchlist = await watchlistService.updateWatchlist({ watchlistName, stocks, id });

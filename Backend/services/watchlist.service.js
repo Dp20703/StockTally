@@ -32,30 +32,52 @@ module.exports.addStocks = async ({ watchlistId, stocks, user }) => {
         stockName: stock.stockName?.trim(),
         stockSymbol: stock.stockSymbol?.trim().toUpperCase(),
     }));
+
+    // Check for duplicate stock symbols
+    const duplicateStocks = new Set();
+    for (const stock of cleanedStocks) {
+        if (duplicateStocks.has(stock.stockSymbol)) {
+            throw new Error(`Duplicate stock symbol: ${stock.stockSymbol}`);
+        }
+        duplicateStocks.add(stock.stockSymbol);
+    }
+
     console.log("cleanedStocks:", cleanedStocks);
+    console.log("duplicateStocks:", duplicateStocks);
+
+    // Check if the watchlist already contains the maximum of 10 stocks
+    const availableSlots = 10 - watchlist.stocks.length;
+
+    if (availableSlots <= 0) {
+        throw new Error('Watchlist already contains the maximum of 10 stocks.');
+    }
 
     // Create a Set of existing stock symbols
     const existingStocks = new Set(
         watchlist.stocks.map(stock => stock.stockSymbol)
     )
     console.log("existingStocks:", existingStocks);
-    
-    const availableSlots = 10 - watchlist.stocks.length;
-
-    if (availableSlots <= 0) {
-        throw new Error('Watchlist already contains the maximum of 10 stocks.');
-    }
     // Filter only unique new stocks
     const uniqueStocks = cleanedStocks.filter(
         stock => !existingStocks.has(stock.stockSymbol)
     )
-
     console.log("uniqueStocks:", uniqueStocks);
-    // Push new stocks into the existing array
-    if (uniqueStocks.length > 0) {
-        watchlist.stocks.push(...uniqueStocks);
-        await watchlist.save();
+
+    if (uniqueStocks.length === 0) {
+        throw new Error('All provided stock symbols already exist in the watchlist.');
     }
+
+
+    // Check if the user can add more stocks
+    if (uniqueStocks.length > availableSlots) {
+        throw new Error(`You can only add ${availableSlots} more stock(s).`);
+    }
+
+
+    // Push new stocks into the existing array
+    watchlist.stocks.push(...uniqueStocks);
+    await watchlist.save();
+
 };
 
 // update watchlist

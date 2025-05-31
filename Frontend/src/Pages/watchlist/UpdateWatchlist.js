@@ -79,6 +79,13 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
         )
             .catch((err) => {
                 console.log("err:", err)
+                if (err.status === 409) {
+                    toast.error(err.response.data.error, {
+                        position: "top-right",
+                        autoClose: 1000
+                    })
+                    return
+                }
                 toast.error("Failed to update watchlist", {
                     position: "top-right",
                     autoClose: 1000
@@ -86,7 +93,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                 setUpdateModal(false);
             })
     }
-    
+
     return (
         <>
             <div style={{ maxHeight: '100vh' }}>
