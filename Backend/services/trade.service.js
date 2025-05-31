@@ -45,45 +45,45 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
 
     const trade = await tradeModel.findById(tradeId);
     if (!trade) {
-        throw { message: 'Trade not found', code: 404 };
+        throw { message: 'Trade not found' };
     }
 
     if (trade.status === 'closed') {
-        throw { message: 'Trade already closed', code: 405 };
+        throw { message: 'Trade already closed' };
     }
 
     if (closeQuantity > trade.quantity) {
-        throw { message: 'Close quantity is greater than trade quantity', code: 406 };
+        throw { message: 'Close quantity is greater than trade quantity' };
     }
 
     if (trade.entryType === 'buy') {
         if (trade.buyPrice === null) {
-            throw { message: 'Buy price not set', code: 400 };
+            throw { message: 'Buy price not set' };
         }
 
         if (['long', 'short'].includes(trade.type)) {
             trade.sellPrice = closePrice;
             trade.sellDate = closeDate;
         } else {
-            throw { message: 'Invalid trade type. Must be "long" or "short".', code: 400 };
+            throw { message: 'Invalid trade type. Must be "long" or "short".' };
         }
 
     }
     else if (trade.entryType === 'sell') {
         if (trade.sellPrice === null) {
-            throw { message: 'Sell price not set', code: 400 };
+            throw { message: 'Sell price not set' };
         }
 
         if (['long', 'short'].includes(trade.type)) {
             trade.buyPrice = closePrice;
             trade.buyDate = closeDate;
         } else {
-            throw { message: 'Invalid trade type. Must be "long" or "short".', code: 400 };
+            throw { message: 'Invalid trade type. Must be "long" or "short".' };
         }
 
     }
     else {
-        throw { message: 'Invalid entry type. Must be "buy" or "sell".', code: 400 };
+        throw { message: 'Invalid entry type. Must be "buy" or "sell".' };
     }
 
     if (closeQuantity < trade.quantity) {
@@ -103,12 +103,9 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
         $inc: { totalProfit: trade.finalProfit }
     });
 
-    console.log("Closed trade Details:", trade);
     return trade;
 
 };
-
-
 
 // update a trade
 module.exports.updateTrade = async (tradeId, tradeData) => {

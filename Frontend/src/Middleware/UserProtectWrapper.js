@@ -5,7 +5,6 @@ import axios from "axios";
 
 const UserProtectWrapper = ({ children }) => {
     const navigate = useNavigate();
-    const [auth, setAuth] = useState(null);
     const [loading, setLoading] = useState(true);
     const { setUser } = useAuth();
 
@@ -23,10 +22,10 @@ const UserProtectWrapper = ({ children }) => {
             if (response.status === 200) {
                 setLoading(false);
                 setUser(response.data);
-                console.log("User profile got successfully in authContext:", response.data);
+                console.log("Authenticated user.");
             }
         }).catch((err) => {
-            console.log("Error while getting user profile:", err);
+            console.log(err.response.data.message || "Error while getting user:", err);
             localStorage.removeItem("token");
             navigate("/login");
         });

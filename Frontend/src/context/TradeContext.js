@@ -9,12 +9,17 @@ export const TradeProvider = ({ children }) => {
     const [trades, setTrades] = useState([])
     // Fetch all trades
     const fetchTrades = async () => {
-        const allTrades = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_all_trades`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        setTrades(allTrades.data.trades || []);
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_all_trades`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            setTrades(response.data.trades || []);
+        } catch (error) {
+            console.error(error.response.data.message || "Error fetching trades");
+            setTrades([]);
+        }
     }
 
     return <TradeContext.Provider value={{ trades, setTrades, fetchTrades }}>
