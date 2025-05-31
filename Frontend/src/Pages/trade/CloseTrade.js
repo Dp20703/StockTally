@@ -196,7 +196,7 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
           </div>
           <hr />
           {tradeData.status === 'closed' ? (
-            <h2 className='text-center text-bg-danger'>Trade Already Closed</h2>
+            <h2 className='text-center text-bg-danger rounded'>Trade Already Closed</h2>
           ) : (
             <>
               <h5 className='text-danger mt-2'>Close Trade</h5>
