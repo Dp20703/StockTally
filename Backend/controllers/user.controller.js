@@ -67,10 +67,36 @@ module.exports.getUserProfile = async (req, res) => {
 
 //this controller function will update the user profile:
 module.exports.updateProfile = async (req, res) => {
-    console.log(req.body);
-    console.log(req.files)
-    return res.status(200).json({"message":"Profile updated successfully"})
-}
+    try {
+        console.log("BODY:", req.body);
+        console.log("FILE:", req.file);
+
+        const updateData = {
+            userName: req.body.userName,
+            email: req.body.email,
+            fullName: {
+                firstName: req.body.fullName.firstName,
+                lastName: req.body.fullName.lastName
+            },
+        };
+
+        if (req.file) {
+            updateData.profilePic = `images/uploads/${req.file.filename}`;
+        }
+
+        const user = await userModel.findByIdAndUpdate(
+            req.user._id,
+            updateData,
+            { new: true }
+        );
+
+        return res.status(200).json({ message: "Profile updated successfully", user });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Something went wrong", error: err.message });
+    }
+};
+
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {
     try {

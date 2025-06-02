@@ -6,17 +6,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Profile = () => {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [updateModal, setUpdateModal] = useState(false);
     const [data, setData] = useState({
-        profilePic: "",
-        userName: '',
+        profilePic: user.profilePic || "",
+        userName: user.userName || "",
         fullName: {
-            firstName: '',
-            lastName: '',
+            firstName: user.fullName.firstName || '',
+            lastName: user.fullName.lastName || '',
         },
-        email: '',
-        password: '',
+        email: user.email || '',
     });
 
     const handleToggle = () => {
@@ -68,7 +67,14 @@ const Profile = () => {
                 }
             );
             console.log('res: ', res.data);
-            toast.success('Profile updated successfully');
+            setUser(res.data.user)
+            toast.success('Profile updated successfully', {
+                position: "top-right",
+                autoClose: 1000,
+                onClose: () => {
+
+                }
+            });
             setUpdateModal(false);
         } catch (err) {
             console.error('Update failed:', err);
@@ -84,14 +90,16 @@ const Profile = () => {
             <NavbarCompo />
             <div className='mt-3'>
                 <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black w-50 rounded-5 overflow-hidden">
-                    <img
-                        src={`https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
-                        className=" m-auto rounded-circle mt-3 "
-                        style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
-                        alt="..." />
-
-                    <i className="ri-file-edit-fill position-absolute" style={{ top: '18rem', right: '15rem', fontSize: '1.5rem', cursor: 'pointer' }} onClick={handleToggle} />
-
+                    <div className='d-flex justify-content-center align-items-center'>
+                        <a href={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}`}>
+                            <img
+                                src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                className=" m-auto rounded-circle mt-3 "
+                                style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
+                                alt="..." />
+                        </a>
+                        <i className="ri-file-edit-fill position-absolute" style={{ top: '18rem', right: '15rem', fontSize: '1.5rem', cursor: 'pointer' }} onClick={handleToggle} />
+                    </div>
                     <div className="card-body text-center">
                         {
                             updateModal ?
@@ -120,8 +128,8 @@ const Profile = () => {
                                                 </div>
 
                                                 <div className="form-group mb-3 d-flex justify-content-center align-items-center">
-                                                    <label htmlFor="email" className='form-label mx-1 w-50'>Enter email:</label>
-                                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2 w-50" placeholder='enter email' />
+                                                    <label htmlFor="email" className='form-label mx-1 w-25'>Enter email:</label>
+                                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2 w-75" placeholder='enter email' />
                                                 </div>
 
                                                 <div className="form-group mb-3">
