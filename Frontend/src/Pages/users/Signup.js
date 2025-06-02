@@ -47,7 +47,7 @@ const Signup = () => {
                     toast.error("Please fill in all required fields.",
                         {
                             position: "top-right",
-                            autoClose: 1500,
+                            autoClose: 1000,
                         })
                 }
                 else if (error.response.status === 409) {

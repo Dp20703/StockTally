@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
+    profilePic: {
+        type: String
+    },
     userName: {
         type: String,
         required: [true, "username is required."],

@@ -13,7 +13,7 @@ module.exports.registerUser = async (req, res) => {
         if (isUserAlreadyExist) {
             return res.status(409).json({ message: 'User already exist' })
         }
-        const isUserNameAlreadyExist = await userModel.findOne({userName });
+        const isUserNameAlreadyExist = await userModel.findOne({ userName });
         if (isUserNameAlreadyExist) {
             return res.status(410).json({ message: 'User already exist' })
         }
@@ -45,18 +45,18 @@ module.exports.registerUser = async (req, res) => {
 
 // this controller function will login the user using email and password:
 module.exports.loginUser = async (req, res) => {
-        //extracting email and password from the request body:
-        const { email, password } = req.body;
-        //login user using userService:
-        const { user, token } = await userService.loginUser(email, password);
-        //set the token as a cookie
-        res.cookie('token', token);
+    //extracting email and password from the request body:
+    const { email, password } = req.body;
+    //login user using userService:
+    const { user, token } = await userService.loginUser(email, password);
+    //set the token as a cookie
+    res.cookie('token', token);
 
-        //remove the password from the response
-        user.password = undefined;
+    //remove the password from the response
+    user.password = undefined;
 
-        //return the response
-        res.status(200).json({ message: "Login successful", token, user });
+    //return the response
+    res.status(200).json({ message: "Login successful", token, user });
 }
 
 //this controller function will get the user profile using user's id:
@@ -65,6 +65,12 @@ module.exports.getUserProfile = async (req, res) => {
     return res.status(200).json(user);
 }
 
+//this controller function will update the user profile:
+module.exports.updateProfile = async (req, res) => {
+    console.log(req.body);
+    console.log(req.files)
+    return res.status(200).json({"message":"Profile updated successfully"})
+}
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {
     try {

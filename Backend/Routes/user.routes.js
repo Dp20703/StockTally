@@ -4,6 +4,7 @@ const { body } = require('express-validator');
 const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const { validateRequest } = require("../middlewares/validateRequest");
+const upload = require("../middlewares/multer");
 
 // users/register
 router.post('/register', [
@@ -32,6 +33,9 @@ router.post('/login', [
 
 // users/profile
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
+
+// /users/update_profile
+router.put('/update_profile', authMiddleware.authUser, upload.single('profilePic'), userController.updateProfile)
 
 // /users/logout:
 router.get('/logout', authMiddleware.authUser, userController.logoutUser)
