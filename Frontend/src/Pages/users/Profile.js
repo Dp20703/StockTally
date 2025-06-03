@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'
 import NavbarCompo from '../../components/Navbar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -17,6 +17,18 @@ const Profile = () => {
         },
         email: user.email || '',
     });
+
+    useEffect(() => {
+        setData({
+            profilePic: user.profilePic || "",
+            userName: user.userName || "",
+            fullName: {
+                firstName: user.fullName.firstName || '',
+                lastName: user.fullName.lastName || '',
+            },
+            email: user.email || '',
+        });
+    }, [user, setUpdateModal]);
 
     const handleToggle = () => {
         setUpdateModal(!updateModal);
@@ -71,17 +83,52 @@ const Profile = () => {
             toast.success('Profile updated successfully', {
                 position: "top-right",
                 autoClose: 1000,
-                onClose: () => {
-
-                }
             });
+            setData({
+                profilePic: "",
+                userName: "",
+                fullName: {
+                    firstName: '',
+                    lastName: '',
+                },
+                email: '',
+            })
             setUpdateModal(false);
         } catch (err) {
             console.error('Update failed:', err);
-            toast.error('Update failed', {
-                position: "top-right",
-                autoClose: 1000,
-            });
+            if (err.status === 500) {
+                toast.error(err.response.data.details || 'Internal Server Error', {
+                    position: "top-right",
+                    autoClose: 1000,
+                });
+            }
+            else if (err.status === 409) {
+                toast.error(err.response.data.message || 'Failed to update', {
+                    position: "top-right",
+                    autoClose: 1000,
+                });
+            }
+            else if (err.status === 400) {
+                toast.error(err.response.data.message || 'All fields are required', {
+                    position: "top-right",
+                    autoClose: 1000,
+                });
+            }
+            else {
+                toast.error('Update failed', {
+                    position: "top-right",
+                    autoClose: 1000,
+                });
+            }
+            setData({
+                profilePic: "",
+                userName: "",
+                fullName: {
+                    firstName: '',
+                    lastName: '',
+                },
+                email: '',
+            })
         }
     };
 

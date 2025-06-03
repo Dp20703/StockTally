@@ -71,17 +71,35 @@ module.exports.updateProfile = async (req, res) => {
         console.log("BODY:", req.body);
         console.log("FILE:", req.file);
 
+        const { userName, email, fullName } = req.body;
+
+        // Validate required fields
+        if (!userName || !email || !fullName?.firstName) {
+            return res.status(400).json({ message: "Username, email, and first name are required" });
+        }
+
         const updateData = {
-            userName: req.body.userName,
-            email: req.body.email,
+            userName: userName.trim(),
+            email: email.trim(),
             fullName: {
-                firstName: req.body.fullName.firstName,
-                lastName: req.body.fullName.lastName
+                firstName: fullName.firstName.trim(),
+                lastName: fullName.lastName?.trim() || ""  // Optional
             },
         };
 
+        // Update profile picture
         if (req.file) {
             updateData.profilePic = `images/uploads/${req.file.filename}`;
+        }
+
+        const existingEmail = await userModel.findOne({ email: updateData.email, _id: { $ne: req.user._id } });
+        if (existingEmail) {
+            return res.status(409).json({ message: "Email already exist" });
+        }
+
+        const existingUsername = await userModel.findOne({ userName: updateData.userName, _id: { $ne: req.user._id } });
+        if (existingUsername) {
+            return res.status(409).json({ message: "Username already exist" });
         }
 
         const user = await userModel.findByIdAndUpdate(
