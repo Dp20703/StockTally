@@ -2,9 +2,11 @@ import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -28,6 +30,7 @@ const Login = () => {
     try {
       const user = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`, data);
       localStorage.setItem('token', user.data.token);
+      setUser(user.data.user);
       toast.success("Login successfully", {
         position: "top-right",
         autoClose: 1000,

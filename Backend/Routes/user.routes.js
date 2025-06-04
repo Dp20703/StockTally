@@ -14,9 +14,9 @@ router.post('/register', [
     body('fullName.firstName')
         .notEmpty().withMessage('First name is required.')
         .isLength({ min: 3 }).withMessage('First name must be at least 3 characters long.'),
-    body('fullName.lastName')
-        .optional()
-        .isLength({ min: 3 }).withMessage('Last name must be at least 3 characters long.'),
+    // body('fullName.lastName')
+    //     .optional()
+    //     .isLength({ min: 3 }).withMessage('Last name must be at least 3 characters long.'),
     body('email')
         .notEmpty().withMessage('Email is required.')
         .isEmail().withMessage('Invalid email address.'),

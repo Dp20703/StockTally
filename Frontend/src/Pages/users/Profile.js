@@ -9,13 +9,13 @@ const Profile = () => {
     const { user, setUser } = useAuth();
     const [updateModal, setUpdateModal] = useState(false);
     const [data, setData] = useState({
-        profilePic: user.profilePic || "",
-        userName: user.userName || "",
+        profilePic: user?.profilePic || "",
+        userName: user?.userName || "",
         fullName: {
-            firstName: user.fullName.firstName || '',
-            lastName: user.fullName.lastName || '',
+            firstName: user?.fullName.firstName || '',
+            lastName: user?.fullName.lastName || '',
         },
-        email: user.email || '',
+        email: user?.email || '',
     });
 
     useEffect(() => {
