@@ -1,10 +1,12 @@
 import React from 'react'
-import TradingViewChart from '../../components/ChartCompo/TradingViewChart'
+import NavbarCompo from '../../components/Navbar';
+import TradingViewWidget from '../../components/ChartCompo/TradingViewWidget';
 
 export const StockCharts = () => {
   return (
-    <>So live StockCharts
-    <TradingViewChart />
+    <>
+      <NavbarCompo />
+      <TradingViewWidget symbol="NSE:TCS" />
     </>
   )
 }
