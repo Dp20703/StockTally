@@ -10,6 +10,7 @@ import Dashboard from './Pages/trade/Dashboard';
 import UserProtectWrapper from './Middleware/UserProtectWrapper';
 import Watchlist from './Pages/watchlist/Watchlist';
 import { StockCharts } from './Pages/charts/StockCharts';
+import TopStories from './Pages/charts/TopStories';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard /></UserProtectWrapper>} />
           <Route path='/trade/watchlist' element={<UserProtectWrapper><Watchlist /></UserProtectWrapper>} />
           <Route path='/chart/showchart' element={<UserProtectWrapper><StockCharts /></UserProtectWrapper>} />
+          <Route path='/chart/topstories' element={<UserProtectWrapper><TopStories /></UserProtectWrapper>} />
         </Routes>
       </BrowserRouter>
     </>

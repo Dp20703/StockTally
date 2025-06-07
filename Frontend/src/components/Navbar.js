@@ -12,6 +12,7 @@ const NavbarCompo = () => {
                         <Nav.Link as={Link} to="/trade/dashboard">Dashboard</Nav.Link>
                         <Nav.Link as={Link} to="/trade/watchlist">watchlist</Nav.Link>
                         <Nav.Link as={Link} to="/chart/showchart">show charts</Nav.Link>
+                        <Nav.Link as={Link} to='/chart/topstories'>Top Stories</Nav.Link>
                         <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
                         <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                     </Nav>

@@ -6,7 +6,7 @@ export const StockCharts = () => {
   return (
     <>
       <NavbarCompo />
-      <TradingViewWidget symbol="NSE:TCS" />
+      <TradingViewWidget/>
     </>
   )
 }
