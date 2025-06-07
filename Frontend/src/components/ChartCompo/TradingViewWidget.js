@@ -5,7 +5,6 @@ function TradingViewWidget() {
 
     useEffect(() => {
         container.current.innerHTML = "";
-
         const script = document.createElement("script");
         script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
         script.type = "text/javascript";
@@ -26,7 +25,7 @@ function TradingViewWidget() {
     }, []);
 
     return (
-        <div id="dashboard" className='overflow-hidden'>
+        <div className='overflow-hidden'>
             <div style={{ height: "100dvh", width: "100%", overflow: "hidden" }}>
                 <div
                     className="tradingview-widget-container overflow-hidden"

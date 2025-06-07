@@ -4,7 +4,7 @@ import NavbarCompo from '../../components/Navbar'
 const TopStories = () => {
     return (
         <>
-            <div>
+            <div id="dashboard">
                 <NavbarCompo />
                 <TradingViewNewsWidget />
             </div>
