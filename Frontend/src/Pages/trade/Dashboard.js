@@ -10,20 +10,30 @@ const Dashboard = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [closeModal, setCloseModal] = useState(false);
   const [tradeId, setTradeId] = useState(null);
+  const [showClosedTrades, setShowClosedTrades] = useState(false);
+  const [showTrades, setshowTrades] = useState('open');
   const handleTradeId = (id) => { setTradeId(id) };
+
+  const tradesToggle = () => {
+    setShowClosedTrades((prevState) => !prevState);
+    setshowTrades(!showClosedTrades ? 'closed' : 'open');
+  }
 
   return (
     <div id='dashboard' className='overflow-hidden min-vh-100'>
       <NavbarCompo />
-      <div className="mb-3 mt-4 w-100">
-        <button onClick={() => setModal(true)} className="btn btn-primary mx-5 float-start">
+      <div className="mb-3 mt-4 gap-5 w-100 d-flex justify-content-around align-items-center">
+        <button onClick={() => setModal(true)} className="btn btn-primary">
           + New Trade
         </button>
-        <h2 className='text-center m-auto text-bg-warning w-50 rounded'>Dashboard</h2>
+        <h2 className='text-center w-50 text-bg-warning rounded'>Dashboard</h2>
+        <button onClick={tradesToggle} className={!showClosedTrades ? "btn btn-danger " : "btn btn-success "}>
+          {showClosedTrades ? "Open Trades" : "Closed Trades"}
+        </button>
       </div>
 
       {/* All Trades */}
-      <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} />
+      <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} showTrades={showTrades} />
 
       {/* Create Trade Modal */}
       {modal && <CreateTradeModal setModal={setModal} />}
@@ -34,7 +44,7 @@ const Dashboard = () => {
       {/* Close Trade Modal */}
       {closeModal && <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />}
 
-    </div>
+    </div >
   )
 }
 

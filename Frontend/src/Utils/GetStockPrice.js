@@ -47,8 +47,8 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
                     <div>
                         <strong>Stock Price:</strong>₹{stockPrice}</div>
                     <div>
-                        <div className=''>
-                            <strong >Unrealized Profit:</strong>
+                        <div>
+                            <strong>Unrealized Profit:</strong>
                             <CalUnRealProfit
                                 stockPrice={stockPrice}
                                 quantity={quantity}
