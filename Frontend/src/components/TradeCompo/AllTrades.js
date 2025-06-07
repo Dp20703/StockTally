@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import GetStockPrice from '../../Utils/GetStockPrice';
 import { useTrades } from '../../context/TradeContext';
 import { deleteTrade } from './DeleteTrade';
+import Swal from 'sweetalert2';
 
 const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
     const { trades, fetchTrades } = useTrades();
@@ -10,9 +11,23 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal }) => {
 
     // Delete Trade
     const handleDelete = (tradeId) => {
-        deleteTrade(tradeId, navigate);
-        fetchTrades()
-    }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This trade will be permanently deleted.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteTrade(tradeId, navigate);
+                Swal.fire('Deleted!', 'The trade has been deleted.', 'success');
+            }
+            fetchTrades();
+        });
+    };
+
 
     // Fetch all trades
     useEffect(() => {
