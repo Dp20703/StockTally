@@ -20,13 +20,13 @@ const Dashboard = () => {
   }
 
   return (
-    <div id='dashboard' className='overflow-hidden min-vh-100'>
+    <div id='dashboard'>
       <NavbarCompo />
-      <div className="mb-3 mt-4 gap-5 w-100 d-flex justify-content-around align-items-center">
+      <div className="mb-3 mt-4 px-2 gap-5 w-100 d-flex justify-content-around align-items-center">
         <button onClick={() => setModal(true)} className="btn btn-primary">
           + New Trade
         </button>
-        <h2 className='text-center w-50 text-bg-warning rounded'>Dashboard</h2>
+        <h2 className='text-center w-50 text-bg-warning rounded p-1'>Dashboard</h2>
         <button onClick={tradesToggle} className={!showClosedTrades ? "btn btn-danger " : "btn btn-success "}>
           {showClosedTrades ? "Open Trades" : "Closed Trades"}
         </button>
