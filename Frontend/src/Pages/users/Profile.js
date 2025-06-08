@@ -34,6 +34,17 @@ const Profile = () => {
         setUpdateModal(!updateModal);
     }
 
+    const handleProfilePicChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setData((prev) => ({
+                ...prev,
+                profilePic: file
+            }))
+        }
+    };
+
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         if (name === 'firstName' || name === 'lastName') {
@@ -44,14 +55,6 @@ const Profile = () => {
                     }
                 }
             ))
-        }
-        else if (name === 'profilePic') {
-            setData((prev) =>
-            ({
-                ...prev,
-                profilePic: files[0]
-            })
-            )
         }
         else {
             setData((prev) => ({ ...prev, [name]: value }));
@@ -181,7 +184,7 @@ const Profile = () => {
 
                                                 <div className="form-group mb-3">
                                                     <label htmlFor="profilePic" className='form-label mx-2'>Select profile picture:</label>
-                                                    <input type="file" name="profilePic" onChange={handleChange} />
+                                                    <input type="file" accept="image/*" onChange={handleProfilePicChange} />
                                                 </div>
 
 
