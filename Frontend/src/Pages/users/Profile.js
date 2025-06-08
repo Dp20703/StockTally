@@ -184,7 +184,7 @@ const Profile = () => {
 
                                                 <div className="form-group mb-3">
                                                     <label htmlFor="profilePic" className='form-label mx-2'>Select profile picture:</label>
-                                                    <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                                                    <input type="file" name='profilePic' accept="image/*" onChange={handleProfilePicChange} />
                                                 </div>
 
 
