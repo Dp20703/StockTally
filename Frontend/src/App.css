@@ -65,11 +65,12 @@
 .login {
   overflow: hidden;
   width: 100%;
-  padding: 4% 16%;
   background-color: #ccddef;
-  min-height: 100dvh;
+  height: 100dvh;
 }
 .wrapper {
+  margin: 4% 16%;
+  background: red;
   border-radius: 4%;
   overflow: hidden;
   display: flex;
@@ -83,14 +84,71 @@
 }
 .poster img {
   width: 100%;
-  min-height: 81dvh;
+  height: 81dvh;
   object-fit: cover;
   object-position: center;
 }
 .loginForm {
-  min-height: 81dvh;
+  padding: 8em 2em;
+  height: 81dvh;
   width: 50%;
   background-color: #ffffff;
+}
+
+/* register */
+.registerWrapper {
+  margin: 4% 16%;
+  background: red;
+  border-radius: 4%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 10px 2px gray;
+}
+.registerForm {
+  padding: 3em 2em;
+  height: 81dvh;
+  width: 50%;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 2px gray;
+}
+
+@media screen and (max-width: 768px) {
+  .poster {
+    display: none;
+  }
+  .login {
+    height: 100dvh;
+    width: 100dvw;
+  }
+  .wrapper {
+    width: 80%;
+    margin: 6em 2em;
+  }
+  .loginForm {
+    font-size: 1em;
+    padding: 4em 1em;
+    height: 100%;
+    width: 100%;
+  }
+  .registerWrapper {
+    width: 80%;
+    margin: 3em 2em;
+  }
+  .registerForm {
+    font-size: 1em;
+    padding: 2em 1em;
+    height: 100%;
+    width: 100%;
+    label {
+      font-size: 1em;
+    }
+    input[type="text"] {
+      font-size: 0.8em;
+    }
+  }
 }
 
 /* AddStockModal */

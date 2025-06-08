@@ -71,11 +71,11 @@ const Login = () => {
       <div className="login">
         <div className="wrapper">
 
-          <div className='loginForm' style={{ padding: '8rem 3rem' }}>
+          <div className='loginForm'>
             <div>
               <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Login Account</h1>
 
-              <form className='p-2 rounded'>
+              <form>
                 <div className="form-group mb-3">
                   <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
                   <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='xyz@gmail.com' />
