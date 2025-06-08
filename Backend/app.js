@@ -14,7 +14,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-app.use('/images/uploads', express.static('public/images/uploads'))
+app.use('/images/uploads', express.static(path.join(__dirname, 'images/uploads')));
+// app.use('/images/uploads', express.static('public/images/uploads'))
 
 app.get('/', function (req, res) {
     res.send("hello from / route")

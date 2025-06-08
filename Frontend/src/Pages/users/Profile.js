@@ -66,16 +66,16 @@ const Profile = () => {
         formData.append('profilePic', data.profilePic);
         formData.append('fullName[firstName]', data.fullName.firstName);
         formData.append('fullName[lastName]', data.fullName.lastName);
-console.log("formData: ", formData);
+        console.log("formData: ", formData);
+        console.log("profilePic: ", data.profilePic);
         try {
             const res = await axios.put(
                 `${process.env.REACT_APP_BACKEND_URL}/users/update_profile`,
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'multipart/form-data',
-                    },
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
                 }
             );
             console.log('res: ', res.data);
@@ -138,7 +138,7 @@ console.log("formData: ", formData);
             <div className='mt-3'>
                 <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black w-50 rounded-5 overflow-hidden">
                     <div className='d-flex justify-content-center align-items-center'>
-                        <a href={`${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}`}>
+                        <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
                             <img
                                 src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
                                 className=" m-auto rounded-circle mt-3 "
