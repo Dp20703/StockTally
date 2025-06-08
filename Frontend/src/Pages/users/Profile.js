@@ -66,7 +66,7 @@ const Profile = () => {
         formData.append('profilePic', data.profilePic);
         formData.append('fullName[firstName]', data.fullName.firstName);
         formData.append('fullName[lastName]', data.fullName.lastName);
-
+console.log("formData: ", formData);
         try {
             const res = await axios.put(
                 `${process.env.REACT_APP_BACKEND_URL}/users/update_profile`,
