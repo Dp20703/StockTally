@@ -156,7 +156,7 @@ const Profile = () => {
                                 (
                                     <div id='updateProfile'>
                                         <div >
-                                            <form className='rounded p-4' encType='multipart/form-data'>
+                                            <form className='rounded p-4'>
                                                 <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
                                                 <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Update Profile</h1>
 
