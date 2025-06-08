@@ -141,9 +141,9 @@ const Profile = () => {
             <div className='mt-3'>
                 <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black w-50 rounded-5 overflow-hidden">
                     <div className='d-flex justify-content-center align-items-center'>
-                        <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
+                        <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
                             <img
-                                src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
                                 className=" m-auto rounded-circle mt-3 "
                                 style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
                                 alt="..." />
