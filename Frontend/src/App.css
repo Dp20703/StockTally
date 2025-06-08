@@ -70,7 +70,6 @@
 }
 .wrapper {
   margin: 4% 16%;
-  background: red;
   border-radius: 4%;
   overflow: hidden;
   display: flex;
@@ -87,6 +86,7 @@
   height: 81dvh;
   object-fit: cover;
   object-position: center;
+  min-height: 35rem;
 }
 .loginForm {
   padding: 8em 2em;
@@ -98,7 +98,6 @@
 /* register */
 .registerWrapper {
   margin: 4% 16%;
-  background: red;
   border-radius: 4%;
   overflow: hidden;
   display: flex;
@@ -124,8 +123,12 @@
     width: 100dvw;
   }
   .wrapper {
+    margin: 0;
     width: 80%;
-    margin: 6em 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .loginForm {
     font-size: 1em;
@@ -134,8 +137,12 @@
     width: 100%;
   }
   .registerWrapper {
+    margin: 0;
     width: 80%;
-    margin: 3em 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .registerForm {
     font-size: 1em;

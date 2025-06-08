@@ -78,7 +78,7 @@ const Signup = () => {
             <div className="login">
                 <div className="registerWrapper">
                     <div className="poster">
-                        <img src="../images/bull4.jpg" alt="..." style={{ minHeight: '35rem' }} />
+                        <img src="../images/bull4.jpg" alt="..." />
                     </div>
                     <div className="registerForm">
                         <div >
