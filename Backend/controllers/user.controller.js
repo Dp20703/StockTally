@@ -89,7 +89,7 @@ module.exports.updateProfile = async (req, res) => {
 
         // Update profile picture
         if (req.file) {
-            updateData.profilePic = `images/uploads/${req.file.filename}`;
+            updateData.profilePic = `images/profilePic/${req.file.filename}`;
         }
 
         const existingEmail = await userModel.findOne({ email: updateData.email, _id: { $ne: req.user._id } });
