@@ -138,7 +138,7 @@ const Profile = () => {
         <div id='dashboard'>
             <NavbarCompo />
             <div className='mt-3'>
-                <div style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }} className="card m-auto bg-black w-50 rounded-5 overflow-hidden">
+                <div className="profile card m-auto bg-black  text-white border border-gray border-1 rounded-5 overflow-hidden">
                     <div className='d-flex justify-content-center align-items-center'>
                         <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
                             <img
@@ -147,7 +147,7 @@ const Profile = () => {
                                 style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
                                 alt="..." />
                         </a>
-                        <i className="ri-file-edit-fill position-absolute" style={{ top: '18rem', right: '15rem', fontSize: '1.5rem', cursor: 'pointer' }} onClick={handleToggle} />
+                        <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
                     </div>
                     <div className="card-body text-center">
                         {

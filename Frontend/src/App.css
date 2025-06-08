@@ -184,6 +184,29 @@
   display: none;
 }
 
+/* style={{ background: '#13162F', color: 'white', backgroundPosition: 'center', backgroundSize: "cover", border: '.5px solid white' }}  */
+/* profile */
+.profile {
+  width: 50%;
+}
+.editBtn {
+  position: absolute;
+  top: 18rem;
+  right: 15rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  .profile {
+    width: 90vw;
+  }
+  .editBtn {
+    top: 18rem;
+    right: 8rem;
+    font-size: 1.5rem;
+  }
+}
+
 /* updateProfile */
 #updateProfile {
   position: fixed;
