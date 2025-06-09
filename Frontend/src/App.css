@@ -167,7 +167,35 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+#create-watchlist-modal {
+  width: 35%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
 @media screen and (max-width: 768px) {
+  #create-watchlist-modal {
+    width: 85%;
+  }
+
+  #create-watchlist-modal h2 {
+    font-size: 1rem;
+    margin-top: .4rem;
+  }
+
+  #create-watchlist-modal label {
+    width: 100%;
+    font-size: 0.7rem;
+  }
+  #create-watchlist-modal input {
+    font-size: 0.6rem;
+  }
+
+  #create-watchlist-modal button {
+    font-size: 0.7rem;
+  }
+
   #modal-content {
     width: 95%;
     padding: 10px;
@@ -350,5 +378,33 @@
 @media (max-width: 768px) {
   .custom-toast-container {
     margin: 1rem 0.5rem;
+  }
+}
+
+/* watchlist */
+
+#watchlist {
+  margin-top: 1rem;
+}
+#watchlist .btns h2 {
+  margin: 0 auto;
+}
+#watchlist .btns button {
+  margin-left: 3rem;
+  float: left;
+}
+
+@media screen and (max-width: 768px) {
+  #watchlist .btns {
+    display: flex;
+    gap: 0.5rem;
+  }
+  #watchlist .btns h2 {
+    margin: 0;
+  }
+  #watchlist .btns button {
+    margin-left: 0.5rem;
+    float: left;
+    padding: 0.2rem 0.4rem;
   }
 }

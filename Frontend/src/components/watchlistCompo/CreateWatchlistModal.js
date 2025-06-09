@@ -5,7 +5,7 @@ const CreateWatchlistModal = ({ setModal }) => {
     return (
         <div>
             <div id="modal">
-                <div id="modal-content" className='text-bg-dark ' style={{ width: '35%' }}>
+                <div id="create-watchlist-modal" className='text-bg-dark'>
                     <span id='close' className='close'
                         onClick={() => setModal(false)} >
                         &times;

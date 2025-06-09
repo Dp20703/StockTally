@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import { toast } from 'react-toastify';
 import { useWatchlists } from '../../context/WatchlistContext';
 import { deleteWatchlist } from './DeleteWatchlist';
 
-const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
+const AllWatchlist = ({ setUpdateModal, setWatchlistId, setModal }) => {
   const { watchlists, fetchWatchlist } = useWatchlists();
 
   useEffect(() => {
@@ -13,18 +11,27 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
   }, [])
 
   const handleDelete = (id) => {
+    watchlists.filter(watchlist => watchlist._id !== id);
     deleteWatchlist(id);
     fetchWatchlist()
   }
 
   return (
     <>
-      <div className='py-3'>
+      <div id='watchlist'>
+
+        <div className="w-100 mb-3 btns">
+          <button onClick={() => setModal(true)} className="btn btn-primary">
+            + New Watchlist
+          </button>
+          <h2 className='text-center text-bg-warning w-50 rounded text-nowrap'>All watchlist</h2>
+        </div>
+
         <div className='d-flex justify-content-center gap-3 flex-wrap w-100'>
           {
             watchlists.length === 0 ? (
               <div className="rounded-2 overflow-hidden">
-                <h1 className='text-bg-dark text-center text-nowrap px-2 mb-0 py-1 fs-2'>
+                <h1 className='text-bg-dark text-center px-2 mb-0 py-1 fs-2'>
                   No watchlists
                 </h1>
               </div>
@@ -84,6 +91,7 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId }) => {
               )
           }
         </div>
+
       </div>
     </>
   )
