@@ -4,9 +4,11 @@ import TradingViewWidget from '../../components/ChartCompo/TradingViewWidget';
 
 export const StockCharts = () => {
   return (
-    <div id="dashboard">
+    <>
       <NavbarCompo />
-      <TradingViewWidget/>
-    </div>
+      <div id="dashboard" className='overflow-x-auto'>
+        <TradingViewWidget />
+      </div>
+    </>
   )
 }

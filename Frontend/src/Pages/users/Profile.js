@@ -135,88 +135,90 @@ const Profile = () => {
     };
 
     return (
-        <div id='dashboard'>
+        <>
             <NavbarCompo />
-            <div className="profile mt-5 card m-auto bg-black  text-white border border-gray border-1 rounded-5 overflow-hidden">
-                <div className='d-flex justify-content-center align-items-center'>
-                    <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
-                        <img
-                            src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
-                            className=" m-auto rounded-circle mt-3 "
-                            style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
-                            alt="..." />
-                    </a>
-                    <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
-                </div>
-                <div className="card-body text-center">
-                    {
-                        updateModal ?
-                            (
-                                <div id='updateProfile'>
-                                    <div >
-                                        <form className='rounded p-4'>
-                                            <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
-                                            <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Update Profile</h1>
+            <div id='dashboard'>
+                <div className="profile mt-5 card m-auto bg-black  text-white border border-gray border-1 rounded-5 overflow-hidden">
+                    <div className='d-flex justify-content-center align-items-center'>
+                        <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
+                            <img
+                                src={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                className=" m-auto rounded-circle mt-3 "
+                                style={{ height: "20rem", width: '20rem', objectFit: 'cover', objectPosition: 'center', border: '2px solid white', }}
+                                alt="..." />
+                        </a>
+                        <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
+                    </div>
+                    <div className="card-body text-center">
+                        {
+                            updateModal ?
+                                (
+                                    <div id='updateProfile'>
+                                        <div >
+                                            <form className='rounded p-4'>
+                                                <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
+                                                <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Update Profile</h1>
 
-                                            <div className="fullName d-flex justify-content-center align-items-center gap-2 form-group mb-3">
-                                                <div className='w-50'>
-                                                    <label htmlFor="firstName" className='form-label mx-1'>Enter first name:</label>
+                                                <div className="fullName d-flex justify-content-center align-items-center gap-2 form-group mb-3">
+                                                    <div className='w-50'>
+                                                        <label htmlFor="firstName" className='form-label mx-1'>Enter first name:</label>
 
-                                                    <input type="text" name="firstName" value={data.fullName?.firstName} onChange={handleChange} className="form-control" placeholder="enter first name" />
+                                                        <input type="text" name="firstName" value={data.fullName?.firstName} onChange={handleChange} className="form-control" placeholder="enter first name" />
+                                                    </div>
+                                                    <div className='w-50'>
+                                                        <label htmlFor="lastName" className='form-label mx-1'>Enter last name:</label>
+                                                        <input type="text" name="lastName" value={data.fullName?.lastName} onChange={handleChange} className="form-control" placeholder="enter last name" />
+                                                    </div>
                                                 </div>
-                                                <div className='w-50'>
-                                                    <label htmlFor="lastName" className='form-label mx-1'>Enter last name:</label>
-                                                    <input type="text" name="lastName" value={data.fullName?.lastName} onChange={handleChange} className="form-control" placeholder="enter last name" />
+
+                                                <div className="form-group mb-3 d-flex justify-content-center align-items-center">
+                                                    <label htmlFor="userName" className='form-label mx-1 w-50'>Enter username:</label>
+                                                    <input type="text" name="userName" className="form-control mb-2 w-50" placeholder="enter username" value={data.userName} onChange={handleChange} />
                                                 </div>
-                                            </div>
 
-                                            <div className="form-group mb-3 d-flex justify-content-center align-items-center">
-                                                <label htmlFor="userName" className='form-label mx-1 w-50'>Enter username:</label>
-                                                <input type="text" name="userName" className="form-control mb-2 w-50" placeholder="enter username" value={data.userName} onChange={handleChange} />
-                                            </div>
+                                                <div className="form-group mb-3 d-flex justify-content-center align-items-center">
+                                                    <label htmlFor="email" className='form-label mx-1 w-25'>Enter email:</label>
+                                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2 w-75" placeholder='enter email' />
+                                                </div>
 
-                                            <div className="form-group mb-3 d-flex justify-content-center align-items-center">
-                                                <label htmlFor="email" className='form-label mx-1 w-25'>Enter email:</label>
-                                                <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2 w-75" placeholder='enter email' />
-                                            </div>
-
-                                            <div className="form-group mb-3">
-                                                <label htmlFor="profilePic" className='form-label mx-2'>Select profile picture:</label>
-                                                <input type="file" name='profilePic' accept="image/*" onChange={handleProfilePicChange} />
-                                            </div>
+                                                <div className="form-group mb-3">
+                                                    <label htmlFor="profilePic" className='form-label mx-2'>Select profile picture:</label>
+                                                    <input type="file" name='profilePic' accept="image/*" onChange={handleProfilePicChange} />
+                                                </div>
 
 
-                                            <input type="submit" onClick={submitHandler} value="Update" className='form-control btn btn-danger mb-2' />
-                                        </form>
+                                                <input type="submit" onClick={submitHandler} value="Update" className='form-control btn btn-danger mb-2' />
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                            : (
-                                <div>
-                                    <p className="card-title">
-                                        <i className="ri-shield-user-fill fs-4" />
-                                        &nbsp; <span className='fs-4'>{user?.userName}</span>
-                                    </p>
-                                    <p className="card-title">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <i className="ri-user-fill fs-5" />
-                                        &nbsp;
-                                        <span className='fs-6'>
-                                            {user?.fullName?.firstName + " " + user?.fullName?.lastName}
-                                        </span>
-                                    </p>
-                                    <p className="card-title">
-                                        <i className="ri-mail-fill fs-5" />
-                                        &nbsp;
-                                        <span className='fs-6'>
-                                            {user?.email}</span></p>
-                                </div>
-                            )
-                    }
+                                )
+                                : (
+                                    <div>
+                                        <p className="card-title">
+                                            <i className="ri-shield-user-fill fs-4" />
+                                            &nbsp; <span className='fs-4'>{user?.userName}</span>
+                                        </p>
+                                        <p className="card-title">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i className="ri-user-fill fs-5" />
+                                            &nbsp;
+                                            <span className='fs-6'>
+                                                {user?.fullName?.firstName + " " + user?.fullName?.lastName}
+                                            </span>
+                                        </p>
+                                        <p className="card-title">
+                                            <i className="ri-mail-fill fs-5" />
+                                            &nbsp;
+                                            <span className='fs-6'>
+                                                {user?.email}</span></p>
+                                    </div>
+                                )
+                        }
 
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

@@ -181,7 +181,7 @@
     font-size: 0.6rem;
   }
   #modal-content .label-m {
-    margin-top: .85rem;
+    margin-top: 0.85rem;
   }
   #modal-content input {
     font-size: 0.45rem;
@@ -349,6 +349,6 @@
 /* Medium screens and above */
 @media (max-width: 768px) {
   .custom-toast-container {
-    margin: 1rem .5rem;
+    margin: 1rem 0.5rem;
   }
 }
