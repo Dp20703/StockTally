@@ -54,6 +54,7 @@ const CreateWatchlist = ({ setModal }) => {
     return (
         <>
             <h2 className='text-center border-bottom pb-2'>Create Watchlist</h2>
+            
             <div>
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicInput">

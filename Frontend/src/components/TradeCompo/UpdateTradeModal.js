@@ -4,7 +4,7 @@ const UpdateTradeModal = ({ tradeId, setUpdateModal }) => {
     return (
         <div id="modal" >
             <div id="modal-content" className='text-bg-dark'>
-                <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
+                <span className="close text-light fs-2" onClick={() => setUpdateModal(false)}>&times;</span>
                 <UpdateTrade tradeId={tradeId} setUpdateModal={setUpdateModal} />
             </div>
         </div>

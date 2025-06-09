@@ -96,9 +96,9 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
 
     return (
         <>
-            <div style={{ maxHeight: '100vh' }}>
+            <div>
                 <div>
-                    <h1 className='text-center fs-2'>Update Watchlist</h1>
+                    <h1 className='text-center fs-3'>Update Watchlist</h1>
                 </div>
                 <div>
                     <Form className='border border-secondary rounded-3 p-3 mt-3'>

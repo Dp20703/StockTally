@@ -70,7 +70,7 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
 
     return (
         <div id='addStock'>
-            <div className='w-50  border border-secondary rounded-3 p-3' style={{ height: 'fit-content' }}>
+            <div className='  border border-secondary rounded-3 p-3' style={{ height: 'fit-content' }}>
                 <div>
                     <Form className="mx-auto mt-4" style={{ maxWidth: '80%' }}>
                         <h3 className="text-center mb-4">Add Stocks

@@ -181,7 +181,7 @@
 
   #create-watchlist-modal h2 {
     font-size: 1rem;
-    margin-top: .4rem;
+    margin-top: 0.4rem;
   }
 
   #create-watchlist-modal label {
@@ -299,13 +299,6 @@
   }
 }
 
-/* Update Trade */
-@media screen and (max-width: 768px) {
-  /* #updateTradeModal {
-    background-color: red;
-  } */
-}
-
 /* AddStockModal */
 #addStock {
   position: fixed;
@@ -406,5 +399,8 @@
     margin-left: 0.5rem;
     float: left;
     padding: 0.2rem 0.4rem;
+  }
+  #watchlist #watchlistTitle span {
+    font-size: 1rem;
   }
 }
