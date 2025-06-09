@@ -39,7 +39,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal, showTrades })
     }
     return (
         <>
-            <div className="px-4 overflow-hidden mt-3" id="allTrades">
+            <div className="overflow-hidden" id="allTrades">
                 <h1 className='text-center text-light rounded mb-3'>{captalizeFirstLetter(showTrades)} Trades Details</h1>
                 <TradesTable trades={tradesToDisplay} handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} handleDelete={handleDelete} showTrades={showTrades} />
             </div>

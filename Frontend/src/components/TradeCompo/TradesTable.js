@@ -2,7 +2,7 @@ import GetStockPrice from '../../Utils/GetStockPrice';
 
 const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, handleDelete, showTrades }) => {
     return (
-        <div className='table-responsive rounded-3 border border-light overflow-hidden mb-5'>
+        <div id='tradeTable' className='table-responsive rounded-2 border border-light overflow-x-auto'>
             <table className='table table-responsive table-bordered table-hover mb-0 table-dark ' >
                 <thead className='table-primary'>
                     <tr className='text-center'>
@@ -13,7 +13,7 @@ const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, han
                         <th>Buy Date</th>
                         <th>Sell Price</th>
                         <th>Sell Date</th>
-                      {showTrades === 'open' &&   <th>Currrent Quantity</th>}
+                        {showTrades === 'open' && <th>Currrent Quantity</th>}
                         <th>Original Quantity</th>
                         <th>Type</th>
                         <th>EntryType</th>

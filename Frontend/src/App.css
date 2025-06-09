@@ -1,81 +1,3 @@
-/* CreateTrade modal */
-#modal {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  z-index: 5;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(2px);
-}
-
-#modal-content {
-  width: 70%;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-}
-.close {
-  float: right;
-  cursor: pointer;
-  font-size: 24px;
-  color: #000;
-}
-
-/* Navbar */
-.nav {
-  background-color: whitesmoke;
-  border: 1px solid gray;
-  font-family: "Poppins dark";
-}
-/*.nav .logo{
-   background-image: url('../public/images/StockTally.png');
-  object-fit: cover;
-  object-position: center;
-  height: 50px;
-  width: 50px;
-  
-} */
-.nav .links {
-  transition: 0.5s ease;
-
-  .li {
-    text-decoration: none;
-    color: rgb(2, 7, 91);
-    &:hover {
-      /* color: white; */
-      transform: scale(1.1);
-      text-decoration: underline;
-      /* background-color: rgb(2, 7, 91); */
-    }
-  }
-}
-
-/* Dashboard */
-#dashboard {
-  min-height: 100dvh;
-  background-color: #0f1113;
-  border: 0.5px solid #718ba6;
-}
-
-@media screen and (max-width: 768px) {
-  #dashboard .btns h2 {
-    font-size: 1.2rem;
-    /* margin: 0 .5rem; */
-    padding: 2px 5px;
-  }
-  #dashboard .btns button {
-    text-wrap: none;
-    font-size: 0.5rem;
-    margin: 0 .8rem;
-    padding: 0.2rem 1rem;
-  }
-}
-
 /* login */
 .login {
   overflow: hidden;
@@ -138,6 +60,7 @@
     height: 100dvh;
     width: 100dvw;
   }
+
   .wrapper {
     margin: 0;
     width: 90%;
@@ -160,6 +83,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   .registerForm {
     font-size: 1em;
     padding: 2em 1em;
@@ -173,6 +97,164 @@
     }
   }
 }
+
+/* profile */
+.profile {
+  width: 50%;
+}
+
+.editBtn {
+  position: absolute;
+  top: 18rem;
+  right: 15rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .profile {
+    width: 90vw;
+  }
+  .editBtn {
+    top: 18rem;
+    right: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* updateProfile */
+#updateProfile {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+#updateProfile form {
+  border: 1px solid gray;
+  margin: 0 auto;
+  width: 85%;
+  padding: 5% 10%;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* CreateTrade modal */
+#modal {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+#modal-content {
+  width: 70%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 24px;
+  color: #000;
+}
+
+/* Dashboard */
+#dashboard {
+  min-height: 100dvh;
+  background-color: #0f1113;
+  border: 0.5px solid #718ba6;
+}
+
+#allTrades {
+  padding: 0 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  #dashboard .btns h2 {
+    font-size: 1.2rem;
+    padding: 2px 5px;
+  }
+  #dashboard .btns button {
+    text-wrap: none;
+    font-size: 0.5rem;
+    margin: 0 0.8rem;
+    padding: 0.2rem 1rem;
+  }
+
+  /* All trades */
+  #allTrades h1 {
+    font-size: 1.2rem;
+  }
+}
+
+/* TradesTable */
+/* @media screen and (max-width: 768px) {
+  #tradeTable {
+    width: 100%;
+  }
+  #tradeTable table tbody tr {
+    background: red;
+  }
+  #tradeTable thead tr th {
+    font-size: 0.3rem;
+  }
+  #tradeTable tbody tr {
+    text-wrap: wrap;
+  }
+  #tradeTable tbody td {
+    font-size: 0.2rem;
+    text-wrap: wrap;
+  }
+} */
+
+@media screen and (max-width: 768px) {
+  #tradeTable thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  #tradeTable {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  #tradeTable table {
+    min-width: 1000px;
+  }
+
+  #tradeTable thead tr th {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  #tradeTable tbody td {
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
+
+  #tradeTable .btn {
+    font-size: 0.6rem;
+    padding: 2px 5px;
+  }
+
+}
+
 
 /* AddStockModal */
 #addStock {
@@ -198,51 +280,6 @@
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
-}
-
-/* profile */
-.profile {
-  width: 50%;
-}
-.editBtn {
-  position: absolute;
-  top: 18rem;
-  right: 15rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-@media screen and (max-width: 768px) {
-  .profile {
-    width: 90vw;
-  }
-  .editBtn {
-    top: 18rem;
-    right: 2rem;
-    font-size: 1.5rem;
-  }
-}
-
-/* updateProfile */
-#updateProfile {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(2px);
-  form {
-    border: 1px solid gray;
-    margin: 0 auto;
-    width: 85%;
-    padding: 5% 10%;
-    border-radius: 1rem;
-    background-color: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-  }
 }
 
 /* 404 page*/
