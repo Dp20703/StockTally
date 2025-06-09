@@ -40,7 +40,7 @@ const Logout = () => {
         })
     })
     return (
-        <div>Logout....</div>
+        <div className='text-center mt-5'>Logout....</div>
     )
 }
 

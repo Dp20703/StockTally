@@ -20,31 +20,33 @@ const Dashboard = () => {
   }
 
   return (
-    <div id='dashboard'>
+    <div>
       <NavbarCompo />
-      <div className="mb-3 mt-4 px-2 gap-5 w-100 d-flex justify-content-around align-items-center">
-        <button onClick={() => setModal(true)} className="btn btn-primary">
-          + New Trade
-        </button>
-        <h2 className='text-center w-50 text-bg-warning rounded p-1'>Dashboard</h2>
-        <button onClick={tradesToggle} className={!showClosedTrades ? "btn btn-danger " : "btn btn-success "}>
-          {showClosedTrades ? "Open Trades" : "Closed Trades"}
-        </button>
-      </div>
+      <div id='dashboard'>
+        <div className="btns mb-3 mt-4 gap-5 w-100 d-flex justify-content-around align-items-center">
+          <button onClick={() => setModal(true)} className="btn btn-primary">
+            + New Trade
+          </button>
+          <h2 className='text-center w-50 text-bg-warning rounded p-1'>Dashboard</h2>
+          <button onClick={tradesToggle} className={!showClosedTrades ? "btn btn-danger " : "btn btn-success "}>
+            {showClosedTrades ? "Open Trades" : "Closed Trades"}
+          </button>
+        </div>
 
-      {/* All Trades */}
-      <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} showTrades={showTrades} />
+        {/* All Trades */}
+        <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} showTrades={showTrades} />
 
-      {/* Create Trade Modal */}
-      {modal && <CreateTradeModal setModal={setModal} />}
+        {/* Create Trade Modal */}
+        {modal && <CreateTradeModal setModal={setModal} />}
 
-      {/*Update Trade Modal */}
-      {updateModal && <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />}
+        {/*Update Trade Modal */}
+        {updateModal && <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />}
 
-      {/* Close Trade Modal */}
-      {closeModal && <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />}
+        {/* Close Trade Modal */}
+        {closeModal && <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />}
 
-    </div >
+      </div >
+    </div>
   )
 }
 
