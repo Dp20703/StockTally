@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
-    const [auth, setAuth] = useState(false);
     const { user, loading } = useAuth();
 
     if (loading) return <div className="text-white">Loading...</div>;
@@ -11,12 +10,13 @@ const Home = () => {
 
     return (
         <div
-            className="d-flex flex-column justify-content-center align-items-center vh-100"
+            className="d-flex flex-column justify-content-center align-items-center"
             style={{
                 backgroundImage: 'url("../images/stock1.jpg")',
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
+                height: '100dvh',
             }}
         >
             <div className="text-center">

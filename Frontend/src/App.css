@@ -266,6 +266,26 @@
   margin: 20px 0;
   display: inline-block;
 }
+
 .contant_box_404 {
   margin-top: -50px;
+}
+
+/* toast-style */
+.custom-toast-container {
+  margin: 1rem; /* Base margin for small screens */
+}
+
+/* Medium screens and above */
+@media (min-width: 768px) {
+  .custom-toast-container {
+    margin: 2rem;
+  }
+}
+
+/* Large screens and above */
+@media (min-width: 1024px) {
+  .custom-toast-container {
+    margin: 3rem;
+  }
 }

@@ -16,7 +16,7 @@ import NotFound from './Pages/users/NotFound';
 const App = () => {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer toastClassName={'custom-toast-container'} />
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
