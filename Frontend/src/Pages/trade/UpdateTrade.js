@@ -103,76 +103,75 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                     <h2 className='text-center'>Enter Trade Update Details</h2>
                     <hr />
                     {tradeData.status === 'closed' ? (
-                    <div className='py-5'>
-                        <h2 className='text-center text-bg-danger rounded'>Trade Already Closed and cannot be updated</h2>
-                    </div>
+                        <div className='py-5'>
+                            <h2 className='text-center text-bg-danger rounded'>Trade Already Closed and cannot be updated</h2>
+                        </div>
                     ) : (
                         <div>
-                            <div className='d-flex gap-2 justify-content-center align-content-center w-100 z-3'>
-
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                            <div className='d-flex gap-2 mb-2 justify-content-center align-content-center w-100 z-3'>
+                                <div className="form-group w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Name</label>
                                     <input type="text" name='stockName' value={tradeData?.stockName} onChange={handleChange} placeholder='enter stock name' className='form-control' />
                                 </div>
 
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                                <div className="form-group w-50 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Symbol</label>
                                     <input type="text" name='stockSymbol' value={tradeData?.stockSymbol} onChange={handleChange} placeholder='ex. KRN' className='form-control' />
                                 </div>
                             </div>
 
-                            <div className='d-flex gap-2 justify-content-center align-content-center w-100'>
+                            <div className='d-flex gap-2 mb-2 justify-content-center align-content-center w-100'>
 
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Buy Price</label>
-                                    <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='enter stock buy price' className='form-control'
+                                    <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='buyprice' className='form-control'
                                         disabled={!tradeData.buyPrice} />
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                                <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Sell Price</label>
-                                    <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='enter stock sell price' className='form-control'
+                                    <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='sell price' className='form-control'
                                         disabled={!tradeData.sellPrice} />
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
+                                <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Quantity</label>
                                     <input type="number" value={tradeData?.quantity} onChange={handleChange} min={1} name='quantity' placeholder='enter stock quantity' className='form-control' />
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                                    <label>Enter Stock Original Quantity</label>
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
+                                    <label>Enter Original Quantity</label>
                                     <input type="number" value={tradeData?.originalQuantity} onChange={handleChange} min={1} name='originalQuantity' placeholder='enter stock original quantity' className='form-control' />
                                 </div>
 
                             </div>
 
-                            <div className='d-flex gap-2 justify-content-center align-content-center w-100'>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                                    <label>Enter entryType</label>
+                            <div className='d-flex gap-2 mb-2 justify-content-center align-content-center w-100'>
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
+                                    <label>Select Stock entryType</label>
                                     < select className='form-control' value={tradeData?.entryType} onChange={handleChange} name="entryType" id="">
                                         <option value=''>Select entryType</option>
                                         <option value='buy'>Buy</option>
                                         <option value='sell'>Sell</option>
                                     </select>
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                                    <label>Enter Type of Position</label>
-                                    < select value={tradeData?.type} onChange={handleChange} className='form-control' name="type" id="">
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
+                                    <label>Select Typeof position</label>
+                                    <select value={tradeData?.type} onChange={handleChange} className='form-control' name="type" id="">
                                         <option value=''>Select Type</option>
                                         <option value="long">Long</option>
                                         <option value="short">Short</option>
                                     </select>
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                                    <label>Enter Buy Date</label>
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
+                                    <label className='label-m'>Enter Buy Date </label>
                                     <input type="date" min={1} value={(tradeData?.buyDate || "").slice(0, 10)} onChange={handleChange} name='buyDate' placeholder='enter buy date' className='form-control' disabled={!tradeData.buyDate} />
                                 </div>
-                                <div className="form-group mb-2 w-50 d-flex flex-column justify-content-center align-items-start gap-2">
-                                    <label>Enter Sell Date</label>
+                                <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
+                                    <label className='label-m'>Enter Sell Date</label>
                                     <input type="date" min={1} value={(tradeData?.sellDate || "").slice(0, 10)} onChange={handleChange} name='sellDate' placeholder='enter sell date' className='form-control' disabled={!tradeData.sellDate} />
                                 </div>
                             </div>
 
-                            <div className="w-25 mt-2 m-auto">
-                                <button type="Submit" onClick={submitHandler} className='btn btn-primary w-100'>Submit</button>
+                            <div className="text-center mt-3">
+                                <button type="Submit" onClick={submitHandler} className='btn btn-primary'>Submit</button>
                             </div>
                         </div>
                     )

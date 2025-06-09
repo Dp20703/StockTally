@@ -27,7 +27,7 @@ const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, han
                 <tbody>
                     {
                         trades.length === 0 ? (
-                            <tr className='text-center '>
+                            <tr>
                                 <td colSpan={16} className='py-3'>No trades found</td>
                             </tr>
                         ) : trades.map((trade, index) => {

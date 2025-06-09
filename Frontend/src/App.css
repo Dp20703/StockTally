@@ -167,6 +167,34 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
 
+@media screen and (max-width: 768px) {
+  #modal-content {
+    width: 95%;
+    padding: 10px;
+  }
+  #modal-content h2 {
+    font-size: 1rem;
+  }
+
+  #modal-content label {
+    width: 100%;
+    font-size: 0.6rem;
+  }
+  #modal-content .label-m {
+    margin-top: .85rem;
+  }
+  #modal-content input {
+    font-size: 0.45rem;
+  }
+
+  #modal-content select {
+    font-size: 0.45rem;
+  }
+  #modal-content button {
+    font-size: 0.7rem;
+  }
+}
+
 .close {
   float: right;
   cursor: pointer;
@@ -204,24 +232,10 @@
 }
 
 /* TradesTable */
-/* @media screen and (max-width: 768px) {
-  #tradeTable {
-    width: 100%;
-  }
-  #tradeTable table tbody tr {
-    background: red;
-  }
-  #tradeTable thead tr th {
-    font-size: 0.3rem;
-  }
-  #tradeTable tbody tr {
-    text-wrap: wrap;
-  }
-  #tradeTable tbody td {
-    font-size: 0.2rem;
-    text-wrap: wrap;
-  }
-} */
+
+#tradeTable tbody tr {
+  text-align: center;
+}
 
 @media screen and (max-width: 768px) {
   #tradeTable thead th {
@@ -247,14 +261,22 @@
     font-size: 0.65rem;
     white-space: nowrap;
   }
+  #tradeTable tbody tr {
+    text-align: start;
+  }
 
   #tradeTable .btn {
     font-size: 0.6rem;
     padding: 2px 5px;
   }
-
 }
 
+/* Update Trade */
+@media screen and (max-width: 768px) {
+  /* #updateTradeModal {
+    background-color: red;
+  } */
+}
 
 /* AddStockModal */
 #addStock {
@@ -327,6 +349,6 @@
 /* Medium screens and above */
 @media (max-width: 768px) {
   .custom-toast-container {
-    margin: 1rem 1rem;
+    margin: 1rem .5rem;
   }
 }
