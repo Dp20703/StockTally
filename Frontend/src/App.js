@@ -11,6 +11,7 @@ import UserProtectWrapper from './Middleware/UserProtectWrapper';
 import Watchlist from './Pages/watchlist/Watchlist';
 import { StockCharts } from './Pages/charts/StockCharts';
 import TopStories from './Pages/charts/TopStories';
+import NotFound from './Pages/users/NotFound';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
           <Route path='/profile' element={<UserProtectWrapper><Profile /></UserProtectWrapper>} />
           <Route path='/logout' element={<UserProtectWrapper><Logout /></UserProtectWrapper>} />
           <Route path='/trade/dashboard' element={<UserProtectWrapper><Dashboard /></UserProtectWrapper>} />
