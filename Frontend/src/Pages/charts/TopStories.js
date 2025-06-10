@@ -4,8 +4,8 @@ import NavbarCompo from '../../components/Navbar'
 const TopStories = () => {
     return (
         <>
-            <NavbarCompo />
             <div id="dashboard" className='overflow-x-auto'>
+                <NavbarCompo />
                 <TradingViewNewsWidget />
             </div>
         </>

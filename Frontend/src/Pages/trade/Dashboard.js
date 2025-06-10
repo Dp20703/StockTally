@@ -21,8 +21,9 @@ const Dashboard = () => {
 
   return (
     <div>
-      <NavbarCompo />
       <div id='dashboard'>
+        <NavbarCompo />
+        
         <div className="btns mb-3 mt-4 gap-5 w-100 d-flex justify-content-around align-items-center">
           <button onClick={() => setModal(true)} className="btn btn-primary">
             + New Trade

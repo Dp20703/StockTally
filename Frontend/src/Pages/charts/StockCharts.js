@@ -5,8 +5,8 @@ import TradingViewWidget from '../../components/ChartCompo/TradingViewWidget';
 export const StockCharts = () => {
   return (
     <>
-      <NavbarCompo />
       <div id="dashboard" className='overflow-x-auto'>
+        <NavbarCompo />
         <TradingViewWidget />
       </div>
     </>

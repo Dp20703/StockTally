@@ -11,6 +11,7 @@ const Watchlist = () => {
   return (
     <>
       <div id='dashboard'>
+        
         <NavbarCompo/>  
         
         {/* All watchlist */}

@@ -136,8 +136,9 @@ const Profile = () => {
 
     return (
         <>
-            <NavbarCompo />
             <div id='dashboard'>
+                <NavbarCompo />
+
                 <div className="profile mt-5 card m-auto bg-black  text-white border border-gray border-1 rounded-5 overflow-hidden">
                     <div className='d-flex justify-content-center align-items-center'>
                         <a href={user.profilePic ? `${process.env.REACT_APP_BACKEND_URL}/public/${user.profilePic}` : `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
@@ -217,6 +218,7 @@ const Profile = () => {
 
                     </div>
                 </div>
+                
             </div>
         </>
     )
