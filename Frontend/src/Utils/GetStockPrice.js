@@ -11,7 +11,7 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
         setLoading(true);
         const token = localStorage.getItem('token');
         if (!token) {
-            console.log('Token not found. Please log in.');
+            // console.log('Token not found. Please log in.');
             setLoading(false);
             return;
         }
@@ -27,7 +27,7 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
             if (response.status === 200) {
                 setStockPrice(response.data.price);
             } else {
-                console.log('Failed to fetch stock price.');
+                // console.log('Failed to fetch stock price.');
             }
         } catch (err) {
             return err

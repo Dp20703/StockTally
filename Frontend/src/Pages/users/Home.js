@@ -6,7 +6,7 @@ const Home = () => {
     const { user, loading } = useAuth();
 
     if (loading) return <div className="text-white">Loading...</div>;
-    console.log("user: ", user);
+    // console.log("user: ", user);
 
     return (
         <div

@@ -14,7 +14,7 @@ const NavbarCompo = () => {
                         <Nav.Link as={Link} to="/trade/dashboard" active={location.pathname === '/trade/dashboard'}>Dashboard</Nav.Link>
                         <Nav.Link as={Link} to="/trade/watchlist" active={location.pathname === '/trade/watchlist'}>Watchlist</Nav.Link>
                         <Nav.Link as={Link} to="/chart/showchart" active={location.pathname === '/chart/showchart'}>Show Charts</Nav.Link>
-                        <Nav.Link as={Link} to="/chart/topstories" active={location.pathname === '/chart/topstories'}>Top </Nav.Link>
+                        <Nav.Link as={Link} to="/chart/topstories" active={location.pathname === '/chart/topstories'}>Top Stories </Nav.Link>
                         <Nav.Link as={Link} to="/profile" active={location.pathname === '/profile'}>Profile</Nav.Link>
                         <Nav.Link as={Link} to="/logout" active={location.pathname === '/logout'}>Logout</Nav.Link></Nav>
                 </Navbar.Collapse>

@@ -35,7 +35,7 @@ module.exports.createTrade = async (user, tradeData) => {
         return newTrade;
 
     } catch (error) {
-        console.log("Error in createTrade service:", error);
+        // console.log("Error in createTrade service:", error);
         throw error;
     }
 };
@@ -115,7 +115,7 @@ module.exports.updateTrade = async (tradeId, tradeData) => {
         if (!trade) {
             throw new Error('Trade not found');
         }
-        console.log("in service tradeData:", tradeData);
+        // console.log("in service tradeData:", tradeData);
         const { profit, finalProfit, ...restOfTradeData } = tradeData;
 
         // Update the trade
@@ -160,7 +160,7 @@ module.exports.getStockPrice = async (symbol) => {
         // Check if we got a valid response and price info
         if (response.status === 200 && response.data.priceInfo && typeof response.data.priceInfo.lastPrice === 'number') {
             const price = response.data.priceInfo.lastPrice;
-            console.log(`${symbol} current price is:`, price);
+            // console.log(`${symbol} current price is:`, price);
             return price;
         } else {
             throw new Error(`Failed to fetch price for ${symbol}. Response doesn't contain valid data. URL: ${url}`);

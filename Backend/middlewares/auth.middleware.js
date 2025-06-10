@@ -9,7 +9,7 @@ module.exports.authUser = async (req, res, next) => {
 
     //if token is not found it will return unauthorized:
     if (!token) {
-        console.log("token not found")
+        // console.log("token not found")
         return res.status(401).json({ message: "Unauthorized" })
     }
 
@@ -17,7 +17,7 @@ module.exports.authUser = async (req, res, next) => {
     const isTokenBlacklisted = await BlacklistTokenModel.findOne({ token: token });
     // console.log(isTokenBlacklisted)
     if (isTokenBlacklisted) {
-        console.log("blacklisted token")
+        // console.log("blacklisted token")
         return res.status(401).json({ message: "Unauthorized" })
     }
     try {
@@ -25,7 +25,7 @@ module.exports.authUser = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         //getting the user from the token using user's id:
         const user = await userModel.findById(decoded._id);
-        // console.log("user from middleware:", user);
+        // // console.log("user from middleware:", user);
         if (!user) {
             res.status(401).json({ message: "Unauthorized" });
         }
@@ -33,7 +33,7 @@ module.exports.authUser = async (req, res, next) => {
         req.user = user;
         return next();
     } catch (error) {
-        console.log("Auth middleware error:", error);
+        // console.log("Auth middleware error:", error);
         return res.status(401).json({ message: "Unauthorized" })
     }
 }

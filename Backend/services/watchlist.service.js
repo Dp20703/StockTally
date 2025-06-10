@@ -42,8 +42,8 @@ module.exports.addStocks = async ({ watchlistId, stocks, user }) => {
         duplicateStocks.add(stock.stockSymbol);
     }
 
-    console.log("cleanedStocks:", cleanedStocks);
-    console.log("duplicateStocks:", duplicateStocks);
+    // console.log("cleanedStocks:", cleanedStocks);
+    // console.log("duplicateStocks:", duplicateStocks);
 
     // Check if the watchlist already contains the maximum of 10 stocks
     const availableSlots = 10 - watchlist.stocks.length;
@@ -56,12 +56,12 @@ module.exports.addStocks = async ({ watchlistId, stocks, user }) => {
     const existingStocks = new Set(
         watchlist.stocks.map(stock => stock.stockSymbol)
     )
-    console.log("existingStocks:", existingStocks);
+    // console.log("existingStocks:", existingStocks);
     // Filter only unique new stocks
     const uniqueStocks = cleanedStocks.filter(
         stock => !existingStocks.has(stock.stockSymbol)
     )
-    console.log("uniqueStocks:", uniqueStocks);
+    // console.log("uniqueStocks:", uniqueStocks);
 
     if (uniqueStocks.length === 0) {
         throw new Error('All provided stock symbols already exist in the watchlist.');

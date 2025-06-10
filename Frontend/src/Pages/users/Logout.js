@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Logout = () => {
-    console.log("User Logout page loading..");
+    // console.log("User Logout page loading..");
     const navigate = useNavigate();
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/logout`, {
@@ -14,7 +14,7 @@ const Logout = () => {
         }).then((response) => {
             if (response.status === 200) {
                 localStorage.removeItem("token");
-                console.log("User Logged out Successfully");
+                // console.log("User Logged out Successfully");
                 toast.error("User Logged out Successfully",
                     {
                         position: "top-right",

@@ -7,7 +7,7 @@ export const deleteTrade = (tradeId, navigate) => {
             Authorization: `Bearer ${localStorage.getItem('token')}`
         }
     }).then(() => {
-        console.log("Trade Deleted Successfully")
+        // console.log("Trade Deleted Successfully")
         toast.success("Trade Deleted Successfully", {
             position: "top-right",
             autoClose: 1000,
@@ -17,7 +17,7 @@ export const deleteTrade = (tradeId, navigate) => {
             }
         })
     }).catch((err) => {
-        console.log("Error while deleting trade:", err);
+        // console.log("Error while deleting trade:", err);
         if (err.response.status === 404) {
             toast.error("Trade not found", {
                 position: "top-right",

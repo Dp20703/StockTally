@@ -9,7 +9,6 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const navigate = useNavigate();
     const { fetchTrades } = useTrades();
     const [tradeData, setTradeData] = useState([])
-
     const fetchData = async () => {
         const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
             headers: {
@@ -29,7 +28,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        console.log('TradeData:', tradeData);
+        // console.log('TradeData:', tradeData);
         try {
             const newTrade = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/trades/update/${tradeId}`, tradeData, {
                 headers: {
@@ -125,12 +124,12 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                                 <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Buy Price</label>
                                     <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='buyprice' className='form-control'
-                                        disabled={!tradeData.buyPrice} />
+                                        disabled={tradeData.buyPrice ===null} />
                                 </div>
                                 <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Sell Price</label>
                                     <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='sell price' className='form-control'
-                                        disabled={!tradeData.sellPrice} />
+                                        disabled={tradeData.sellPrice ===null} />
                                 </div>
                                 <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Quantity</label>

@@ -9,7 +9,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal, showTrades })
     const { trades, fetchTrades } = useTrades();
     const navigate = useNavigate();
     const tradesToDisplay = trades.filter(trade => trade.status === showTrades);
-    console.log("tradesToDisplay:", tradesToDisplay);
+    // console.log("tradesToDisplay:", tradesToDisplay);
     // Delete Trade
     const handleDelete = (tradeId) => {
         Swal.fire({

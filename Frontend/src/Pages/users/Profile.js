@@ -68,8 +68,8 @@ const Profile = () => {
         formData.append('profilePic', data.profilePic);
         formData.append('fullName[firstName]', data.fullName.firstName);
         formData.append('fullName[lastName]', data.fullName.lastName);
-        console.log("formData: ", formData);
-        console.log("profilePic: ", data.profilePic);
+        // console.log("formData: ", formData);
+        // console.log("profilePic: ", data.profilePic);
         try {
             const res = await axios.put(
                 `${process.env.REACT_APP_BACKEND_URL}/users/update_profile`,
@@ -80,7 +80,7 @@ const Profile = () => {
                     }
                 }
             );
-            console.log('res: ', res.data);
+            // console.log('res: ', res.data);
             setUser(res.data.user)
             toast.success('Profile updated successfully', {
                 position: "top-right",

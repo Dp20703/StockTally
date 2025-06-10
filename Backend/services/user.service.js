@@ -2,12 +2,12 @@ const userModel = require('../models/user.model');
 
 // this function is used to create a user:
 module.exports.createUser = async ({ userName, firstName, lastName, email, password }) => {
-    console.log("User service function for create user");
+    // console.log("User service function for create user");
     if (!userName || !firstName || !lastName || !email || !password) {
-        console.log('All fields are required');
+        // console.log('All fields are required');
         throw new Error('All fields are required');
     }
-    console.log("user:", userName, firstName, lastName, email, password);
+    // console.log("user:", userName, firstName, lastName, email, password);
     const user = await userModel.create({
         userName,
         fullName: {
@@ -18,13 +18,13 @@ module.exports.createUser = async ({ userName, firstName, lastName, email, passw
         password,
         totalProfit: 0
     })
-    console.log("user:", user);
+    // console.log("user:", user);
     return user;
 }
 
 // this function is used to login a user:
 module.exports.loginUser = async (email, password) => {
-    console.log("User service function for login user");
+    // console.log("User service function for login user");
     if (!email || !password) {
         throw new Error('All fields are required');
     }

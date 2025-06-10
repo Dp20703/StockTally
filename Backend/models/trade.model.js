@@ -91,7 +91,7 @@ tradeSchema.methods.calculateProfit = function (closeQuantity) {
         if (isNaN(this.buyPrice) || isNaN(this.sellPrice) || isNaN(quantitySold)) {
             this.profit = 0;
             this.finalProfit = 0;
-            console.log("Invalid input values");
+            // console.log("Invalid input values");
             return;
         }
 

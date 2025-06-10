@@ -26,7 +26,7 @@ const CreateTrade = ({ setModal }) => {
     const submitHandler = async (e) => {
 
         e.preventDefault();
-        console.log('TradeData:', tradeData);
+        // console.log('TradeData:', tradeData);
         try {
             const newTrade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/create`, tradeData, {
                 headers: {
@@ -41,7 +41,7 @@ const CreateTrade = ({ setModal }) => {
                     fetchTrades();
                 }
             })
-            console.log("newTrade:", newTrade);
+            // console.log("newTrade:", newTrade);
             setTradeData({
                 stockName: '',
                 stockSymbol: '',
@@ -62,7 +62,7 @@ const CreateTrade = ({ setModal }) => {
                 toast.error("An unexpected error occurred. Try again later.");
 
 
-                console.log("Error while creating trade:", error);
+                // console.log("Error while creating trade:", error);
                 toast.error("create Trade Failed", {
                     position: "top-right",
                     autoClose: 1500,

@@ -29,14 +29,14 @@ module.exports.registerUser = async (req, res) => {
             email,
             password: hashPassword
         });
-        console.log("user:", user);
+        // console.log("user:", user);
 
         //generating a token using user's id: 
         const token = await user.generateAuthToken();
         res.status(200).json({ message: 'User registered successfully', token, user });
 
     } catch (error) {
-        console.log("Error is register_user controller:", error);
+        // console.log("Error is register_user controller:", error);
         res.status(500).json({ error: error.message });
     }
 
@@ -68,8 +68,8 @@ module.exports.getUserProfile = async (req, res) => {
 //this controller function will update the user profile:
 module.exports.updateProfile = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("FILE:", req.file);
+        // console.log("BODY:", req.body);
+        // console.log("FILE:", req.file);
 
         const { userName, email, fullName } = req.body;
 

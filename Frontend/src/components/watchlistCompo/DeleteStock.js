@@ -13,7 +13,7 @@ export const deleteStock = (stockId, watchlistId) => {
         })
     })
         .catch((err) => {
-            console.log("err:", err)
+            // console.log("err:", err)
             toast.error("Failed to delete stock", {
                 position: "top-right",
                 autoClose: 1000

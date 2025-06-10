@@ -8,7 +8,7 @@ const AllWatchlist = ({ setUpdateModal, setWatchlistId, setModal }) => {
 
   useEffect(() => {
     fetchWatchlist();
-  }, [])
+  })
 
   const handleDelete = (id) => {
     watchlists.filter(watchlist => watchlist._id !== id);

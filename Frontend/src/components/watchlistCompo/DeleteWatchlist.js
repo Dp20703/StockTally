@@ -18,7 +18,7 @@ export const deleteWatchlist = (id) => {
             })
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
             toast.error("Failed to delete watchlist", {
                 position: "top-right",
                 autoClose: 1000

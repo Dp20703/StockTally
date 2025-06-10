@@ -28,7 +28,7 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Submitted Stocks:", stocks);
+        // console.log("Submitted Stocks:", stocks);
 
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/watchlist/add`, {
             stocks, watchlistId
@@ -58,7 +58,7 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
                     })
                 }
                 else {
-                    console.log("err:", err)
+                    // console.log("err:", err)
                     toast.error("Failed to add stocks", {
                         position: "top-right",
                         autoClose: 1000

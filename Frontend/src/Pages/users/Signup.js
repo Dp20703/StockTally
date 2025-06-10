@@ -39,7 +39,7 @@ const Signup = () => {
                     navigate('/login')
                 }
             })
-            console.log("newUser:", newUser);
+            // console.log("newUser:", newUser);
 
         } catch (error) {
             if (error.response) {
@@ -60,7 +60,7 @@ const Signup = () => {
                     toast.error("An unexpected error occurred. Try again later.");
                 }
             }
-            console.log("Error while registration:", error);
+            // console.log("Error while registration:", error);
             setData({
                 userName: '',
                 fullName: {

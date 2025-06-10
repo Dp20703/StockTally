@@ -8,7 +8,7 @@ import { deleteStock } from '../../components/watchlistCompo/DeleteStock';
 import { useWatchlists } from '../../context/WatchlistContext';
 
 const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
-    console.log("Watchlist Id:", watchlistId);
+    // console.log("Watchlist Id:", watchlistId);
 
     const [updateWatchlist, setUpdateWatchlist] = useState({});
     const [addStockModal, setAddStockModal] = useState(false);
@@ -35,7 +35,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
             }).then((res) => {
                 setUpdateWatchlist(res.data);
             }).catch(err => {
-                console.log("err:", err)
+                // console.log("err:", err)
                 toast.error("Failed to fetch watchlist", {
                     position: "top-right",
                     autoClose: 1000
@@ -78,7 +78,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
             }
         )
             .catch((err) => {
-                console.log("err:", err)
+                // console.log("err:", err)
                 if (err.status === 409) {
                     toast.error(err.response.data.error, {
                         position: "top-right",

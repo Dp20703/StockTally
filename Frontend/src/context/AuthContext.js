@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         }).then((res) => {
             setUser(res.data);
         }).catch((err) => {
-            console.log("Error while fetching user from AuthContext:", err);
+            // console.log("Error while fetching user from AuthContext:", err);
             localStorage.removeItem("token");
             setUser(null);
         }).finally(() => {

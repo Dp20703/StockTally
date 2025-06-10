@@ -34,7 +34,7 @@ module.exports.createTrade = async (req, res) => {
         res.status(201).json({ success: true, message: 'Trade created successfully', trade });
 
     } catch (error) {
-        console.log("Error in createTrade controller:", error);
+        // // console.log("Error in createTrade controller:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -51,7 +51,7 @@ module.exports.getAllTrades = async (req, res) => {
             trades
         });
     } catch (error) {
-        console.log("Error is getAllTrades controller:", error);
+        // console.log("Error is getAllTrades controller:", error);
         res.status(500).json({ error: error.message });
     }
 }
@@ -69,7 +69,7 @@ module.exports.getTrade = async (req, res) => {
             trade
         });
     } catch (error) {
-        console.log("Error is get_trade controller:", error);
+        // console.log("Error is get_trade controller:", error);
         res.status(500).json({ error: error.message });
     }
 }
@@ -88,7 +88,7 @@ module.exports.closeTrade = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error in closeTrade controller:", error);
+        // console.log("Error in closeTrade controller:", error);
         res.status(500).json({ error: error.message });
 
     }
@@ -108,7 +108,7 @@ module.exports.updateTrade = async (req, res) => {
 
     }
     catch (error) {
-        console.log("Error in updateTrade controller:", error);
+        // console.log("Error in updateTrade controller:", error);
         res.status(500).json({ error: error.message });
     }
 }
@@ -147,7 +147,7 @@ module.exports.getStockPrice = async (req, res) => {
             'price': stockPrice
         });
     } catch (error) {
-        // console.log("Error in getStockPrice controller:", error);
+        // // console.log("Error in getStockPrice controller:", error);
         res.status(500).json({ error: error.message });
     }
 }
