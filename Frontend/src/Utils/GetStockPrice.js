@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CalUnRealProfit from './CalUnRealProfit';
+import Loader from './Loader';
 
 const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     const [stockPrice, setStockPrice] = useState(null);
@@ -40,26 +41,26 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
 
     return (
         <>
-            {loading ? (
-                <div>Loading...</div>
-            ) : stockPrice ? (
-                <div className='d-flex justify-content-center  align-items-center gap-3'>
-                    <div>
-                        <strong>Stock Price:</strong>₹{stockPrice}</div>
-                    <div>
+            {loading ?
+                (<div><Loader type="dot" /></div>)
+                : stockPrice ? (
+                    <div className='d-flex justify-content-center  align-items-center gap-3'>
                         <div>
-                            <strong>Unrealized Profit:</strong>
-                            <CalUnRealProfit
-                                stockPrice={stockPrice}
-                                quantity={quantity}
-                                buyPrice={buyPrice}
-                                sellPrice={sellPrice}
-                            /></div>
+                            <strong>Stock Price:</strong>₹{stockPrice}</div>
+                        <div>
+                            <div>
+                                <strong>Unrealized Profit:</strong>
+                                <CalUnRealProfit
+                                    stockPrice={stockPrice}
+                                    quantity={quantity}
+                                    buyPrice={buyPrice}
+                                    sellPrice={sellPrice}
+                                /></div>
+                        </div>
                     </div>
-                </div>
-            ) : (
-                <div>No price available</div>
-            )}
+                ) : (
+                    <div>No price available</div>
+                )}
         </>
     );
 };
