@@ -17,19 +17,27 @@
 
 ## 🖼️ Screenshots
 
-### 🏠 Home / Dashboard
+### 🏠 Home
 
-![Home](./public/images/Screenshots/home.png)
+![Home](./Frontend/public/images/Screenshots/home.png)
+
+
+### 📝 Login
+
+![Login](./Frontend/public/images/Screenshots/login.png)
+
+### 📝 Register
+
+![Register](./Frontend/public/images/Screenshots/register.png)
 
 ### 💼 Trade Management
 
-![Dashboard/Trades](./public/images/Screenshots/dashboard.png)
+![Dashboard/Trades](.Frontend/public/images/Screenshots/dashboard.png)
 
 ### 📋 Watchlist Page
 
-![Watchlist](./public/images/Screenshots/watchlist.png)
+![Watchlist](./Frontend/public/images/Screenshots/watchlist.png)
 
----
 
 ## 🧰 Tech Stack
 
