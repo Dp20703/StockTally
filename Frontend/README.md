@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# 📊 StockTally
+
+**StockTally** is a stock trade and watchlist management app built using **React** (via Create React App) and the **MERN stack**. It allows users to track trades, organize stock watchlists, and analyze portfolio activity with a clean, responsive interface.
+
+---
+
+## 🚀 Features
+
+- ✅ Create, Read, Update, Delete (CRUD) operations for:
+  - **Trades** – manage your stock buying/selling records
+  - **Watchlists** – keep an eye on stocks you're interested in
+- 🔐 User Authentication (Sign Up / Login)
+- 📱 Responsive UI using Bootstrap
+- 🌍 Backend API built with Node.js, Express, MongoDB (MongoDB Atlas)
+
+---
+
+## 🖼️ Screenshots
+
+### 🏠 Home / Dashboard
+
+![Home](./public/images/Screenshots/home.png)
+
+### 💼 Trade Management
+
+![Dashboard/Trades](./public/images/Screenshots/dashboard.png)
+
+### 📋 Watchlist Page
+
+![Watchlist](./public/images/Screenshots/watchlist.png)
+
+---
+
+## 🧰 Tech Stack
+
+- **Frontend:** React.js (CRA), Bootstrap, Context API
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Atlas)
+- **Deployment:** Vercel (Frontend), Render (Backend)
+
+---
+
+## 📦 Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Prerequisites
 
-In the project directory, you can run:
+- Node.js and npm
+- MongoDB Atlas connection URI
+- (Optional) Postman for API testing
+
+---
+
+## 📁 Project Structure
+
+```
+stocktally/
+├── Frontend/           # React frontend (CRA)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── Middleware/
+│   │   ├── pages/
+│   │   ├── Utils/
+│   │   ├── context/
+│   │   └── App.js
+├── Backend/           # Express backend
+│   ├── config/
+│   ├── controllers/
+│   ├── middlewares/
+│   ├── models/
+│   ├── public/
+│   ├── Routes/
+│   ├── services/
+│   ├── utils/
+│   ├── .env
+│   ├── .app.js
+│   └── server.js
+```
+
+---
+
+## 🔧 Installation
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Dp20703/stocktally.git
+cd stocktally
+```
+
+### 2. Setup the backend
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+### 3. Setup the frontend
+
+```bash
+cd ../client
+npm install
+npm start
+```
+
+---
+
+## 🖥 Available Scripts (Frontend)
+
+In the `client/` directory:
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Builds the app for production to the `build` folder.
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Note:** This is a one-way operation. Once you eject, you can’t go back!
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📚 Learn More
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [React Docs](https://reactjs.org/)
+- [Create React App Docs](https://facebook.github.io/create-react-app/)
+- [MongoDB Docs](https://www.mongodb.com/docs/)
+- [Express.js Guide](https://expressjs.com/)
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 👤 Author
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Darshan Prajapati**  
+[LinkedIn](https://www.linkedin.com/in/darshan-prajapati-523202282) | [GitHub](https://github.com/Dp20703)
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> Built for traders, by a tech enthusiast 💼📈
