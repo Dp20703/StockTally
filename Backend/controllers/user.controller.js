@@ -33,6 +33,10 @@ module.exports.registerUser = async (req, res) => {
 
         //generating a token using user's id: 
         const token = await user.generateAuthToken();
+
+        //set the token as a cookie
+        res.cookie('token', token);
+
         res.status(200).json({ message: 'User registered successfully', token, user });
 
     } catch (error) {
