@@ -5,12 +5,12 @@ const NavbarCompo = () => {
     const location = useLocation();
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
+        <Navbar className='navBar' bg="dark" variant="dark" expand="lg" sticky="top">
             <Container>
-                <Navbar.Brand as={Link} to="/">📈 StockTally</Navbar.Brand>
+                <Navbar.Brand className='brand' as={Link} to="/">📈 StockTally</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="ms-auto">
+                    <Nav className="nav-links ms-auto">
                         <Nav.Link as={Link} to="/trade/dashboard" active={location.pathname === '/trade/dashboard'}>Dashboard</Nav.Link>
                         <Nav.Link as={Link} to="/trade/watchlist" active={location.pathname === '/trade/watchlist'}>Watchlist</Nav.Link>
                         <Nav.Link as={Link} to="/chart/showchart" active={location.pathname === '/chart/showchart'}>Show Charts</Nav.Link>
