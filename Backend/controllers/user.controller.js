@@ -1,6 +1,7 @@
 const userService = require('../services/user.service');
 const userModel = require('../models/user.model');
 const BlacklistTokenModel = require('../models/blacklistToken.model');
+const { cloudinary } = require('../middlewares/cloudinary');
 
 //this controller function will register the user using required fields:
 module.exports.registerUser = async (req, res) => {
@@ -77,11 +78,12 @@ module.exports.updateProfile = async (req, res) => {
 
         const { userName, email, fullName } = req.body;
 
-        // Validate required fields
+        // ✅ Validate required fields
         if (!userName || !email || !fullName?.firstName) {
             return res.status(400).json({ message: "Username, email, and first name are required" });
         }
 
+        // ✅ Prepare update data
         const updateData = {
             userName: userName.trim(),
             email: email.trim(),
@@ -91,35 +93,46 @@ module.exports.updateProfile = async (req, res) => {
             },
         };
 
-        // ✅ Use Cloudinary image URL instead of local path
-        if (req.file) {
-            updateData.profilePic = req.file.path; // Cloudinary URL
+        const existingUser = await userModel.findById(req.user._id);
+
+        // ✅ Delete old profile pic if a new one is uploaded
+        if (req.file && existingUser?.profilePic) {
+            try {
+                const urlParts = existingUser.profilePic.split('/');
+                const publicIdWithExt = urlParts[urlParts.length - 1]; // e.g. abc123.jpg
+                const publicId = 'profile_pics/' + publicIdWithExt.split('.')[0]; // folder + name
+                await cloudinary.uploader.destroy(publicId);
+                console.log("Old profile pic deleted from Cloudinary:", publicId);
+            } catch (deleteErr) {
+                console.error("Failed to delete old profile pic from Cloudinary:", deleteErr.message);
+            }
         }
 
-        // Check for email conflict
+        // ✅ Save new profile pic Cloudinary URL
+        if (req.file) {
+            updateData.profilePic = req.file.path;
+        }
+
+        // 🔍 Check for duplicate email
         const existingEmail = await userModel.findOne({
             email: updateData.email,
             _id: { $ne: req.user._id },
         });
-
         if (existingEmail) {
             return res.status(409).json({ message: "Email already exists" });
         }
 
-        // Check for username conflict
+        // 🔍 Check for duplicate username
         const existingUsername = await userModel.findOne({
             userName: updateData.userName,
             _id: { $ne: req.user._id },
         });
-
         if (existingUsername) {
             return res.status(409).json({ message: "Username already exists" });
         }
 
-        // Update user
-        const user = await userModel.findByIdAndUpdate(req.user._id, updateData, {
-            new: true,
-        });
+        // ✅ Update user in DB
+        const user = await userModel.findByIdAndUpdate(req.user._id, updateData, { new: true });
 
         return res.status(200).json({
             message: "Profile updated successfully",
@@ -130,7 +143,6 @@ module.exports.updateProfile = async (req, res) => {
         return res.status(500).json({ message: "Something went wrong", error: err.message });
     }
 };
-
 
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {
