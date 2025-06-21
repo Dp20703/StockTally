@@ -39,6 +39,8 @@ router.put("/update_profile", authMiddleware.authUser, upload.single("profilePic
     userController.updateProfile
 );
 
+// /users/delete_profile_pic
+router.delete('/delete_profile_pic', authMiddleware.authUser, userController.deleteProfilePic);
 
 // /users/logout:
 router.get('/logout', authMiddleware.authUser, userController.logoutUser)

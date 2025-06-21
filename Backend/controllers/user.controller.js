@@ -144,6 +144,39 @@ module.exports.updateProfile = async (req, res) => {
     }
 };
 
+// this controller function will delete the user profile pic:
+module.exports.deleteProfilePic = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._id);
+
+        if (!user || !user.profilePic) {
+            return res.status(400).json({ message: "No profile picture to delete" });
+        }
+
+        // Extract public_id from Cloudinary URL
+        const urlParts = user.profilePic.split('/');
+        const publicIdWithExt = urlParts[urlParts.length - 1]; // e.g. abc123.jpg
+        const publicId = 'profile_pics/' + publicIdWithExt.split('.')[0];
+
+        // Delete from Cloudinary
+        await cloudinary.uploader.destroy(publicId);
+
+        // Remove profilePic from DB
+        user.profilePic = '';
+        await user.save();
+
+        return res.status(200).json({
+            message: "Profile picture deleted successfully",
+            user,
+        });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Failed to delete profile picture", error: err.message });
+    }
+};
+
+
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {
     try {

@@ -18,7 +18,6 @@ const Profile = () => {
         email: '',
     });
 
-    console.log('previewImage:', previewImage);
     useEffect(() => {
         setData({
             profilePic: user?.profilePic || "",
@@ -49,6 +48,25 @@ const Profile = () => {
         }
     };
 
+    const handleDeletePic = async () => {
+        try {
+            const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/users/delete_profile_pic`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            console.log("res:", res);
+            toast.success(res.data.message,{
+                position: "top-right",
+                autoClose: 1000
+            });
+            setUser(res.data.user); // Update frontend state
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to delete profile picture");
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'firstName' || name === 'lastName') {
@@ -70,11 +88,7 @@ const Profile = () => {
         formData.append('profilePic', data.profilePic); // Only works if file
         formData.append('fullName[firstName]', data.fullName.firstName);
         formData.append('fullName[lastName]', data.fullName.lastName);
-        console.log("formData:", formData);
-        console.log("user:", user);
-        console.log('data:', data);
-        console.log('profilePic:', data.profilePic);
-        console.log('PreviewImage:', previewImage);
+
         try {
             const res = await axios.put(
                 `${process.env.REACT_APP_BACKEND_URL}/users/update_profile`,
@@ -107,17 +121,61 @@ const Profile = () => {
     return (
         <div id='dashboard'>
             <NavbarCompo />
+
             <div className="profile mt-5 card m-auto bg-black text-white border border-gray border-1 rounded-5 overflow-hidden">
+
                 <div className='d-flex justify-content-center align-items-center'>
-                    <a href={previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}>
-                        <img
-                            src={previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
-                            className="m-auto rounded-circle mt-3"
-                            style={{ height: "20rem", width: '20rem', objectFit: 'cover', border: '2px solid white' }}
-                            alt="Profile"
-                        />
-                    </a>
-                    <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
+
+                    <div className="position-relative text-center mt-3" style={{ width: '20rem' }}>
+                        <div className="dropdown d-inline-block">
+                            <button
+                                className="border-0 bg-transparent p-0 dropdown-toggle"
+                                type="button"
+                                id="profilePicDropdownBtn"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <img
+                                    src={previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                    className="rounded-circle"
+                                    style={{
+                                        height: "20rem",
+                                        width: '20rem',
+                                        objectFit: 'cover',
+                                        border: '2px solid white',
+                                        cursor: 'pointer',
+                                    }}
+                                    alt="Profile"
+                                />
+                            </button>
+
+                            <ul
+                                className="dropdown-menu text-center"
+                                aria-labelledby="profilePicDropdownBtn"
+                                style={{ minWidth: "10rem" }}
+                            >
+                                <li>
+                                    <a
+                                        className="dropdown-item"
+                                        href={user?.profilePic || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        👁 View Profile Picture
+                                    </a>
+                                </li>
+                                <li>
+                                    <button className="dropdown-item text-danger" onClick={handleDeletePic}>
+                                        ❌ Delete Profile Picture
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Edit icon stays outside dropdown */}
+                        <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
+                    </div>
+
                 </div>
 
                 <div className="card-body text-center">
