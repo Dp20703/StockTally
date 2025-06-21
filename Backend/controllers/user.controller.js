@@ -72,8 +72,8 @@ module.exports.getUserProfile = async (req, res) => {
 //this controller function will update the user profile:
 module.exports.updateProfile = async (req, res) => {
     try {
-        // console.log("BODY:", req.body);
-        // console.log("FILE:", req.file);
+        console.log("BODY:", req.body);
+        console.log("Uploaded file:", req.file);
 
         const { userName, email, fullName } = req.body;
 
@@ -87,37 +87,50 @@ module.exports.updateProfile = async (req, res) => {
             email: email.trim(),
             fullName: {
                 firstName: fullName.firstName.trim(),
-                lastName: fullName.lastName?.trim() || ""  // Optional
+                lastName: fullName.lastName?.trim() || "",
             },
         };
 
-        // Update profile picture
+        // ✅ Use Cloudinary image URL instead of local path
         if (req.file) {
-            updateData.profilePic = `images/profilePic/${req.file.filename}`;
+            updateData.profilePic = req.file.path; // Cloudinary URL
         }
 
-        const existingEmail = await userModel.findOne({ email: updateData.email, _id: { $ne: req.user._id } });
+        // Check for email conflict
+        const existingEmail = await userModel.findOne({
+            email: updateData.email,
+            _id: { $ne: req.user._id },
+        });
+
         if (existingEmail) {
-            return res.status(409).json({ message: "Email already exist" });
+            return res.status(409).json({ message: "Email already exists" });
         }
 
-        const existingUsername = await userModel.findOne({ userName: updateData.userName, _id: { $ne: req.user._id } });
+        // Check for username conflict
+        const existingUsername = await userModel.findOne({
+            userName: updateData.userName,
+            _id: { $ne: req.user._id },
+        });
+
         if (existingUsername) {
-            return res.status(409).json({ message: "Username already exist" });
+            return res.status(409).json({ message: "Username already exists" });
         }
 
-        const user = await userModel.findByIdAndUpdate(
-            req.user._id,
-            updateData,
-            { new: true }
-        );
+        // Update user
+        const user = await userModel.findByIdAndUpdate(req.user._id, updateData, {
+            new: true,
+        });
 
-        return res.status(200).json({ message: "Profile updated successfully", user });
+        return res.status(200).json({
+            message: "Profile updated successfully",
+            user,
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Something went wrong", error: err.message });
     }
 };
+
 
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {
