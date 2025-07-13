@@ -7,7 +7,7 @@ const NavbarCompo = () => {
     return (
         <Navbar className='navBar' bg="dark" variant="dark" expand="lg" sticky="top">
             <Container>
-                <Navbar.Brand className='brand' as={Link} to="/">📈 StockTally</Navbar.Brand>
+                <Navbar.Brand className='brand' as={Link} to="/"> StockTally</Navbar.Brand>
                 <Navbar.Toggle className='toggle' aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links ms-auto">

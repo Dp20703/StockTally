@@ -28,7 +28,7 @@ const CreateTrade = ({ setModal }) => {
         e.preventDefault();
         // console.log('TradeData:', tradeData);
         try {
-            const newTrade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/create`, tradeData, {
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/create`, tradeData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

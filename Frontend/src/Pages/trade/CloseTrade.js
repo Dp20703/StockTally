@@ -77,19 +77,19 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
     } catch (error) {
       // Handle different error responses
       if (error.response) {
-        if (error.response.status == '400') {
+        if (error.response.status === '400') {
           toast.error(error.response.data.message || "Please fill in all required fields.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
-        else if (error.response.status == '401') {
+        else if (error.response.status === '401') {
           toast.error("Unauthorized. Please login again.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
-        else if (error.response.status == '500') {
+        else if (error.response.status === '500') {
           toast.error(error.response.data.error || "Internal Server Error. Please try again later.", {
             position: "top-right",
             autoClose: 1000,

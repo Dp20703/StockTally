@@ -109,7 +109,7 @@ const Profile = () => {
             });
             setUpdateModal(false);
         } catch (err) {
-            const status = err.response?.status;
+            // const status = err.response?.status;
             const message = err.response?.data?.message || 'Something went wrong';
             toast.error(message, {
                 position: "top-right",

@@ -7,12 +7,12 @@
 }
 .wrapper {
   margin: 4% 16%;
-  border-radius: 4%;
+  border-radius: 2rem;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 10px 2px gray;
+  box-shadow: 0px 0px 10px 1px #0f1113;
 }
 .poster {
   width: 50%;
@@ -35,12 +35,12 @@
 /* register */
 .registerWrapper {
   margin: 4% 16%;
-  border-radius: 4%;
+  border-radius: 2rem;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 10px 2px gray;
+  box-shadow: 0px 0px 10px 1px #0f1113;
 }
 .registerForm {
   padding: 3em 2em;
@@ -53,10 +53,17 @@
 
 /* media queries */
 @media screen and (max-width: 768px) {
+  /* .wrapper{
+    box-shadow:  none;
+  }
+  .registerWrapper{
+    box-shadow: none;
+  } */
   .poster {
     display: none;
   }
   .login {
+    background-image: url("/public/images/bg.jpg");
     height: 100dvh;
     width: 100dvw;
   }
@@ -230,7 +237,7 @@
 #dashboard {
   min-height: 100dvh;
   background-color: #0f1113;
-  border: 0.5px solid #718ba6;
+  /* border: 0.5px solid #718ba6; */
 }
 
 #allTrades {
@@ -433,12 +440,28 @@
 
 @media screen and (max-width: 768px) {
   .navBar .brand {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
   .navBar .toggle {
     font-size: 1rem;
   }
   .navBar .nav-links {
     font-size: 1rem;
+  }
+}
+
+/* Home.js */
+
+#home {
+  background-image: url("/public/images/stock1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100dvh;
+}
+
+@media screen and (max-width: 768px) {
+  #home {
+    background-position: left;
   }
 }

@@ -109,7 +109,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                             </Form.Group>
 
                             {
-                                updateWatchlist.stocks == 0 ? (
+                                updateWatchlist.stocks === 0 ? (
                                     <p className='text-center text-danger fw-bold mx-3'>No stocks added</p>
                                 ) :
                                     (

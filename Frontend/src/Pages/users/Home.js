@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
@@ -9,15 +8,8 @@ const Home = () => {
     // console.log("user: ", user);
 
     return (
-        <div
-            className="d-flex flex-column justify-content-center align-items-center"
-            style={{
-                backgroundImage: 'url("../images/stock1.jpg")',
-                backgroundPosition: 'center',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                height: '100dvh',
-            }}
+        <div id='home'
+            className="d-flex flex-column justify-content-center  align-items-center "
         >
             <div className="text-center">
                 <h1
