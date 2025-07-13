@@ -56,7 +56,7 @@ const Profile = () => {
                 }
             });
             console.log("res:", res);
-            toast.success(res.data.message,{
+            toast.success(res.data.message, {
                 position: "top-right",
                 autoClose: 1000
             });
@@ -136,7 +136,7 @@ const Profile = () => {
                                 aria-expanded="false"
                             >
                                 <img
-                                    src={previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                    src={user.profilePic || previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
                                     className="rounded-circle"
                                     style={{
                                         height: "20rem",

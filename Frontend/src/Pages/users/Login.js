@@ -39,14 +39,14 @@ const Login = () => {
         }
       })
     } catch (error) {
-      if (error.response.status === 500) {
+      if (error?.response?.status === 500) {
         toast.error("Invalid email or password.",
           {
             position: "top-right",
             autoClose: 1000,
           })
       }
-      else if (error.response.status === 400) {
+      else if (error?.response?.status === 400) {
         toast.error("Please fill in all required fields.",
           {
             position: "top-right",
