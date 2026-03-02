@@ -1,10 +1,11 @@
 {
-  "name": "backend",
+  "name": "stocktally-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "npx nodemon server.js",
     "build": "echo \"No build step required\""
   },
   "keywords": [],

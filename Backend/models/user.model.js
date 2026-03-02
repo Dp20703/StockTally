@@ -23,9 +23,7 @@ const userSchema = new mongoose.Schema({
         },
         lastName: {
             type: String,
-            // required: [true, "Last name is required."],
             trim: true,
-            // minlength: [3, "Last name must be at least 3 characters long."]
         }
     },
     email: {
@@ -81,5 +79,4 @@ userSchema.methods.comparePassword = async function (password) {
 }
 
 const user = mongoose.model("user", userSchema);
-
 module.exports = user;

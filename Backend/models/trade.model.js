@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const tradeSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user', // Link to the User model
+        ref: 'user',
         required: true
     },
     stockName: {
@@ -32,7 +32,7 @@ const tradeSchema = new mongoose.Schema({
     },
     entryType: {
         type: String,
-        enum: ['buy', 'sell'], // What was the first action: a buy or a sell?
+        enum: ['buy', 'sell'],
         required: true,
     },
     buyPrice: {
@@ -122,5 +122,4 @@ tradeSchema.methods.calculateProfit = function (closeQuantity) {
 };
 
 const Trade = mongoose.model('Trade', tradeSchema);
-
 module.exports = Trade;
