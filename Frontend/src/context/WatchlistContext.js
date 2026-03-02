@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../Services/apiClient";
 import { useState } from "react";
 import { useContext } from "react";
 const { createContext } = require("react");
@@ -9,19 +9,16 @@ export const WatchlistProvider = ({ children }) => {
     const [watchlists, setWatchlists] = useState([]);
 
     const fetchWatchlist = async () => {
+
         const token = localStorage.getItem('token');
         if (!token) {
             throw new Error('Unauthorized: No token provided');
         }
 
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/watchlist/get`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const res = await api.get("/watchlist/get");
+            setWatchlists(res?.data);
 
-            setWatchlists(res.data);
         } catch (error) {
             console.error('Failed to fetch watchlists:', error);
             throw error;

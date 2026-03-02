@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../Services/apiClient"
 import { toast } from "react-toastify";
 
 export const deleteWatchlist = (id) => {
@@ -6,11 +6,7 @@ export const deleteWatchlist = (id) => {
     if (!token) {
         throw new Error("No token");
     }
-    axios.delete(`${process.env.REACT_APP_BACKEND_URL}/watchlist/delete/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
+    api.delete(`/watchlist/delete/${id}`)
         .then(() => {
             toast.success("Watchlist deleted successfully", {
                 position: "top-right",
@@ -18,7 +14,6 @@ export const deleteWatchlist = (id) => {
             })
         })
         .catch(err => {
-            // console.log(err);
             toast.error("Failed to delete watchlist", {
                 position: "top-right",
                 autoClose: 1000

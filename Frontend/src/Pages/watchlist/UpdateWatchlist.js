@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
@@ -6,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import AddStock from './AddStock';
 import { deleteStock } from '../../components/watchlistCompo/DeleteStock';
 import { useWatchlists } from '../../context/WatchlistContext';
+import api from '../../Services/apiClient';
 
 const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
-    // console.log("Watchlist Id:", watchlistId);
 
     const [updateWatchlist, setUpdateWatchlist] = useState({});
     const [addStockModal, setAddStockModal] = useState(false);
@@ -28,59 +27,55 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
 
     useEffect(() => {
         const FetchWatchlist = () => {
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/watchlist/get/${watchlistId}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            }).then((res) => {
-                setUpdateWatchlist(res.data);
-            }).catch(err => {
-                // console.log("err:", err)
-                toast.error("Failed to fetch watchlist", {
-                    position: "top-right",
-                    autoClose: 1000
+            api.get(`/watchlist/get/${watchlistId}`)
+                .then((res) => {
+                    setUpdateWatchlist(res.data);
                 })
-            }
-            )
+                .catch(err => {
+                    toast.error("Failed to fetch watchlist", {
+                        position: "top-right",
+                        autoClose: 1000
+                    })
+                }
+                )
         }
         FetchWatchlist()
     }, [])
+
     const handleDeleteStock = (stockId) => {
         deleteStock(stockId, watchlistId)
         fetchWatchlist();
     }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.put(`${process.env.REACT_APP_BACKEND_URL}/watchlist/update/${watchlistId}`, {
+        api.put(`/watchlist/update/${watchlistId}`, {
             watchlistName: updateWatchlist.watchlistName,
             stocks: updateWatchlist.stocks.map(stock => ({
                 stockName: stock.stockName,
                 stockSymbol: stock.stockSymbol,
                 stockId: stock._id
             }))
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(
-            () => {
-                toast.success("Watchlist updated successfully", {
-                    position: "top-right",
-                    autoClose: 1000,
-                    onClose: () => {
-                        setUpdateModal(false);
-                    }
-                })
-                setUpdateWatchlist({});
-                setUpdateModal(false);
-                fetchWatchlist();
-            }
-        )
+        })
+            .then(
+                () => {
+                    toast.success("Watchlist updated successfully", {
+                        position: "top-right",
+                        autoClose: 1000,
+                        onClose: () => {
+                            setUpdateModal(false);
+                        }
+                    })
+                    setUpdateWatchlist({});
+                    setUpdateModal(false);
+                    fetchWatchlist();
+                }
+            )
             .catch((err) => {
-                // console.log("err:", err)
-                if (err.status === 409) {
-                    toast.error(err.response.data.error, {
+
+                if (err?.status === 409) {
+                    toast.error(err?.response?.data?.error, {
                         position: "top-right",
                         autoClose: 1000
                     })

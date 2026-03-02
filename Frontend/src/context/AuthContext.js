@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
+import api from "../Services/apiClient";
 
 const AuthContext = createContext();
 
@@ -16,20 +16,15 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
             return;
         }
-
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/profile`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then((res) => {
-            setUser(res.data);
-        }).catch((err) => {
-            // console.log("Error while fetching user from AuthContext:", err);
-            localStorage.removeItem("token");
-            setUser(null);
-        }).finally(() => {
-            setLoading(false);
-        });
+        api.get("/users/profile")
+            .then((res) => {
+                setUser(res.data);
+            }).catch((err) => {
+                localStorage.removeItem("token");
+                setUser(null);
+            }).finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     return <AuthContext.Provider value={{ user, setUser, loading }}>

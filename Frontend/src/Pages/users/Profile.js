@@ -1,8 +1,8 @@
 import { useAuth } from '../../context/AuthContext';
 import NavbarCompo from '../../components/Navbar';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import api from '../../Services/apiClient';
 
 const Profile = () => {
     const { user, setUser } = useAuth();
@@ -36,7 +36,9 @@ const Profile = () => {
     };
 
     const handleProfilePicChange = (e) => {
+
         const file = e.target.files[0];
+
         if (file) {
             setData((prev) => ({ ...prev, profilePic: file }));
 
@@ -50,17 +52,15 @@ const Profile = () => {
 
     const handleDeletePic = async () => {
         try {
-            const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/users/delete_profile_pic`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            });
-            console.log("res:", res);
-            toast.success(res.data.message, {
+            const res = await api.delete("/users/delete_profile_pic")
+
+            toast.success(res?.data?.message, {
                 position: "top-right",
                 autoClose: 1000
             });
-            setUser(res.data.user); // Update frontend state
+
+            setUser(res?.data?.user);
+
         } catch (err) {
             console.error(err);
             toast.error("Failed to delete profile picture");
@@ -85,31 +85,22 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('userName', data.userName);
         formData.append('email', data.email);
-        formData.append('profilePic', data.profilePic); // Only works if file
+        formData.append('profilePic', data.profilePic);
         formData.append('fullName[firstName]', data.fullName.firstName);
         formData.append('fullName[lastName]', data.fullName.lastName);
 
         try {
-            const res = await axios.put(
-                `${process.env.REACT_APP_BACKEND_URL}/users/update_profile`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
-            console.log('res:', res);
+            const res = await api.put("/users/update_profile", formData)
+            setUser(res?.data?.user);
 
-            setUser(res.data.user);
             toast.success('Profile updated successfully', {
                 position: "top-right",
                 autoClose: 1000,
             });
+
             setUpdateModal(false);
         } catch (err) {
-            // const status = err.response?.status;
+
             const message = err.response?.data?.message || 'Something went wrong';
             toast.error(message, {
                 position: "top-right",
@@ -136,7 +127,7 @@ const Profile = () => {
                                 aria-expanded="false"
                             >
                                 <img
-                                    src={user.profilePic || previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                    src={user?.profilePic || previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
                                     className="rounded-circle"
                                     style={{
                                         height: "20rem",

@@ -1,11 +1,12 @@
-import axios from 'axios';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTrades } from '../../context/TradeContext';
+import api from '../../Services/apiClient';
 
 
 const CreateTrade = ({ setModal }) => {
+
     const { fetchTrades } = useTrades();
     const navigate = useNavigate();
     const [tradeData, setTradeData] = useState({
@@ -24,24 +25,20 @@ const CreateTrade = ({ setModal }) => {
     }
 
     const submitHandler = async (e) => {
-
         e.preventDefault();
-        // console.log('TradeData:', tradeData);
+
         try {
-            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/create`, tradeData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            await api.post("/trades/create", tradeData);
+
             toast.success("Create Trade successfully", {
                 position: "top-right",
                 autoClose: 1000,
                 onClose: () => {
-                    navigate('/trade/dashboard');
                     fetchTrades();
+                    navigate('/trade/dashboard');
                 }
             })
-            // console.log("newTrade:", newTrade);
+
             setTradeData({
                 stockName: '',
                 stockSymbol: '',
@@ -51,23 +48,24 @@ const CreateTrade = ({ setModal }) => {
                 price: '',
                 date: '',
             })
+
             setModal(false);
 
         } catch (error) {
+
             if (error.response) {
                 if (error.response.status === 400) {
                     toast.error("Please fill in all required fields.");
                 }
-            } else {
+            }
+            else {
                 toast.error("An unexpected error occurred. Try again later.");
-
-
-                // console.log("Error while creating trade:", error);
                 toast.error("create Trade Failed", {
                     position: "top-right",
                     autoClose: 1500,
                 });
             }
+
             setTradeData({
                 stockName: '',
                 stockSymbol: '',

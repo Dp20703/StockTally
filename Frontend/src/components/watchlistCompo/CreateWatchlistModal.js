@@ -1,4 +1,3 @@
-import React from 'react'
 import CreateWatchlist from '../../Pages/watchlist/CreateWatchlist'
 
 const CreateWatchlistModal = ({ setModal }) => {

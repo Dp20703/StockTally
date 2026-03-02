@@ -1,22 +1,20 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTrades } from '../../context/TradeContext'
+import api from '../../Services/apiClient';
 
 
 const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const navigate = useNavigate();
     const { fetchTrades } = useTrades();
     const [tradeData, setTradeData] = useState([])
+
     const fetchData = async () => {
-        const trade = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        setTradeData(trade.data.trade[0]);
+        const trade = await api.get("/trades/get_trade/${tradeId}");
+        setTradeData(trade?.data?.trade[0]);
     }
+
     useEffect(() => {
         fetchData();
     }, [])
@@ -28,14 +26,11 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        // console.log('TradeData:', tradeData);
+
         try {
-            const newTrade = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/trades/update/${tradeId}`, tradeData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            if (newTrade.status === 200) {
+            const newTrade = await api.put("/trades/update/${tradeId}", tradeData);
+
+            if (newTrade?.status === 200) {
                 toast.success("Trade updated successfully", {
                     position: "top-right",
                     autoClose: 1000,
@@ -67,12 +62,14 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
             setUpdateModal(false);
 
         } catch (error) {
+
             if (!error.response.data.success) {
                 console.error("Update failed:", error);
                 toast.error(error.response.data.message || "Failed to update trade.", {
                     position: "top-right",
                     autoClose: 1500,
                 });
+
                 setUpdateModal(false);
             }
 
@@ -124,12 +121,12 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
                                 <div className="form-group w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Buy Price</label>
                                     <input type="number" value={tradeData?.buyPrice} onChange={handleChange} min={1} name='buyPrice' placeholder='buyprice' className='form-control'
-                                        disabled={tradeData.buyPrice ===null} />
+                                        disabled={tradeData.buyPrice === null} />
                                 </div>
                                 <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Sell Price</label>
                                     <input type="number" value={tradeData?.sellPrice} onChange={handleChange} min={1} name='sellPrice' placeholder='sell price' className='form-control'
-                                        disabled={tradeData.sellPrice ===null} />
+                                        disabled={tradeData.sellPrice === null} />
                                 </div>
                                 <div className="form-group  w-25 d-flex flex-column justify-content-center align-items-start gap-2">
                                     <label>Enter Stock Quantity</label>

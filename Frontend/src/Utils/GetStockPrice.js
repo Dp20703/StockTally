@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import CalUnRealProfit from './CalUnRealProfit';
 import Loader from './Loader';
+import api from '../Services/apiClient';
 
 const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     const [stockPrice, setStockPrice] = useState(null);
@@ -9,27 +9,21 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
 
     // Fetch stock price
     const fetchStockPrice = async () => {
+
         setLoading(true);
         const token = localStorage.getItem('token');
         if (!token) {
-            // console.log('Token not found. Please log in.');
             setLoading(false);
             return;
         }
 
-        const url = `${process.env.REACT_APP_BACKEND_URL}/trades/price/${stockSymbol}`;
         try {
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await api.get(`/trades/price/${stockSymbol}`);
 
             if (response.status === 200) {
-                setStockPrice(response.data.price);
-            } else {
-                // console.log('Failed to fetch stock price.');
+                setStockPrice(response?.data?.price);
             }
+
         } catch (err) {
             return err
         }

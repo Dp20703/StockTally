@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useWatchlists } from '../../context/WatchlistContext';
+import api from '../../Services/apiClient';
 
 
 const CreateWatchlist = ({ setModal }) => {
@@ -20,24 +20,19 @@ const CreateWatchlist = ({ setModal }) => {
             return;
         }
         try {
-            await axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}/watchlist/create`,
-                { watchlistName: trimmedName },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                }
-            );
+            await api.post("/watchlist/create", { watchlistName: trimmedName });
+
             fetchWatchlist?.();
             setWatchlist('');
             setModal(false);
+
             toast.success("Watchlist created successfully", {
                 autoClose: 1000,
                 onClose: () => navigate('/trade/watchlist'),
                 position: "top-right",
             });
-        } catch (err) {
+        }
+        catch (err) {
             console.error('Error creating watchlist:', err);
             const status = err?.response?.status;
             const message =
@@ -54,7 +49,7 @@ const CreateWatchlist = ({ setModal }) => {
     return (
         <>
             <h2 className='text-center border-bottom pb-2'>Create Watchlist</h2>
-            
+
             <div>
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicInput">

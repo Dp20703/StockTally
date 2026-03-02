@@ -1,4 +1,3 @@
-import React from 'react'
 import UpdateWatchlist from '../../Pages/watchlist/UpdateWatchlist'
 
 const UpdateWatchlistModal = ({ setUpdateModal, watchlistId }) => {

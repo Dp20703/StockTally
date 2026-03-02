@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useWatchlists } from "../../context/WatchlistContext";
+import api from '../../Services/apiClient';
+
 const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
     const [stocks, setStocks] = useState([{ stockName: '', stockSymbol: '' }]);
     const { fetchWatchlist } = useWatchlists();
@@ -28,15 +29,8 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("Submitted Stocks:", stocks);
-
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/watchlist/add`, {
-            stocks, watchlistId
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then(
+      
+        api.post("/watchlist/add", { stocks, watchlistId }).then(
             () => {
                 toast.success("Stocks Added successfully", {
                     position: "top-right",
@@ -58,7 +52,6 @@ const AddStock = ({ setAddStockModal, watchlistId, setUpdateModal }) => {
                     })
                 }
                 else {
-                    // console.log("err:", err)
                     toast.error("Failed to add stocks", {
                         position: "top-right",
                         autoClose: 1000

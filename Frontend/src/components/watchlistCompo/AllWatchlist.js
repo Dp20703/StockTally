@@ -4,6 +4,7 @@ import { useWatchlists } from '../../context/WatchlistContext';
 import { deleteWatchlist } from './DeleteWatchlist';
 
 const AllWatchlist = ({ setUpdateModal, setWatchlistId, setModal }) => {
+  
   const { watchlists, fetchWatchlist } = useWatchlists();
 
   useEffect(() => {

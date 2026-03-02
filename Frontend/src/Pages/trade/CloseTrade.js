@@ -1,8 +1,8 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useTrades } from '../../context/TradeContext';
 import { toast } from 'react-toastify';
+import api from '../../Services/apiClient';
 
 const CloseTrade = ({ setCloseModal, tradeId }) => {
   const navigate = useNavigate();
@@ -15,13 +15,10 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
   const { fetchTrades } = useTrades();
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/trades/get_trade/${tradeId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const { data } = await api.get(`/trades/get_trade/${tradeId}`);
 
-      setTradeData(data.trade[0]);
+      setTradeData(data?.trade[0]);
+
     } catch (error) {
       console.error('Error fetching trade data:', error.message);
       toast.error('Failed to fetch trade data. Please try again.', {
@@ -44,14 +41,9 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
     e.preventDefault();
 
     try {
-      const trade = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/trades/close/${tradeId}`, closeData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const trade = await api.post(`/trades/close/${tradeId}`, closeData);
 
-      // Check if the response status is 200
-      if (trade.status === 200) {
+      if (trade?.status === 200) {
         toast.success("Trade Closed successfully", {
           position: "top-right",
           autoClose: 1000,
@@ -61,7 +53,8 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
             setCloseModal(false);
           }
         });
-      } else {
+      }
+      else {
         toast.error("Unexpected error occurred while closing trade.", {
           position: "top-right",
           autoClose: 1000,
@@ -75,34 +68,33 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
       });
       setCloseModal(false);
     } catch (error) {
-      // Handle different error responses
-      if (error.response) {
-        if (error.response.status === '400') {
-          toast.error(error.response.data.message || "Please fill in all required fields.", {
+
+      if (error?.response) {
+        if (error?.response.status === '400') {
+          toast.error(error?.response.data.message || "Please fill in all required fields.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
-        else if (error.response.status === '401') {
+        else if (error?.response.status === '401') {
           toast.error("Unauthorized. Please login again.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
-        else if (error.response.status === '500') {
-          toast.error(error.response.data.error || "Internal Server Error. Please try again later.", {
+        else if (error?.response.status === '500') {
+          toast.error(error?.response.data.error || "Internal Server Error. Please try again later.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
         else {
-          toast.error(error.response.data.error || "Failed to Close trade. Please try again.", {
+          toast.error(error?.response.data.error || "Failed to Close trade. Please try again.", {
             position: "top-right",
             autoClose: 1000,
           });
         }
       } else {
-        // Handle cases where there is no response (e.g., network issues)
         toast.error("Failed to Close trade due to unknown error.", {
           position: "top-right",
           autoClose: 1000,

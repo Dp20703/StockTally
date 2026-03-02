@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../Services/apiClient';
+import { useAuth } from '../../context/AuthContext';
 
 const Signup = () => {
     const navigate = useNavigate();
+    const { setUser } = useAuth();
+
     const [data, setData] = useState({
         userName: '',
         fullName: {
@@ -28,10 +31,14 @@ const Signup = () => {
             setData({ ...data, [name]: value })
         }
     }
+
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            const newUser = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/register`, data);
+
+            const newUser = await api.post("/users/register", data);
+            setUser(newUser?.data?.user)
+
             toast.success("Registration successfully", {
                 position: "top-right",
                 autoClose: 1000,
@@ -39,7 +46,6 @@ const Signup = () => {
                     navigate('/login')
                 }
             })
-            // console.log("newUser:", newUser);
 
         } catch (error) {
             if (error.response) {
@@ -60,7 +66,7 @@ const Signup = () => {
                     toast.error("An unexpected error occurred. Try again later.");
                 }
             }
-            // console.log("Error while registration:", error);
+
             setData({
                 userName: '',
                 fullName: {
