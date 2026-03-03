@@ -1,94 +1,143 @@
-/* login */
-.login {
-  overflow: hidden;
-  width: 100%;
-  background-color: #4b95e5;
+/* Home.js */
+
+#home {
+  background-image: url("/public/images/stock1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   height: 100dvh;
 }
-.wrapper {
-  margin: 4% 16%;
-  border-radius: 2rem;
-  overflow: hidden;
+
+@media screen and (max-width: 768px) {
+  #home {
+    background-position: left;
+  }
+}
+
+/* login */
+.login {
+  width: 100dvw;
+  height: 100dvh;
+  background-color: #f4f4f4;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 10px 1px #0f1113;
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70dvw;
+  height: 90dvh;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 .poster {
-  width: 50%;
-  overflow: hidden;
+  background-color: #ff4411;
+  color: white;
+  width: 45%;
+  height: 100%;
 }
 .poster img {
   width: 100%;
-  height: 81dvh;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   object-position: center;
-  min-height: 35rem;
 }
+
+.poster #brandHero {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 0.9;
+  margin-top: 1.5rem;
+  letter-spacing: -0.04em;
+  padding: 5rem 5rem;
+}
+
 .loginForm {
-  padding: 8em 2em;
-  height: 81dvh;
-  width: 50%;
+  width: 55%;
+  height: 100%;
+  padding: 10rem 2rem;
   background-color: #ffffff;
+  label {
+    font-size: 1.3rem;
+  }
+  input[type="text"] {
+    font-size: 1.1rem;
+  }
+}
+
+#login-text {
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.btn:focus,
+.form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible {
+  outline: none;
+  border: 2px solid #000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 /* register */
 .registerWrapper {
-  margin: 4% 16%;
-  border-radius: 2rem;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 0px 10px 1px #0f1113;
-}
-.registerForm {
-  padding: 3em 2em;
-  height: 81dvh;
-  width: 50%;
-  background-color: #ffffff;
+  width: 70dvw;
+  height: 90dvh;
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  background: red;
+}
+
+.registerForm {
+  width: 55%;
+  height: 100%;
+  padding: 5em 2rem;
+  background-color: #f4f4f4;
   box-shadow: 0px 0px 10px 2px gray;
+  overflow: hidden;
+
+  label {
+    font-size: 1.3rem;
+  }
+  input[type="text"] {
+    font-size: 1.1rem;
+  }
 }
 
 /* media queries */
 @media screen and (max-width: 768px) {
-  /* .wrapper{
-    box-shadow:  none;
-  }
-  .registerWrapper{
-    box-shadow: none;
-  } */
   .poster {
     display: none;
   }
-  .login {
-    background-image: url("/public/images/bg.jpg");
-    height: 100dvh;
-    width: 100dvw;
-  }
 
   .wrapper {
-    margin: 0;
     width: 90%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 60%;
   }
+
   .loginForm {
-    font-size: 1em;
     padding: 4em 1em;
     height: 100%;
     width: 100%;
   }
+  #login-text {
+    font-size: 1rem;
+  }
+
   .registerWrapper {
-    margin: 0;
     width: 90%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 75%;
   }
 
   .registerForm {
@@ -97,10 +146,11 @@
     height: 100%;
     width: 100%;
     label {
-      font-size: 1em;
+      font-size: 1rem;
     }
+
     input[type="text"] {
-      font-size: 0.8em;
+      font-size: 0.9rem;
     }
   }
 }
@@ -447,21 +497,5 @@
   }
   .navBar .nav-links {
     font-size: 1rem;
-  }
-}
-
-/* Home.js */
-
-#home {
-  background-image: url("/public/images/stock1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100dvh;
-}
-
-@media screen and (max-width: 768px) {
-  #home {
-    background-position: left;
   }
 }

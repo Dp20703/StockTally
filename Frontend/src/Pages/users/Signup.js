@@ -83,54 +83,59 @@ const Signup = () => {
         <>
             <div className="login">
                 <div className="registerWrapper">
-                    <div className="poster">
-                        <img src="../images/bull4.jpg" alt="..." />
-                    </div>
                     <div className="registerForm">
                         <div >
-                            <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Register Account</h1>
+                            <h1 className='rounded text-center text-black fw-bold fs-1 mb-4'>Create Account</h1>
 
                             <form>
-                                <div className="form-group mb-3">
-                                    <label htmlFor="userName" className='form-label mx-1'>Enter username:</label>
-                                    <input type="text" name="userName" className="form-control mb-2" placeholder="enter username" value={data.userName} onChange={handleChange} />
+                                <div className="form-group mb-4">
+                                    <label htmlFor="userName" className='from-label fw-bolder mx-1 my-2'>Enter username</label>
+                                    <input type="text" name="userName" className="form-control rounded-5 py-3 mb-2"
+                                        placeholder="enter username" value={data.userName} onChange={handleChange} />
                                 </div>
 
                                 <div className="fullName d-flex justify-content-center align-items-center gap-2 form-group mb-2">
                                     <div className='w-50'>
-                                        <label htmlFor="firstName" className='form-label mx-1'>Enter first name:</label>
-                                        <input type="text" name="firstName" value={data.fullName.firstName} onChange={handleChange} className="form-control" placeholder="enter firstname" />
+                                        <label htmlFor="firstName" className='from-label fw-bolder mx-1 my-2'>Enter first name</label>
+                                        <input
+                                            type="text"
+                                            name="firstName"
+                                            value={data.fullName.firstName} onChange={handleChange} className="form-control rounded-5 py-3" placeholder="enter firstname" />
                                     </div>
                                     <div className='w-50'>
-                                        <label htmlFor="lastName" className='form-label mx-1'>Enter last name:</label>
-                                        <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control " placeholder="enter lastname" />
+                                        <label htmlFor="lastName" className='from-label fw-bolder mx-1 my-2'>Enter last name</label>
+                                        <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control rounded-5 py-3 " placeholder="enter lastname" />
                                     </div>
                                 </div>
 
-                                <div className="form-group mb-3">
-                                    <label htmlFor="email" className='form-label mx-1'>Enter email:</label>
-                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2" placeholder='enter email' />
+                                <div className="form-group mb-4">
+                                    <label htmlFor="email" className='from-label fw-bolder mx-1 my-2'>Enter email</label>
+                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control rounded-5 py-3 mb-2" placeholder='xyz@gmail.com' />
                                 </div>
 
-                                <div className="form-group mb-3">
-                                    <label htmlFor="password" className='form-label mx-1'>Enter password:</label>
-                                    <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control mb-2" placeholder='enter your password' />
+                                <div className="form-group mb-4">
+                                    <label htmlFor="password" className='from-label fw-bolder mx-1 my-2'>Enter password</label>
+                                    <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control rounded-5 py-3 mb-2" placeholder='enter your password' />
                                 </div>
 
-                                <input type="submit" onClick={submitHandler} value="Register" className='form-control btn btn-danger mb-2' />
+                                <input type="submit" onClick={submitHandler} value="Register" className='form-control rounded-5 py-3 btn btn-dark mb-2 rounded-5 py-3 fs-5' />
                             </form>
                         </div>
 
-                        <div className='fs-5 text-center mt-2 '>Alreay have an account? <Link className='text-decoration-none' to='/login'>Login</Link>
+                        <div id='login-text' className='text-center mt-3'>Alreay have an account?{" "}
+                            <Link
+                                className='fw-bold text-dark' to='/login'
+                                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                            >Login</Link>
                         </div>
+                    </div>
+                    <div className="poster">
+                        <img src="../images/register_page.png" alt="..." />
                     </div>
                 </div>
             </div>
-
-
-        </>
-
-    )
+        </>)
 }
 
 
