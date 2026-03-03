@@ -32,7 +32,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal, showTrades })
     // Fetch all trades
     useEffect(() => {
         fetchTrades()
-    }, [])
+    })
 
     const captalizeFirstLetter = (string) => {
         if (!string) return '';

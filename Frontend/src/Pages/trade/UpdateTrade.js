@@ -15,9 +15,9 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
             const trade = await api.get(`/trades/get_trade/${tradeId}`);
             setTradeData(trade?.data?.trade[0]);
         }
-        
+
         fetchData();
-    }, [])
+    }, [tradeId])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
