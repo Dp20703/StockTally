@@ -31,7 +31,7 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     };
     useEffect(() => {
         fetchStockPrice();
-    }, [stockSymbol]);
+    }, [stockSymbol, fetchStockPrice]);
 
     return (
         <>

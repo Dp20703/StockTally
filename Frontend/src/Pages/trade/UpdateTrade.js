@@ -11,13 +11,13 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const [tradeData, setTradeData] = useState([])
 
     const fetchData = async () => {
-        const trade = await api.get("/trades/get_trade/${tradeId}");
+        const trade = await api.get(`/trades/get_trade/${tradeId}`);
         setTradeData(trade?.data?.trade[0]);
     }
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [fetchData])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +28,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
         e.preventDefault();
 
         try {
-            const newTrade = await api.put("/trades/update/${tradeId}", tradeData);
+            const newTrade = await api.put(`/trades/update/${tradeId}`, tradeData);
 
             if (newTrade?.status === 200) {
                 toast.success("Trade updated successfully", {

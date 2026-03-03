@@ -131,7 +131,7 @@ const Signup = () => {
                         </div>
                     </div>
                     <div className="poster">
-                        <img src="../images/register_page.png" alt="..." />
+                        <img src="../images/login_poster.png" alt="..." />
                     </div>
                 </div>
             </div>

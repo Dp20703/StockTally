@@ -40,7 +40,7 @@ const UpdateWatchlist = ({ setUpdateModal, watchlistId }) => {
                 )
         }
         FetchWatchlist()
-    }, [])
+    }, [watchlistId])
 
     const handleDeleteStock = (stockId) => {
         deleteStock(stockId, watchlistId)
