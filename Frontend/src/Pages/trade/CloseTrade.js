@@ -29,7 +29,7 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
   }
   useEffect(() => {
     fetchData()
-  }, [fetchData])
+  }, [])
 
 
   const handleChange = (e) => {

@@ -17,7 +17,7 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
 
     useEffect(() => {
         fetchData();
-    }, [fetchData])
+    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target;

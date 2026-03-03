@@ -7,31 +7,32 @@ const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
     const [stockPrice, setStockPrice] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Fetch stock price
-    const fetchStockPrice = async () => {
+    useEffect(() => {
+        // Fetch stock price
+        const fetchStockPrice = async () => {
 
-        setLoading(true);
-        const token = localStorage.getItem('token');
-        if (!token) {
-            setLoading(false);
-            return;
-        }
-
-        try {
-            const response = await api.get(`/trades/price/${stockSymbol}`);
-
-            if (response.status === 200) {
-                setStockPrice(response?.data?.price);
+            setLoading(true);
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setLoading(false);
+                return;
             }
 
-        } catch (err) {
-            return err
-        }
-        setLoading(false);
-    };
-    useEffect(() => {
+            try {
+                const response = await api.get(`/trades/price/${stockSymbol}`);
+
+                if (response.status === 200) {
+                    setStockPrice(response?.data?.price);
+                }
+
+            } catch (err) {
+                return err
+            }
+            setLoading(false);
+        };
+
         fetchStockPrice();
-    }, [stockSymbol, fetchStockPrice]);
+    }, [stockSymbol]);
 
     return (
         <>
