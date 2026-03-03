@@ -10,12 +10,12 @@ const UpdateTrade = ({ setUpdateModal, tradeId }) => {
     const { fetchTrades } = useTrades();
     const [tradeData, setTradeData] = useState([])
 
-    const fetchData = async () => {
-        const trade = await api.get(`/trades/get_trade/${tradeId}`);
-        setTradeData(trade?.data?.trade[0]);
-    }
-
     useEffect(() => {
+        const fetchData = async () => {
+            const trade = await api.get(`/trades/get_trade/${tradeId}`);
+            setTradeData(trade?.data?.trade[0]);
+        }
+        
         fetchData();
     }, [])
 

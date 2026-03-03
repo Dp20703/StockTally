@@ -12,22 +12,24 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
     closeDate: '',
     closeQuantity: ''
   })
+
   const { fetchTrades } = useTrades();
-  const fetchData = async () => {
-    try {
-      const { data } = await api.get(`/trades/get_trade/${tradeId}`);
 
-      setTradeData(data?.trade[0]);
-
-    } catch (error) {
-      console.error('Error fetching trade data:', error.message);
-      toast.error('Failed to fetch trade data. Please try again.', {
-        position: 'top-right',
-        autoClose: 1000,
-      });
-    }
-  }
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await api.get(`/trades/get_trade/${tradeId}`);
+
+        setTradeData(data?.trade[0]);
+
+      } catch (error) {
+        console.error('Error fetching trade data:', error.message);
+        toast.error('Failed to fetch trade data. Please try again.', {
+          position: 'top-right',
+          autoClose: 1000,
+        });
+      }
+    }
     fetchData()
   }, [])
 
