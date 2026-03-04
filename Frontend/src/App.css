@@ -32,12 +32,15 @@
   width: 50%;
   text-align: center;
   margin-bottom: 2rem;
-  background-color: red;
+  color: #ff4411;
+  padding: 0.2rem 0.8rem;
 }
 
 #wel-msg a {
   margin-top: 0.2rem;
   font-size: 1.3rem;
+  background-color: #111111;
+  color: white;
 }
 
 #home-text #home-btns {
@@ -85,21 +88,23 @@
   #wel-msg a {
     margin-top: 0.2rem;
     font-size: 1rem;
+    background-color: #ff4411;
+    color: white;
   }
 
   #home-text #home-btns {
-  height: 20%;
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: .5rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-#home-btns a {
-  font-size: 1rem;
-}
+    height: 20%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #home-btns a {
+    font-size: 1rem;
+  }
 }
 
 /* login */
@@ -189,7 +194,7 @@
 .registerForm {
   width: 55%;
   height: 100%;
-  padding: 5em 2rem;
+  padding: 5rem 2rem;
   background-color: #f4f4f4;
   overflow: hidden;
 

@@ -16,7 +16,7 @@ export const TradeProvider = ({ children }) => {
             setTrades(response?.data?.trades || []);
 
         } catch (error) {
-            console.error(error.response.data.message || "Error fetching trades");
+            console.error(error?.response?.data?.message || "Error fetching trades");
             setTrades([]);
         }
     }

@@ -118,7 +118,7 @@ const Signup = () => {
                                     <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control rounded-5 py-3 mb-2" placeholder='enter your password' />
                                 </div>
 
-                                <input type="submit" onClick={submitHandler} value="Register" className='form-control rounded-5 py-3 btn btn-dark mb-2 rounded-5 py-3 fs-5' />
+                                <input type="submit" onClick={submitHandler} value="Register" className='form-control rounded-5 py-3 btn btn-dark mb-2 rounded-5 fs-5' />
                             </form>
                         </div>
 
