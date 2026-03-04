@@ -31,13 +31,13 @@
   height: 90dvh;
   overflow: hidden;
   border-radius: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.01);
 }
 .poster {
-  background-color: #ff4411;
-  color: white;
   width: 45%;
   height: 100%;
+  color: white;
+  background-color: #ff4411;
 }
 .poster img {
   width: 100%;
@@ -94,7 +94,7 @@
   width: 70dvw;
   height: 90dvh;
   border-radius: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -103,7 +103,6 @@
   height: 100%;
   padding: 5em 2rem;
   background-color: #f4f4f4;
-  box-shadow: 0px 0px 10px 2px gray;
   overflow: hidden;
 
   label {
@@ -121,27 +120,27 @@
   }
 
   .wrapper {
+    height: fit-content;
     width: 90%;
-    height: 60%;
   }
 
   .loginForm {
-    padding: 4em 1em;
+    padding: 2rem 1rem;
     height: 100%;
     width: 100%;
   }
   #login-text {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .registerWrapper {
     width: 90%;
-    height: 75%;
+    height: fit-content;
   }
 
   .registerForm {
-    font-size: 1em;
-    padding: 2em 1em;
+    font-size: 1rem;
+    padding: 2rem 1rem;
     height: 100%;
     width: 100%;
     label {

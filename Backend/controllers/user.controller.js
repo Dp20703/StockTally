@@ -73,9 +73,6 @@ module.exports.getUserProfile = async (req, res) => {
 //this controller function will update the user profile:
 module.exports.updateProfile = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("Uploaded file:", req.file);
-
         const { userName, email, fullName } = req.body;
 
         // ✅ Validate required fields
@@ -88,8 +85,8 @@ module.exports.updateProfile = async (req, res) => {
             userName: userName.trim(),
             email: email.trim(),
             fullName: {
-                firstName: fullName.firstName.trim(),
-                lastName: fullName.lastName?.trim() || "",
+                firstName: fullName?.firstName.trim(),
+                lastName: fullName?.lastName?.trim() || "",
             },
         };
 
