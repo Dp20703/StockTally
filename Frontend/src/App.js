@@ -12,7 +12,6 @@ import Watchlist from './Pages/watchlist/Watchlist';
 import { StockCharts } from './Pages/charts/StockCharts';
 import TopStories from './Pages/charts/TopStories';
 import NotFound from './Pages/users/NotFound';
-import Poster from './Pages/Poster';
 
 const App = () => {
   return (
@@ -21,7 +20,6 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/poster' element={<Poster />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path="*" element={<NotFound />} />
