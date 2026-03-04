@@ -127,7 +127,7 @@ const Signup = () => {
                                 className='fw-bold text-dark' to='/login'
                                 onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                                 onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                            >Login</Link>
+                            >Login →</Link>
                         </div>
                     </div>
                     <div className="poster">

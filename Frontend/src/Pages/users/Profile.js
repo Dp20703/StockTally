@@ -91,7 +91,6 @@ const Profile = () => {
 
         try {
             const res = await api.put("/users/update_profile", formData)
-            console.log("RES UPDATE PROFILE:", res);
             setUser(res?.data?.user);
 
             toast.success('Profile updated successfully', {
@@ -101,8 +100,6 @@ const Profile = () => {
 
             setUpdateModal(false);
         } catch (err) {
-            console.log("ERROR UPDATE PROFILE:", err);
-
             const message = err.response?.data?.message || 'Something went wrong';
             toast.error(message, {
                 position: "top-right",

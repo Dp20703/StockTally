@@ -4,9 +4,13 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 dotenv.config();
-const rateLimit = require("express-rate-limit");
+
+const userRoutes = require('./Routes/user.routes');
+const tradeRoutes = require('./Routes/trade.routes');
+const watchlistRoutes = require('./Routes/watchlist.routes');
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -14,13 +18,6 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
-
-const userRoutes = require('./Routes/user.routes');
-const tradeRoutes = require('./Routes/trade.routes');
-const watchlistRoutes = require('./Routes/watchlist.routes');
-
-app.use(helmet());
-
 
 const allowedOrigins = [
     process.env.CLIENT_URL,
@@ -37,7 +34,7 @@ app.use(cors({
     },
     credentials: true
 }));
-
+app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -11,30 +11,37 @@ const Home = () => {
         <div id='home'
             className="d-flex flex-column justify-content-center  align-items-center "
         >
-            <div className="text-center">
-                <h1
-                    className="py-5 px-3 rounded-3 border-3 border-black"
-                    style={{ color: '#001257', backgroundColor: '#F39F2B' }}
-                >
-                    Get Started with StockTally
-                </h1>
-                {user ? (
-                    <div className="mt-3">
-                        <h4 className="mb-3 text-white">
-                            Welcome, <span className="text-dark">{user?.fullName?.firstName + " " + user?.fullName?.lastName || "User"}</span>!
-                        </h4>
-                        <Link to="/profile" className="btn btn-success px-3 py-2 rounded">
-                            Go to Profile
-                        </Link>
-                    </div>
-                ) : (<div className="d-flex gap-4 mt-3 justify-content-center align-items-center">
-                    <Link to="/login" className="btn btn-danger px-3 py-2 rounded">
-                        Login
-                    </Link>
-                    <Link to="/signup" className="btn btn-success px-3 py-2 rounded">
-                        Sign Up
-                    </Link>
-                </div>)}
+            <div id='home-text' className="text-center">
+                {user ?
+                    (
+                        <div id='wel-msg' className="mt-3">
+                            <h4 className="mb-3 text-white ">
+                                Welcome, <span className="text-white rounded-5 fw-bold">{user?.fullName?.firstName + " " + user?.fullName?.lastName || "User"}</span>
+                            </h4>
+                            <Link to="/profile" className='text-dark fw-bolder btn btn-light rounded-5 btn-outline-light'
+                                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>
+                                Go to Profile →
+                            </Link>
+                        </div>
+                    ) :
+                    (
+                        <div id='home-btns'>
+                            <Link to="/login"
+                                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                                className="btn btn-black fw-bolder bg-white rounded-5 py-2 px-5">
+                                Login
+                            </Link>
+                            <Link
+                                to="/signup"
+                                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                                className="btn btn-black bg-white fw-bolder rounded-5 py-2 px-5">
+                                SignUp
+                            </Link>
+                        </div>
+                    )}
             </div>
         </div>
     );
