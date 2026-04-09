@@ -32,7 +32,7 @@
 
 ### 💼 Trade Management
 
-![Dashboard/Trades](.Frontend/public/images/Screenshots/dashboard.png)
+![Dashboard/Trades](./Frontend/public/images/Screenshots/dashboard.png)
 
 ### 📋 Watchlist Page
 

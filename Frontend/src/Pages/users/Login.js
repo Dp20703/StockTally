@@ -7,26 +7,28 @@ import api from '../../Services/apiClient';
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+
   const [data, setData] = useState({
     email: '',
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false)
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'firstName' || name === 'lastName') {
-      setData({
-        ...data, fullName: {
-          ...data.fullName, [name]: value
-        }
-      })
-    }
-    else {
-      setData({ ...data, [name]: value })
-    }
+    setData((prev) => ({ ...prev, [name]: value }))
   }
+
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!data.email || !data.password) {
+      return toast.error("Please fill in all required fields.", {
+        autoClose: 1000,
+      });
+    }
+
     try {
       const user = await api.post("/users/login", data);
 
@@ -36,81 +38,98 @@ const Login = () => {
       toast.success("Login successfully", {
         position: "top-right",
         autoClose: 1000,
-        onClose: () => {
-          navigate('/profile')
-        }
+        onClose: () => navigate('/profile'),
       })
 
     } catch (error) {
-      if (error?.response?.status === 500) {
-        toast.error("Invalid email or password.",
-          {
-            position: "top-right",
-            autoClose: 1000,
-          })
-      }
-      else if (error?.response?.status === 400) {
-        toast.error("Please fill in all required fields.",
-          {
-            position: "top-right",
-            autoClose: 1000,
-          })
-      }
-      else {
-        toast.error("Login Failed", {
-          position: "top-right",
-          autoClose: 1000,
-        });
-      }
-      setData({
-        email: "",
-        password: "",
-      });
+      toast.error(
+        error?.response?.status === 500
+          ? "Invalid email or password."
+          : "Login Failed",
+        { autoClose: 1000 }
+      );
+
+      setData({ email: "", password: "" });
     }
+  };
 
-  }
+
   return (
-    <>
-      <div className="login">
-        <div className="wrapper">
-          <div className="poster">
-            <img src="../images/login_poster.png" alt="no-image" />
-          </div>
+    <main className="login">
+      <section className="wrapper">
+        <figure className="poster">
+          <img src="../images/login_poster.png" alt="Login illustration" />
+        </figure>
 
-          <div className='loginForm'>
-            <h1 className='rounded text-center text-dark fw-bold fs-1 p-1 mb-4'>Welcome back</h1>
-            <form>
-              <div className="form-group mb-4">
-                <label htmlFor="email" className='from-label fw-bolder mx-1 my-2'>Enter email</label>
-                <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control mb-2 rounded-5 py-3" placeholder='xyz@gmail.com' />
+        <section className='loginForm'>
+          <header>
+            <h1 className='text-center fw-bold mb-4'>Welcome back</h1>
+          </header>
+
+          <form onSubmit={submitHandler} noValidate>
+
+            <section className="mb-3">
+              <label htmlFor="email" className='fw-bold mx-1'>Enter email</label>
+              <input
+                type="email"
+                id='email'
+                name='email'
+                value={data.email}
+                onChange={handleChange}
+                className="form-control rounded-5 py-3 my-2"
+                placeholder='xyz@gmail.com'
+                autoComplete='email'
+                required />
+            </section>
+
+            <section className="mb-4">
+
+              <label htmlFor="password" className='fw-bold my-2 mx-1'>Enter password</label>
+
+              <div className="position-relative">
+
+                <input
+                  id='password'
+                  type={showPassword ? "text" : "password"}
+                  value={data.password}
+                  name='password'
+                  onChange={handleChange}
+                  className="form-control rounded-5 py-3 mb-3 pe-5" placeholder='enter your password'
+                  autoComplete="current-password"
+                  required
+                />
+                <button
+                  type='button'
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className='position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent fs-5'
+                  onClick={() => setShowPassword((prev) => !prev)} >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
               </div>
+            </section>
 
-              <div className="form-group mb-4">
-                <label htmlFor="password" className='from-label fw-bolder mx-1 my-2'>Enter password</label>
-                <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control rounded-5 py-3" placeholder='enter your password' />
-              </div>
+            <button
+              type="submit"
+              className='btn btn-dark mb-2 w-100 rounded-5 py-3 fs-5 ' >
+              Sign in
+            </button>
+          </form>
 
-              <button type="submit" onClick={submitHandler} value="Login" className='form-control btn btn-dark mb-2 rounded-5 py-3 fs-5 ' >
-                Sign in
-              </button>
-            </form>
-
-            <div id='login-text' className='text-center mt-3'>
+          <footer id='login-text' className='text-center mt-3'>
+            <p>
               New to StockTally?{" "}
               <Link
                 className='text-dark fw-bold'
                 onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                 onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                to='/signup'>Create account →</Link>
-            </div>
-          </div>
+                to='/signup'>Create account →
+              </Link>
+            </p>
+          </footer>
+        </section>
 
-
-
-        </div>
-      </div >
-    </>
-
+      </section>
+    </main >
   )
 }
 
