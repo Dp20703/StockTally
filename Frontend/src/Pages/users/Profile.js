@@ -184,7 +184,7 @@ const Profile = () => {
 
                                 <header>
                                     <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
-                                    <h1 className="text-primary fw-bold fs-2 mb-3">
+                                    <h1 id="updateTitle" className="text-primary fw-bold mb-3">
                                         Update Profile
                                     </h1>
                                 </header>

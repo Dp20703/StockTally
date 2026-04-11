@@ -168,30 +168,33 @@ const Signup = () => {
                             </div>
 
                             {/* Password */}
-                            <div className="mb-4 position-relative">
+                            <div className="mb-4">
                                 <label htmlFor="password" className="form-label fw-bold">
                                     Password
                                 </label>
 
-                                <input
-                                    id="password"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    value={data.password}
-                                    onChange={handleChange}
-                                    placeholder="Enter password"
-                                    className="form-control rounded-5 py-3 pe-5"
-                                    required
-                                />
+                                <div className=" position-relative">
 
-                                <button
-                                    type="button"
-                                    aria-label={showPassword ? "Hide password" : "Show password"}
-                                    className="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent"
-                                    onClick={() => setShowPassword((prev) => !prev)}
-                                >
-                                    {showPassword ? "🙈" : "👁️"}
-                                </button>
+                                    <input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        value={data.password}
+                                        onChange={handleChange}
+                                        placeholder="Enter password"
+                                        className="form-control rounded-5 py-3 mb-3 pe-5"
+                                        required
+                                    />
+
+                                    <button
+                                        type="button"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        className="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent fs-5"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                    >
+                                        {showPassword ? "🙈" : "👁️"}
+                                    </button>
+                                </div>
                             </div>
 
                             {/* Submit */}

@@ -2,6 +2,7 @@ const userService = require('../services/user.service');
 const userModel = require('../models/user.model');
 const BlacklistTokenModel = require('../models/blacklistToken.model');
 const { cloudinary } = require('../middlewares/cloudinary');
+const { sendWelcomeEmail } = require('../utils/mailer');
 
 //this controller function will register the user using required fields:
 module.exports.registerUser = async (req, res) => {
@@ -31,6 +32,17 @@ module.exports.registerUser = async (req, res) => {
             email,
             password: hashPassword
         });
+
+        sendWelcomeEmail({
+            to: user.email,
+            firstName: user.fullName.firstName,
+            fullName: `${user.fullName.firstName} ${user.fullName.lastName}`,
+            userName: user.userName,
+            email: user.email,
+        }).catch((err) =>
+            console.error("[Mailer] Welcome email failed:", err.message)
+        );
+
         // console.log("user:", user);
 
         //generating a token using user's id: 
@@ -43,13 +55,19 @@ module.exports.registerUser = async (req, res) => {
             sameSite: "strict"
         });
 
-        return res.status(201).json({ message: 'User registered successfully', token, user });
+        /* ── Strip password before sending ── */
+        const { password: _pw, ...safeUser } = user.toObject();
+
+        return res.status(201).json({
+            message: "Registration successful! Welcome to StockTally.",
+            token,
+            user: safeUser,
+        });
 
     } catch (error) {
-        // console.log("Error is register_user controller:", error);
-        res.status(500).json({ error: error.message });
+        console.error("Registration error:", err);
+        return res.status(500).json({ message: "Internal server error." });
     }
-
 
 }
 

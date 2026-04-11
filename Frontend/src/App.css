@@ -260,12 +260,6 @@
   color: white;
 }
 
-@media screen and (max-width: 768px) {
-  .profile {
-    width: 90vw;
-  }
-}
-
 /* updateProfile */
 #updateProfile {
   position: fixed;
@@ -282,11 +276,47 @@
 #updateProfile form {
   border: 1px solid gray;
   margin: 0 auto;
-  width: 40%;
+  width: 50%;
   padding: 2% 4%;
   border-radius: 1rem;
   background-color: rgba(0, 0, 0, 0.8);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+#updateProfile form #updateTitle {
+  font-size: 2rem;
+}
+
+#updateProfile form label {
+  font-size: 1.5rem;
+}
+
+#updateProfile form input {
+  font-size: 1.5rem;
+}
+#updateProfile form button {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .profile {
+    width: 90vw;
+  }
+  #updateProfile form #updateTitle {
+    font-size: 1rem;
+  }
+  #updateProfile form {
+    width: 90%;
+  }
+  #updateProfile form label {
+    font-size: 0.8rem;
+  }
+  #updateProfile form input {
+    font-size: 0.8rem;
+  }
+  #updateProfile form button {
+    font-size: 0.8rem;
+  }
 }
 
 /* CreateTrade modal */
