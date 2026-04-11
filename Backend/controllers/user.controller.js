@@ -10,13 +10,14 @@ module.exports.registerUser = async (req, res) => {
         const { userName, fullName, email, password } = req.body;
 
         // Check if user already exist
-        const isUserAlreadyExist = await userModel.findOne({ email, userName });
-        if (isUserAlreadyExist) {
-            return res.status(409).json({ message: 'User already exist' })
+        const existingEmail = await userModel.findOne({ email });
+        if (existingEmail) {
+            return res.status(409).json({ message: 'Email already exists' });
         }
-        const isUserNameAlreadyExist = await userModel.findOne({ userName });
-        if (isUserNameAlreadyExist) {
-            return res.status(410).json({ message: 'User already exist' })
+
+        const existingUsername = await userModel.findOne({ userName });
+        if (existingUsername) {
+            return res.status(410).json({ message: 'Username already exists' });
         }
 
         //converting the password into hashPassword:
@@ -36,9 +37,13 @@ module.exports.registerUser = async (req, res) => {
         const token = await user.generateAuthToken();
 
         //set the token as a cookie
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict"
+        });
 
-        res.status(200).json({ message: 'User registered successfully', token, user });
+        return res.status(201).json({ message: 'User registered successfully', token, user });
 
     } catch (error) {
         // console.log("Error is register_user controller:", error);
@@ -50,18 +55,27 @@ module.exports.registerUser = async (req, res) => {
 
 // this controller function will login the user using email and password:
 module.exports.loginUser = async (req, res) => {
-    //extracting email and password from the request body:
-    const { email, password } = req.body;
-    //login user using userService:
-    const { user, token } = await userService.loginUser(email, password);
-    //set the token as a cookie
-    res.cookie('token', token);
+    try {  //extracting email and password from the request body:
+        const { email, password } = req.body;
+        //login user using userService:
+        const { user, token } = await userService.loginUser(email, password);
+        //set the token as a cookie
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict"
+        });
 
-    //remove the password from the response
-    user.password = undefined;
+        //remove the password from the response
+        user.password = undefined;
 
-    //return the response
-    res.status(200).json({ message: "Login successful", token, user });
+        //return the response
+        res.status(200).json({ message: "Login successful", token, user });
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message || "Login failed"
+        });
+    }
 }
 
 //this controller function will get the user profile using user's id:
@@ -77,70 +91,102 @@ module.exports.updateProfile = async (req, res) => {
 
         // ✅ Validate required fields
         if (!userName || !email || !fullName?.firstName) {
-            return res.status(400).json({ message: "Username, email, and first name are required" });
+            return res.status(400).json({
+                message: "Username, email, and first name are required",
+            });
         }
 
-        // ✅ Prepare update data
+        // ✅ Normalize input (IMPORTANT)
+        const normalizedEmail = email.toLowerCase().trim();
+        const normalizedUsername = userName.trim();
+
         const updateData = {
-            userName: userName.trim(),
-            email: email.trim(),
+            userName: normalizedUsername,
+            email: normalizedEmail,
             fullName: {
-                firstName: fullName?.firstName.trim(),
+                firstName: fullName.firstName.trim(),
                 lastName: fullName?.lastName?.trim() || "",
             },
         };
 
+        // ✅ Get current user
         const existingUser = await userModel.findById(req.user._id);
 
-        // ✅ Delete old profile pic if a new one is uploaded
-        if (req.file && existingUser?.profilePic) {
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // 🖼️ PROFILE PIC HANDLING
+        if (req.file && existingUser.profilePic) {
             try {
-                const urlParts = existingUser.profilePic.split('/');
-                const publicIdWithExt = urlParts[urlParts.length - 1]; // e.g. abc123.jpg
-                const publicId = 'profile_pics/' + publicIdWithExt.split('.')[0]; // folder + name
+                const urlParts = existingUser.profilePic.split("/");
+                const publicIdWithExt = urlParts[urlParts.length - 1];
+                const publicId =
+                    "profile_pics/" + publicIdWithExt.split(".")[0];
+
                 await cloudinary.uploader.destroy(publicId);
-                console.log("Old profile pic deleted from Cloudinary:", publicId);
-            } catch (deleteErr) {
-                console.error("Failed to delete old profile pic from Cloudinary:", deleteErr.message);
+                console.log("Old profile pic deleted:", publicId);
+            } catch (err) {
+                console.error("Cloudinary delete error:", err.message);
             }
         }
 
-        // ✅ Save new profile pic Cloudinary URL
         if (req.file) {
             updateData.profilePic = req.file.path;
         }
 
-        // 🔍 Check for duplicate email
-        const existingEmail = await userModel.findOne({
-            email: updateData.email,
-            _id: { $ne: req.user._id },
-        });
-        if (existingEmail) {
-            return res.status(409).json({ message: "Email already exists" });
+        // 🔍 DUPLICATE CHECKS
+
+        // ✅ Check email ONLY if changed
+        if (normalizedEmail !== existingUser.email) {
+            const existingEmail = await userModel.findOne({
+                email: normalizedEmail,
+                _id: { $ne: req.user._id },
+            });
+
+            if (existingEmail) {
+                return res.status(409).json({
+                    message: "Email already exists",
+                });
+            }
         }
 
-        // 🔍 Check for duplicate username
-        const existingUsername = await userModel.findOne({
-            userName: updateData.userName,
-            _id: { $ne: req.user._id },
-        });
-        if (existingUsername) {
-            return res.status(409).json({ message: "Username already exists" });
+        // ✅ Check username ONLY if changed
+        if (normalizedUsername !== existingUser.userName) {
+            const existingUsername = await userModel.findOne({
+                userName: normalizedUsername,
+                _id: { $ne: req.user._id },
+            });
+
+            if (existingUsername) {
+                return res.status(409).json({
+                    message: "Username already exists",
+                });
+            }
         }
 
-        // ✅ Update user in DB
-        const user = await userModel.findByIdAndUpdate(req.user._id, updateData, { new: true });
+        // ✅ UPDATE USER
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            req.user._id,
+            updateData,
+            { new: true }
+        );
 
         return res.status(200).json({
             message: "Profile updated successfully",
-            user,
+            user: updatedUser,
         });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Something went wrong", error: err.message });
-    }
-};
 
+    } catch (err) {
+        console.error("Update profile error:", err);
+
+        return res.status(500).json({
+            message: "Something went wrong",
+            error: err.message,
+        });
+    }
+}
 // this controller function will delete the user profile pic:
 module.exports.deleteProfilePic = async (req, res) => {
     try {
@@ -172,7 +218,6 @@ module.exports.deleteProfilePic = async (req, res) => {
         return res.status(500).json({ message: "Failed to delete profile picture", error: err.message });
     }
 };
-
 
 //this controller function will logout the user:
 module.exports.logoutUser = async (req, res) => {

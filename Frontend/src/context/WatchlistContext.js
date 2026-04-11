@@ -21,7 +21,6 @@ export const WatchlistProvider = ({ children }) => {
 
         } catch (error) {
             console.error('Failed to fetch watchlists:', error);
-            throw error;
         }
     }
 

@@ -7,6 +7,7 @@ import api from '../../Services/apiClient';
 const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false)
 
   const [data, setData] = useState({
     email: '',
@@ -28,7 +29,7 @@ const Login = () => {
         autoClose: 1000,
       });
     }
-
+    setLoading(true);
     try {
       const user = await api.post("/users/login", data);
 
@@ -40,7 +41,7 @@ const Login = () => {
         autoClose: 1000,
         onClose: () => navigate('/profile'),
       })
-
+      setLoading(false);
     } catch (error) {
       toast.error(
         error?.response?.status === 500
@@ -51,6 +52,7 @@ const Login = () => {
 
       setData({ email: "", password: "" });
     }
+    setLoading(false);
   };
 
 
@@ -111,7 +113,7 @@ const Login = () => {
             <button
               type="submit"
               className='btn btn-dark mb-2 w-100 rounded-5 py-3 fs-5 ' >
-              Sign in
+              {loading ? "Signing..." : "Sign in"}
             </button>
           </form>
 

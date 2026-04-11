@@ -1,81 +1,74 @@
-import { useAuth } from '../../context/AuthContext';
-import NavbarCompo from '../../components/Navbar';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import api from '../../Services/apiClient';
+import { useAuth } from "../../context/AuthContext";
+import NavbarCompo from "../../components/Navbar";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import api from "../../Services/apiClient";
 
 const Profile = () => {
     const { user, setUser } = useAuth();
+
     const [updateModal, setUpdateModal] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const [data, setData] = useState({
         profilePic: "",
         userName: "",
-        fullName: {
-            firstName: '',
-            lastName: '',
-        },
-        email: '',
+        fullName: { firstName: "", lastName: "" },
+        email: "",
     });
 
+    // Sync user data
     useEffect(() => {
+        if (!user) return;
+
         setData({
-            profilePic: user?.profilePic || "",
-            userName: user?.userName || "",
+            profilePic: user.profilePic || "",
+            userName: user.userName || "",
             fullName: {
-                firstName: user?.fullName?.firstName || '',
-                lastName: user?.fullName?.lastName || '',
+                firstName: user.fullName?.firstName || "",
+                lastName: user.fullName?.lastName || "",
             },
-            email: user?.email || '',
+            email: user.email || "",
         });
-        setPreviewImage(user?.profilePic || "");
+
+        setPreviewImage(user.profilePic || "");
     }, [user]);
 
-    const handleToggle = () => {
-        setUpdateModal(!updateModal);
+    const handleToggle = () => setUpdateModal((prev) => !prev);
+
+    const handleChange = ({ target: { name, value } }) => {
+        if (["firstName", "lastName"].includes(name)) {
+            setData((prev) => ({
+                ...prev,
+                fullName: { ...prev.fullName, [name]: value },
+            }));
+        } else {
+            setData((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
-    const handleProfilePicChange = (e) => {
+    const handleProfilePicChange = ({ target }) => {
+        const file = target.files[0];
+        if (!file) return;
 
-        const file = e.target.files[0];
+        setData((prev) => ({ ...prev, profilePic: file }));
 
-        if (file) {
-            setData((prev) => ({ ...prev, profilePic: file }));
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onloadend = () => setPreviewImage(reader.result);
+        reader.readAsDataURL(file);
     };
 
     const handleDeletePic = async () => {
         try {
-            const res = await api.delete("/users/delete_profile_pic")
-
-            toast.success(res?.data?.message, {
-                position: "top-right",
-                autoClose: 1000
-            });
+            const res = await api.delete("/users/delete_profile_pic");
 
             setUser(res?.data?.user);
+            setPreviewImage("");
 
-        } catch (err) {
-            console.error(err);
+            toast.success(res?.data?.message);
+        } catch {
             toast.error("Failed to delete profile picture");
-        }
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'firstName' || name === 'lastName') {
-            setData((prev) => ({
-                ...prev,
-                fullName: { ...prev.fullName, [name]: value }
-            }));
-        } else {
-            setData((prev) => ({ ...prev, [name]: value }));
         }
     };
 
@@ -83,41 +76,46 @@ const Profile = () => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('userName', data.userName);
-        formData.append('email', data.email);
-        formData.append('profilePic', data.profilePic);
-        formData.append('fullName[firstName]', data.fullName.firstName);
-        formData.append('fullName[lastName]', data.fullName.lastName);
+        formData.append("userName", data.userName.trim());
+        formData.append("email", data.email.trim());
+        formData.append("profilePic", data.profilePic);
+        formData.append("fullName[firstName]", data.fullName.firstName);
+        formData.append("fullName[lastName]", data.fullName.lastName);
+
+        setLoading(true);
 
         try {
-            const res = await api.put("/users/update_profile", formData)
+            const res = await api.put("/users/update_profile", formData);
+
             setUser(res?.data?.user);
-
-            toast.success('Profile updated successfully', {
-                position: "top-right",
-                autoClose: 1000,
-            });
-
             setUpdateModal(false);
+
+            toast.success("Profile updated successfully");
         } catch (err) {
-            const message = err.response?.data?.message || 'Something went wrong';
-            toast.error(message, {
-                position: "top-right",
-                autoClose: 1000,
-            });
+            toast.error(err?.response?.data?.message || "Something went wrong");
+        } finally {
+            setLoading(false);
         }
     };
 
+    const profileImage =
+        previewImage ||
+        user?.profilePic ||
+        `https://randomuser.me/api/portraits/men/${Math.floor(
+            Math.random() * 100
+        )}.jpg`;
+
     return (
-        <div id='dashboard'>
+        <main id="dashboard">
             <NavbarCompo />
 
-            <div className="profile mt-5 card m-auto bg-black text-white border border-gray border-1 rounded-5 overflow-hidden">
+            <section className="profile mt-5 card m-auto bg-black text-white border border-gray border-1 rounded-5 overflow-hidden">
 
-                <div className='d-flex justify-content-center align-items-center'>
+                {/* PROFILE IMAGE SECTION */}
+                <header className="d-flex justify-content-center align-items-center">
+                    <div className="position-relative text-center mt-3" style={{ width: "20rem" }}>
 
-                    <div className="position-relative text-center mt-3" style={{ width: '20rem' }}>
-                        <div className="dropdown d-inline-block">
+                        <figure className="dropdown d-inline-block">
                             <button
                                 className="border-0 bg-transparent p-0 dropdown-toggle"
                                 type="button"
@@ -126,16 +124,16 @@ const Profile = () => {
                                 aria-expanded="false"
                             >
                                 <img
-                                    src={user?.profilePic || previewImage || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                    src={profileImage}
+                                    alt="User profile"
                                     className="rounded-circle"
                                     style={{
                                         height: "20rem",
-                                        width: '20rem',
-                                        objectFit: 'cover',
-                                        border: '2px solid white',
-                                        cursor: 'pointer',
+                                        width: "20rem",
+                                        objectFit: "cover",
+                                        border: "2px solid white",
+                                        cursor: "pointer",
                                     }}
-                                    alt="Profile"
                                 />
                             </button>
 
@@ -147,7 +145,7 @@ const Profile = () => {
                                 <li>
                                     <a
                                         className="dropdown-item"
-                                        href={user?.profilePic || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`}
+                                        href={profileImage}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -155,55 +153,83 @@ const Profile = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <button className="dropdown-item text-danger" onClick={handleDeletePic}>
+                                    <button
+                                        type="button"
+                                        className="dropdown-item text-danger"
+                                        onClick={handleDeletePic}
+                                    >
                                         ❌ Delete Profile Picture
                                     </button>
                                 </li>
                             </ul>
-                        </div>
+                        </figure>
 
-                        {/* Edit icon stays outside dropdown */}
-                        <i className="ri-file-edit-fill editBtn" onClick={handleToggle} />
+                        {/* Edit Button */}
+                        <button
+                            type="button"
+                            className="border-0 bg-transparent editBtn"
+                            onClick={handleToggle}
+                            aria-label="Edit profile"
+                        >
+                            <i className="ri-file-edit-fill" />
+                        </button>
                     </div>
+                </header>
 
-                </div>
+                {/* PROFILE CONTENT */}
+                <article className="card-body text-center">
+                    {updateModal ? (
+                        <section id="updateProfile">
+                            <form onSubmit={submitHandler} noValidate>
 
-                <div className="card-body text-center">
-                    {
-                        updateModal ? (
-                            <div id='updateProfile'>
-                                <form className='rounded p-4' onSubmit={submitHandler}>
+                                <header>
                                     <span className="close text-light" onClick={() => setUpdateModal(false)}>&times;</span>
-                                    <h1 className='rounded text-center text-primary fw-bold fs-2 p-1 mb-3'>Update Profile</h1>
+                                    <h1 className="text-primary fw-bold fs-2 mb-3">
+                                        Update Profile
+                                    </h1>
+                                </header>
 
-                                    <div className="d-flex justify-content-center align-items-center gap-2 form-group mb-3">
-                                        <div className='w-50'>
-                                            <label htmlFor="firstName" className='form-label mx-1'>First name:</label>
-                                            <input
-                                                type="text"
-                                                name="firstName"
-                                                value={data.fullName.firstName}
-                                                onChange={handleChange}
-                                                className="form-control"
-                                                placeholder="Enter first name"
-                                            />
-                                        </div>
-                                        <div className='w-50'>
-                                            <label htmlFor="lastName" className='form-label mx-1'>Last name:</label>
-                                            <input
-                                                type="text"
-                                                name="lastName"
-                                                value={data.fullName.lastName}
-                                                onChange={handleChange}
-                                                className="form-control"
-                                                placeholder="Enter last name"
-                                            />
-                                        </div>
+                                <fieldset>
+
+                                    {/* First Name */}
+                                    <div className="d-flex justify-content-center align-items-center mb-3">
+                                        <label htmlFor="firstName" className="form-label mx-1 w-50">
+                                            First name:
+                                        </label>
+                                        <input
+                                            id="firstName"
+                                            type="text"
+                                            name="firstName"
+                                            value={data.fullName.firstName}
+                                            onChange={handleChange}
+                                            className="form-control w-50"
+                                            placeholder="Enter first name"
+                                        />
                                     </div>
 
-                                    <div className="form-group mb-3 d-flex justify-content-center align-items-center">
-                                        <label htmlFor="userName" className='form-label mx-1 w-50'>Username:</label>
+                                    {/* Last Name */}
+                                    <div className="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                        <label htmlFor="lastName" className="form-label mx-1 w-50">
+                                            Last name:
+                                        </label>
                                         <input
+                                            id="lastName"
+                                            type="text"
+                                            name="lastName"
+                                            value={data.fullName.lastName}
+                                            onChange={handleChange}
+                                            className="form-control w-50"
+                                            placeholder="Enter last name"
+                                        />
+                                    </div>
+
+                                    {/* Username */}
+                                    <div className="d-flex justify-content-center align-items-center mb-3">
+                                        <label htmlFor="userName" className="form-label mx-1 w-50">
+                                            Username:
+                                        </label>
+                                        <input
+                                            id="userName"
                                             type="text"
                                             name="userName"
                                             value={data.userName}
@@ -213,57 +239,72 @@ const Profile = () => {
                                         />
                                     </div>
 
-                                    <div className="form-group mb-3 d-flex justify-content-center align-items-center">
-                                        <label htmlFor="email" className='form-label mx-1 w-25'>Email:</label>
+                                    {/* Email */}
+                                    <div className="d-flex justify-content-center align-items-center mb-3">
+                                        <label htmlFor="email" className="form-label mx-1 w-50">
+                                            Email:
+                                        </label>
                                         <input
+                                            id="email"
                                             type="email"
                                             name="email"
                                             value={data.email}
                                             onChange={handleChange}
-                                            className="form-control w-75"
+                                            className="form-control w-50"
                                             placeholder="Enter email"
                                         />
                                     </div>
 
-                                    <div className="form-group mb-3">
-                                        <label htmlFor="profilePic" className='form-label mx-2'>Choose profile picture:</label>
+                                    {/* Profile Pic */}
+                                    <div className="d-flex justify-content-center align-items-center mb-3">
+                                        <label htmlFor="profilePic" className="form-label mx-2 w-50">
+                                            Choose profile picture:
+                                        </label>
                                         <input
+                                            id="profilePic"
                                             type="file"
-                                            name="profilePic"
                                             accept="image/*"
                                             onChange={handleProfilePicChange}
-                                            className="form-control"
+                                            className="form-control w-50"
                                         />
                                     </div>
 
-                                    <input type="submit" value="Update" className='form-control btn btn-danger mb-2' />
-                                </form>
-                            </div>
-                        ) : (
-                            <div>
-                                <p className="card-title">
-                                    <i className="ri-shield-user-fill fs-4" />
-                                    &nbsp; <span className='fs-4'>{user?.userName}</span>
-                                </p>
-                                <p className="card-title">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <i className="ri-user-fill fs-5" />
-                                    &nbsp;
-                                    <span className='fs-6'>
-                                        {user?.fullName?.firstName + " " + user?.fullName?.lastName}
-                                    </span>
-                                </p>
-                                <p className="card-title">
-                                    <i className="ri-mail-fill fs-5" />
-                                    &nbsp;
-                                    <span className='fs-6'>{user?.email}</span>
-                                </p>
-                            </div>
-                        )
-                    }
-                </div>
-            </div>
-        </div>
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="form-control btn btn-danger mb-2"
+                                    >
+                                        {loading ? "Updating..." : "Update"}
+                                    </button>
+                                </fieldset>
+                            </form>
+                        </section>
+                    ) : (
+                        <section aria-label="User profile details">
+                            <p className="card-title">
+                                <i className="ri-shield-user-fill fs-4" />
+                                &nbsp;
+                                <span className="fs-4">{user?.userName}</span>
+                            </p>
+
+                            <p className="card-title">
+                                <i className="ri-user-fill fs-5" />
+                                &nbsp;
+                                <span className="fs-6">
+                                    {user?.fullName?.firstName} {user?.fullName?.lastName}
+                                </span>
+                            </p>
+
+                            <p className="card-title">
+                                <i className="ri-mail-fill fs-5" />
+                                &nbsp;
+                                <span className="fs-6">{user?.email}</span>
+                            </p>
+                        </section>
+                    )}
+                </article>
+            </section>
+        </main>
     );
 };
 

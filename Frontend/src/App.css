@@ -277,13 +277,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(5px);
 }
 #updateProfile form {
   border: 1px solid gray;
   margin: 0 auto;
-  width: 85%;
-  padding: 5% 10%;
+  width: 40%;
+  padding: 2% 4%;
   border-radius: 1rem;
   background-color: rgba(0, 0, 0, 0.8);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);

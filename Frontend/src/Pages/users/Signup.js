@@ -1,142 +1,230 @@
-import { useState } from 'react'
-import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
-import api from '../../Services/apiClient';
-import { useAuth } from '../../context/AuthContext';
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../Services/apiClient";
+import { useAuth } from "../../context/AuthContext";
 
 const Signup = () => {
     const navigate = useNavigate();
     const { setUser } = useAuth();
 
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
     const [data, setData] = useState({
-        userName: '',
+        userName: "",
         fullName: {
-            firstName: '',
-            lastName: '',
+            firstName: "",
+            lastName: "",
         },
-        email: '',
-        password: '',
+        email: "",
+        password: "",
     });
 
+    // Handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'firstName' || name === 'lastName') {
-            setData({
-                ...data, fullName: {
-                    ...data.fullName, [name]: value
-                }
-            })
-        }
-        else {
-            setData({ ...data, [name]: value })
-        }
-    }
 
+        if (["firstName", "lastName"].includes(name)) {
+            setData((prev) => ({
+                ...prev,
+                fullName: { ...prev.fullName, [name]: value },
+            }));
+        } else {
+            setData((prev) => ({ ...prev, [name]: value }));
+        }
+    };
+
+    // Form submit
     const submitHandler = async (e) => {
         e.preventDefault();
-        try {
 
-            const newUser = await api.post("/users/register", data);
-            setUser(newUser?.data?.user)
+        const { userName, fullName, email, password } = data;
 
-            toast.success("Registration successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate('/login')
-                }
-            })
-
-        } catch (error) {
-            if (error.response) {
-                if (error.response.status === 400) {
-                    toast.error("Please fill in all required fields.",
-                        {
-                            position: "top-right",
-                            autoClose: 1000,
-                        })
-                }
-                else if (error.response.status === 409) {
-                    toast.error("Email already exists. Try another.");
-                }
-                else if (error.response.status === 410) {
-                    toast.error("Username already exists. Try another.");
-                }
-                else {
-                    toast.error("An unexpected error occurred. Try again later.");
-                }
-            }
-
-            setData({
-                userName: '',
-                fullName: {
-                    firstName: '',
-                    lastName: ""
-                },
-                email: "",
-                password: "",
-            });
+        // Validation
+        if (!userName || !fullName.firstName || !email || !password) {
+            return toast.error("Please fill in all required fields.");
         }
 
-    }
+        if (password.length < 6) {
+            return toast.error("Password must be at least 6 characters.");
+        }
+
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+            return toast.error("Invalid email format.");
+        }
+
+        setLoading(true);
+
+        try {
+            const res = await api.post("/users/register", data);
+
+            setUser(res?.data?.user);
+
+            toast.success("Registration successful!", {
+                autoClose: 1000,
+                onClose: () => navigate("/login"),
+            });
+
+        } catch (error) {
+            const { status, data } = error?.response || {};
+
+            if (status === 400 && data?.errors) {
+                data.errors.forEach((err) => toast.error(err.message));
+            } else if (status === 409) {
+                toast.error("Email already exists.");
+            } else if (status === 410) {
+                toast.error("Username already exists.");
+            } else {
+                toast.error(data?.message || "Something went wrong.");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <>
-            <div className="login">
-                <div className="registerWrapper">
-                    <div className="registerForm">
-                        <div >
-                            <h1 className='rounded text-center text-black fw-bold fs-1 mb-4'>Create Account</h1>
+        <main className="login">
+            <section className="registerWrapper">
 
-                            <form>
-                                <div className="form-group mb-4">
-                                    <label htmlFor="userName" className='from-label fw-bolder mx-1 my-2'>Enter username</label>
-                                    <input type="text" name="userName" className="form-control rounded-5 py-3 mb-2"
-                                        placeholder="enter username" value={data.userName} onChange={handleChange} />
+                {/* FORM SECTION */}
+                <section className="registerForm">
+                    <header>
+                        <h1 className="text-center fw-bold fs-1 mb-4">
+                            Create Account
+                        </h1>
+                    </header>
+
+                    <form onSubmit={submitHandler} noValidate>
+                        <fieldset>
+
+                            {/* Username */}
+                            <div className="mb-4">
+                                <label htmlFor="userName" className="form-label fw-bold">
+                                    Username
+                                </label>
+                                <input
+                                    id="userName"
+                                    type="text"
+                                    name="userName"
+                                    value={data.userName}
+                                    onChange={handleChange}
+                                    placeholder="Enter username"
+                                    className="form-control rounded-5 py-3"
+                                    required
+                                />
+                            </div>
+
+                            {/* Full Name */}
+                            <div className="d-flex gap-2 mb-4">
+                                <div className="w-50">
+                                    <label htmlFor="firstName" className="form-label fw-bold">
+                                        First Name
+                                    </label>
+                                    <input
+                                        id="firstName"
+                                        type="text"
+                                        name="firstName"
+                                        value={data.fullName.firstName}
+                                        onChange={handleChange}
+                                        placeholder="Enter first name"
+                                        className="form-control rounded-5 py-3"
+                                        required
+                                    />
                                 </div>
 
-                                <div className="fullName d-flex justify-content-center align-items-center gap-2 form-group mb-2">
-                                    <div className='w-50'>
-                                        <label htmlFor="firstName" className='from-label fw-bolder mx-1 my-2'>Enter first name</label>
-                                        <input
-                                            type="text"
-                                            name="firstName"
-                                            value={data.fullName.firstName} onChange={handleChange} className="form-control rounded-5 py-3" placeholder="enter firstname" />
-                                    </div>
-                                    <div className='w-50'>
-                                        <label htmlFor="lastName" className='from-label fw-bolder mx-1 my-2'>Enter last name</label>
-                                        <input type="text" name="lastName" value={data.fullName.lastName} onChange={handleChange} className="form-control rounded-5 py-3 " placeholder="enter lastname" />
-                                    </div>
+                                <div className="w-50">
+                                    <label htmlFor="lastName" className="form-label fw-bold">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        id="lastName"
+                                        type="text"
+                                        name="lastName"
+                                        value={data.fullName.lastName}
+                                        onChange={handleChange}
+                                        placeholder="Enter last name"
+                                        className="form-control rounded-5 py-3"
+                                    />
                                 </div>
+                            </div>
 
-                                <div className="form-group mb-4">
-                                    <label htmlFor="email" className='from-label fw-bolder mx-1 my-2'>Enter email</label>
-                                    <input type="email" value={data.email} name='email' onChange={handleChange} className="form-control rounded-5 py-3 mb-2" placeholder='xyz@gmail.com' />
-                                </div>
+                            {/* Email */}
+                            <div className="mb-4">
+                                <label htmlFor="email" className="form-label fw-bold">
+                                    Email
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value={data.email}
+                                    onChange={handleChange}
+                                    placeholder="xyz@gmail.com"
+                                    className="form-control rounded-5 py-3"
+                                    required
+                                />
+                            </div>
 
-                                <div className="form-group mb-4">
-                                    <label htmlFor="password" className='from-label fw-bolder mx-1 my-2'>Enter password</label>
-                                    <input type="password" value={data.password} name='password' onChange={handleChange} className="form-control rounded-5 py-3 mb-2" placeholder='enter your password' />
-                                </div>
+                            {/* Password */}
+                            <div className="mb-4 position-relative">
+                                <label htmlFor="password" className="form-label fw-bold">
+                                    Password
+                                </label>
 
-                                <input type="submit" onClick={submitHandler} value="Register" className='form-control rounded-5 py-3 btn btn-dark mb-2 rounded-5 fs-5' />
-                            </form>
-                        </div>
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={data.password}
+                                    onChange={handleChange}
+                                    placeholder="Enter password"
+                                    className="form-control rounded-5 py-3 pe-5"
+                                    required
+                                />
 
-                        <div id='login-text' className='text-center mt-3'>Alreay have an account?{" "}
-                            <Link
-                                className='fw-bold text-dark' to='/login'
-                                onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                                onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                            >Login →</Link>
-                        </div>
-                    </div>
-                    <div className="poster">
-                        <img src="../images/login_poster.png" alt="..." />
-                    </div>
-                </div>
-            </div>
-        </>)
-}
+                                <button
+                                    type="button"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                    className="position-absolute top-50 end-0 translate-middle-y me-3 border-0 bg-transparent"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                >
+                                    {showPassword ? "🙈" : "👁️"}
+                                </button>
+                            </div>
 
+                            {/* Submit */}
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="form-control rounded-5 py-3 btn btn-dark fs-5"
+                            >
+                                {loading ? "Registering..." : "Register"}
+                            </button>
 
-export default Signup
+                        </fieldset>
+                    </form>
+
+                    {/* Login Link */}
+                    <footer className="text-center mt-3">
+                        <p>
+                            Already have an account?{" "}
+                            <Link className="fw-bold text-dark" to="/login">
+                                Login →
+                            </Link>
+                        </p>
+                    </footer>
+                </section>
+
+                {/* IMAGE */}
+                <aside className="poster">
+                    <img src="../images/login_poster.png" alt="Signup illustration" />
+                </aside>
+
+            </section>
+        </main>
+    );
+};
+
+export default Signup;
