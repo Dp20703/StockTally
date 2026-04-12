@@ -66,15 +66,6 @@ const CreateTrade = ({ setModal }) => {
                 });
             }
 
-            setTradeData({
-                stockName: '',
-                stockSymbol: '',
-                originalQuantity: '',
-                entryType: ['buy', 'sell'],
-                type: ['long', 'short'],
-                price: '',
-                date: '',
-            })
         }
     }
 

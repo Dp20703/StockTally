@@ -37,7 +37,7 @@ module.exports.createWatchlist = async (req, res) => {
 module.exports.getWatchlist = async (req, res) => {
     const user = await userModel.findById(req.user._id);
     const items = await watchlistModel.find({ _id: { $in: user.watchlists } }).lean();
-    res.json(items)
+    return res.json(items)
 }
 
 //get watchlist by id
@@ -47,7 +47,7 @@ module.exports.getWatchlistById = async (req, res) => {
     if (!watchlist) {
         return res.status(404).json({ error: 'Watchlist not found' });
     }
-    res.json(watchlist);
+    return res.json(watchlist);
 }
 
 // delete watchlist

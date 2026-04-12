@@ -5,14 +5,7 @@ export const deleteTrade = (tradeId, navigate) => {
 
     api.delete(`/trades/delete/${tradeId}`)
         .then(() => {
-
-            toast.success("Trade Deleted Successfully", {
-                position: "top-right",
-                autoClose: 1000,
-                onClose: () => {
-                    navigate('/trade/dashboard');
-                }
-            })
+            navigate('/trade/dashboard');
         }).catch((err) => {
 
             if (err.response.status === 404) {
