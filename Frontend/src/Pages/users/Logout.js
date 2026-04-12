@@ -13,8 +13,8 @@ const Logout = () => {
             try {
                 await api.get("/users/logout");
                 toast.success("User Logged out Successfully");
-            } catch {
-                toast.error("Error logging out");
+            } catch (error) {
+                console.log("Logout error:", error); // just log
             } finally {
                 localStorage.removeItem("token");
                 setUser(null);
