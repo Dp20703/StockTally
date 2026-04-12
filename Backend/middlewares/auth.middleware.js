@@ -5,7 +5,13 @@ const jwt = require('jsonwebtoken');
 // this middleware will check if the user is authenticated or not
 module.exports.authUser = async (req, res, next) => {
     //getting the token from the request:
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    const authHeader = req.headers.authorization;
+
+    const token =
+        req.cookies?.token ||
+        (authHeader && authHeader.startsWith("Bearer ")
+            ? authHeader.split(" ")[1]
+            : null);
 
     //if token is not found it will return unauthorized:
     if (!token) {
@@ -14,7 +20,7 @@ module.exports.authUser = async (req, res, next) => {
     }
 
     //check if token is blacklisted:
-    const isTokenBlacklisted = await BlacklistTokenModel.findOne({ token: token });
+    const isTokenBlacklisted = await BlacklistTokenModel.exists({ token });
     // console.log(isTokenBlacklisted)
 
     if (isTokenBlacklisted) {
@@ -31,7 +37,7 @@ module.exports.authUser = async (req, res, next) => {
 
         // // console.log("user from middleware:", user);
         if (!user) {
-            res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ message: "Unauthorized" });
         }
 
         //setting the user in the request:

@@ -11,7 +11,7 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal, showTrades })
     const tradesToDisplay = trades.filter(trade => trade.status === showTrades);
 
     // Delete Trade
-    const handleDelete = (tradeId) => {
+    const handleDelete = async (tradeId) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "This trade will be permanently deleted.",
@@ -20,19 +20,20 @@ const AllTrades = ({ setUpdateModal, handleTradeId, setCloseModal, showTrades })
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Yes, delete it!',
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 deleteTrade(tradeId, navigate);
+                await fetchTrades();
+
                 Swal.fire('Deleted!', 'The trade has been deleted.', 'success');
             }
-            fetchTrades();
         });
     };
 
     // Fetch all trades
     useEffect(() => {
         fetchTrades()
-    })
+    }, [fetchTrades])
 
     const captalizeFirstLetter = (string) => {
         if (!string) return '';

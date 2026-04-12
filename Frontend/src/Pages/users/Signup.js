@@ -182,6 +182,7 @@ const Signup = () => {
                                         value={data.password}
                                         onChange={handleChange}
                                         placeholder="Enter password"
+                                        autoComplete="current-password"
                                         className="form-control rounded-5 py-3 mb-3 pe-5"
                                         required
                                     />

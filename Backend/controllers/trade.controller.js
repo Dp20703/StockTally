@@ -42,16 +42,17 @@ module.exports.createTrade = async (req, res) => {
 // this controller function will fetch all trades of a user:
 module.exports.getAllTrades = async (req, res) => {
     try {
-        const trades = await tradeModel.find({ user: req.user._id }); // No populate
+        const trades = await tradeModel
+            .find({ user: req.user._id })
+            .sort({ createdAt: -1 })
+            .lean();
 
         res.status(200).json({
             success: true,
             message: 'Fetched trades for the logged-in user',
-            user: req.user,
             trades
         });
     } catch (error) {
-        // console.log("Error is getAllTrades controller:", error);
         res.status(500).json({ error: error.message });
     }
 }
