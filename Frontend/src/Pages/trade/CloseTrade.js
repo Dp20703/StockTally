@@ -104,11 +104,6 @@ const CloseTrade = ({ setCloseModal, tradeId }) => {
       }
 
       console.error("Close Trade failed:", error);
-      setCloseData({
-        closePrice: '',
-        closeDate: '',
-        closeQuantity: ''
-      });
     }
   };
 

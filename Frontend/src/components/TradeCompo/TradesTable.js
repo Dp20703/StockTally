@@ -2,11 +2,10 @@ import GetStockPrice from '../../Utils/GetStockPrice';
 
 const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, handleDelete, showTrades }) => {
     return (
-        <div id='tradeTable' className='table-responsive rounded-2 border border-light overflow-x-auto'>
+        <main id='tradeTable' className='table-responsive rounded-2 border border-light overflow-x-auto'>
             <table className='table table-responsive table-bordered table-hover mb-0 table-dark ' >
                 <thead className='table-primary'>
                     <tr className='text-center'>
-                        <th>No</th>
                         <th>Stock Name</th>
                         <th>Stock Symbol</th>
                         <th>Buy Price</th>
@@ -33,7 +32,6 @@ const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, han
                         ) : trades.map((trade, index) => {
                             return (
                                 <tr key={trade._id} >
-                                    <td>{index + 1}</td>
                                     <td>{trade.stockName}</td>
                                     <td>{trade.stockSymbol}</td>
                                     <td>₹ {trade.buyPrice}</td>
@@ -110,7 +108,7 @@ const TradesTable = ({ trades, setUpdateModal, handleTradeId, setCloseModal, han
                     }
                 </tbody>
             </table>
-        </div >
+        </ main>
     )
 }
 

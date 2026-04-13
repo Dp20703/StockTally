@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import CreateTradeModal from '../../components/TradeCompo/CreateTradeModal'
+import { useState } from 'react';
+import CreateTradeModal from '../../components/TradeCompo/CreateTradeModal';
 import AllTrades from '../../components/TradeCompo/AllTrades';
 import UpdateTradeModal from '../../components/TradeCompo/UpdateTradeModal';
 import CloseTradeModal from '../../components/TradeCompo/CloseTradeModal';
@@ -10,45 +10,83 @@ const Dashboard = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [closeModal, setCloseModal] = useState(false);
   const [tradeId, setTradeId] = useState(null);
-  const [showClosedTrades, setShowClosedTrades] = useState(false);
-  const [showTrades, setshowTrades] = useState('open');
-  const handleTradeId = (id) => { setTradeId(id) };
+  const [showTrades, setShowTrades] = useState('open');
+
+  const handleTradeId = (id) => setTradeId(id);
 
   const tradesToggle = () => {
-    setShowClosedTrades((prevState) => !prevState);
-    setshowTrades(!showClosedTrades ? 'closed' : 'open');
-  }
+    setShowTrades((prev) => (prev === 'open' ? 'closed' : 'open'));
+  };
+
+  const isClosed = showTrades === 'closed';
 
   return (
-    <div>
-      <div id='dashboard'>
+    <main id="dashboard">
+
+      {/* ✅ Header */}
+      <header>
         <NavbarCompo />
+      </header>
 
-        <div className="btns mb-3 mt-4 gap-5 w-100 d-flex justify-content-around align-items-center">
-          <button onClick={() => setModal(true)} className="btn btn-primary">
-            + New Trade
-          </button>
-          <h2 className='text-center w-50 text-bg-warning rounded p-1'>Dashboard</h2>
-          <button onClick={tradesToggle} className={!showClosedTrades ? "btn btn-danger " : "btn btn-success "}>
-            {showClosedTrades ? "Open Trades" : "Closed Trades"}
-          </button>
-        </div>
+      {/* ✅ Page Controls */}
+      <section
+        className="btns w-100 mb-3 mt-4 gap-5 d-flex justify-content-around align-items-center"
+        aria-label="Dashboard Controls"
+      >
+        <button
+          onClick={() => setModal(true)}
+          className="btn btn-primary"
+        >
+          + New Trade
+        </button>
 
-        {/* All Trades */}
-        <AllTrades handleTradeId={handleTradeId} setUpdateModal={setUpdateModal} setCloseModal={setCloseModal} showTrades={showTrades} />
+        <h1 className="text-center w-50 text-bg-warning rounded p-1">
+          Dashboard
+        </h1>
 
-        {/* Create Trade Modal */}
+        <button
+          onClick={tradesToggle}
+          className={`btn ${isClosed ? 'btn-success' : 'btn-danger'}`}
+        >
+          {isClosed ? 'Open Trades' : 'Closed Trades'}
+        </button>
+      </section>
+
+      {/* ✅ Trades Section */}
+      <section aria-labelledby="trades-heading">
+        <h2 id="trades-heading" className="visually-hidden">
+          Trades List
+        </h2>
+
+        <AllTrades
+          handleTradeId={handleTradeId}
+          setUpdateModal={setUpdateModal}
+          setCloseModal={setCloseModal}
+          showTrades={showTrades}
+        />
+      </section>
+
+      {/* ✅ Modals (can also wrap in aside) */}
+      <aside aria-label="Trade Modals">
         {modal && <CreateTradeModal setModal={setModal} />}
 
-        {/*Update Trade Modal */}
-        {updateModal && <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />}
+        {updateModal && (
+          <UpdateTradeModal
+            tradeId={tradeId}
+            setUpdateModal={setUpdateModal}
+          />
+        )}
 
-        {/* Close Trade Modal */}
-        {closeModal && <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />}
+        {closeModal && (
+          <CloseTradeModal
+            tradeId={tradeId}
+            setCloseModal={setCloseModal}
+          />
+        )}
+      </aside>
 
-      </div >
-    </div>
-  )
-}
+    </main>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
