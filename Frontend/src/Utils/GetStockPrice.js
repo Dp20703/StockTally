@@ -1,63 +1,94 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import CalUnRealProfit from './CalUnRealProfit';
-import Loader from './Loader';
-import api from '../Services/apiClient';
+import api from '../services/apiClient';
+import { DotLoader } from '../components/ui';
 
-const GetStockPrice = ({ stockSymbol, quantity, buyPrice, sellPrice }) => {
+
+const GetStockPrice = ({ stockSymbol, quantity = 0, buyPrice = 0, sellPrice = 0 }) => {
     const [stockPrice, setStockPrice] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
-    useEffect(() => {
-        // Fetch stock price
-        const fetchStockPrice = async () => {
+    const fetchStockPrice = useCallback(async () => {
+        setLoading(true);
+        setError(false);
 
-            setLoading(true);
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const response = await api.get(`/trades/price/${stockSymbol}`);
-
-                if (response.status === 200) {
-                    setStockPrice(response?.data?.price);
-                }
-
-            } catch (err) {
-                return err
-            }
+        try {
+            const response = await api.get(`/trades/price/${stockSymbol}`);
+            setStockPrice(response?.data?.price);
+        } catch {
+            setError(true);
+        } finally {
             setLoading(false);
-        };
-
-        fetchStockPrice();
+        }
     }, [stockSymbol]);
 
+    useEffect(() => {
+        fetchStockPrice();
+    }, [fetchStockPrice])
+
+
+    if (loading) return <DotLoader />;
+
+    if (error) return <span style={styles.muted}>Failed to fetch</span>;
+
+    if (!stockPrice) return <span style={styles.muted}>N/A</span>;
+
     return (
-        <>
-            {loading ?
-                (<div><Loader type="dot" /></div>)
-                : stockPrice ? (
-                    <div className='d-flex justify-content-center  align-items-center gap-3'>
-                        <div>
-                            <strong>Stock Price:</strong>₹{stockPrice}</div>
-                        <div>
-                            <div>
-                                <strong>Unrealized Profit:</strong>
-                                <CalUnRealProfit
-                                    stockPrice={stockPrice}
-                                    quantity={quantity}
-                                    buyPrice={buyPrice}
-                                    sellPrice={sellPrice}
-                                /></div>
-                        </div>
-                    </div>
-                ) : (
-                    <div>No price available</div>
-                )}
-        </>
+        buyPrice === 0 ? (
+            <span style={styles.value}>₹ {stockPrice}</span>
+        ) : (
+            <div style={styles.wrapper}>
+                <div style={styles.item}>
+                    <span style={styles.label}>Current</span>
+                    <span style={styles.value}>₹ {stockPrice}</span>
+                </div>
+                <div style={styles.divider} />
+                <div style={styles.item}>
+                    <span style={styles.label}>Unrealized</span>
+                    <CalUnRealProfit
+                        stockPrice={stockPrice}
+                        quantity={quantity}
+                        buyPrice={buyPrice}
+                        sellPrice={sellPrice}
+                    />
+                </div>
+            </div >
+        )
     );
+};
+
+const styles = {
+    wrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+    },
+    item: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+    },
+    label: {
+        fontSize: 10,
+        color: '#475569',
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
+    },
+    value: {
+        fontSize: 13,
+        color: '#f0fdf4',
+        fontFamily: "'Courier New', monospace",
+    },
+    divider: {
+        width: 1,
+        height: 28,
+        background: '#1e2d3d',
+    },
+    muted: {
+        fontSize: 12,
+        color: '#475569',
+    },
 };
 
 export default GetStockPrice;
