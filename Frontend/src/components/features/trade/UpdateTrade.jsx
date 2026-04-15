@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTrades } from "../../../context/TradeContext";
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 
 export default function UpdateTrade({ setUpdateModal, tradeId }) {
   const navigate = useNavigate();

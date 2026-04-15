@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useWatchlists } from "../../../context/WatchlistContext";
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 import { Modal } from "../../ui/Modal";
 
 export default function AddStock({

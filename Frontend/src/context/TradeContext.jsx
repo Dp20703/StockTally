@@ -1,5 +1,5 @@
 import { useContext, useState, createContext, useCallback } from "react";
-import api from "../services/apiClient";
+import api from "services/apiClient";
 
 const TradeContext = createContext();
 

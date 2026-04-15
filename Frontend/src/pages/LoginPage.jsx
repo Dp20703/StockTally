@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import api from "../services/apiClient";
+import api from "services/apiClient";
 
 export default function Login() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 import { toast } from "react-toastify";
 
 export const deleteStock = (stockId, watchlistId) => {

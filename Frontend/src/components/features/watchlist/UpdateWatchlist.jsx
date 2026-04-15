@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import AddStock from "../stock/AddStock";
 import { deleteStock } from "../stock/DeleteStock";
 import { useWatchlists } from "../../../context/WatchlistContext";
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 
 export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
   const [updateWatchlist, setUpdateWatchlist] = useState({});

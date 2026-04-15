@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/layout/Navbar";
-import api from "../services/apiClient";
+import api from "services/apiClient";
 import ProfileCard from "../components/features/profile/ProfileCard";
 import { UpdateProfileModal } from "../components/features/profile/UpdateProfileModal";
 

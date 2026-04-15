@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../services/apiClient";
+import api from "services/apiClient";
 import { useAuth } from "../context/AuthContext";
 
 export default function Signup() {

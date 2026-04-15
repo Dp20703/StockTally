@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 import { useTrades } from "../../../context/TradeContext";
 
 export default function CloseTrade({ setCloseModal, tradeId }) {

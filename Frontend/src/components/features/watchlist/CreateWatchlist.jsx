@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useWatchlists } from "../../../context/WatchlistContext";
-import api from "../../../services/apiClient";
+import api from "services/apiClient";
 
 export default function CreateWatchlist({ setModal }) {
   const navigate = useNavigate();

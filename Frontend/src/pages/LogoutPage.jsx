@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../services/apiClient";
+import api from "services/apiClient";
 import { useAuth } from "../context/AuthContext";
 
 const Logout = () => {
@@ -13,9 +13,9 @@ const Logout = () => {
       try {
         await api.get("/users/logout");
         toast.success("User Logged out Successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+          position: "top-right",
+          autoClose: 1000,
+        });
       } catch (error) {
         console.log("Logout error:", error); // just log
       } finally {
