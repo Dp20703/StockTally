@@ -1,7 +1,7 @@
 /* ── Modal ──────────────────────────────────────────────── */
 export const Modal = ({ title, onClose, size = "md", children, footer }) => (
   <div className="st-overlay">
-    <div className={`st-modal-${size} border  border-gray-700  rounded-2xl`}>
+    <div className={`st-modal-${size} border  border-gray-700  rounded-2xl `}>
       <div className="st-modal-header">
         <h2 className="st-modal-title">{title}</h2>
         <button className="st-btn-icon" onClick={onClose} aria-label="Close">
