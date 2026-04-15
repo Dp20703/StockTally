@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import UserProtectWrapper from "./middleware/UserProtectWrapper";
-import Example from "./Example";
 import Home from "./pages/HomePage";
 import Signup from "./pages/SignupPage";
 import NotFound from "./pages/NotFoundPage";
@@ -20,7 +19,6 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/a" element={<Example />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
