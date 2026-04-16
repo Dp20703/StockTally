@@ -3,6 +3,8 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "services/apiClient";
+import { auth, provider } from "../firebase/firebase";
+import { signInWithPopup } from "firebase/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,6 +50,35 @@ export default function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const res = await api.post("/users/auth/google", {
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      });
+
+      localStorage.setItem("token", res?.data?.token);
+      setUser(res?.data?.user);
+
+      toast.success("Login successful", {
+        position: "top-right",
+        autoClose: 1000,
+        onClose: () => navigate("/profile"),
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Google login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="st-page flex items-center justify-center">
       <div className="st-card p-8 w-full max-w-md flex flex-col gap-6">
@@ -73,6 +104,7 @@ export default function Login() {
               onChange={handleChange}
               className="st-input"
               placeholder="xyz@gmail.com"
+              autoComplete="username"
             />
           </div>
 
@@ -88,6 +120,7 @@ export default function Login() {
                 onChange={handleChange}
                 className="st-input pr-10"
                 placeholder="Enter password"
+                autoComplete="current-password"
               />
 
               <button
@@ -109,6 +142,30 @@ export default function Login() {
             {loading ? "Signing..." : "Sign In"}
           </button>
         </form>
+
+        {/* OR Divider */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-gray-300"></div>
+          <span className="text-sm text-gray-500">OR</span>
+          <div className="flex-1 h-px bg-gray-300"></div>
+        </div>
+
+        {/* Google Button */}
+        <button
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-lg py-2.5 px-4 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-200"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="google"
+            className="w-5 h-5"
+          />
+
+          <span className="text-sm font-medium text-gray-700">
+            {loading ? "Please wait..." : "Continue with Google"}
+          </span>
+        </button>
 
         {/* Footer */}
         <p className="text-center text-text-muted text-sm">

@@ -95,6 +95,54 @@ module.exports.loginUser = async (req, res) => {
         });
     }
 }
+// this controller function will login the user using googleAuth:
+module.exports.googleAuthController = async (req, res) => {
+    try {
+        const { name, email, photo } = req.body;
+
+        let user = await userModel.findOne({ email });
+
+        // If user doesn't exist → create
+        if (!user) {
+            user = await userModel.create({
+                email,
+                profilePic: photo,
+                isGoogleUser: true,
+                userName: email.split("@")[0],
+                fullName: {
+                    firstName: name,
+                },
+            });
+        } else {
+            user.profilePic = photo || user.profilePic;
+            await user.save();
+        }
+
+        // Generate token 
+        const token = user.generateAuthToken();
+
+        // set cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+        });
+
+        // Remove password
+        user.password = undefined;
+
+        res.status(200).json({
+            message: "Google login successful",
+            token,
+            user,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message || "Google login failed",
+        });
+    }
+};
 
 //this controller function will get the user profile using user's id:
 module.exports.getUserProfile = async (req, res) => {

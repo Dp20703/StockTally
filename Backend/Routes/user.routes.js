@@ -31,6 +31,11 @@ router.post('/login', [
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
 ], validateRequest, userController.loginUser)
 
+// /auth/google
+router.post('/auth/google', [
+    body('email').isEmail().withMessage("Invalid Email"),
+], validateRequest, userController.googleAuthController)
+
 // users/profile
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
 

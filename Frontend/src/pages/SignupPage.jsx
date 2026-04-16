@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase/firebase";
 import api from "services/apiClient";
 import { useAuth } from "../context/AuthContext";
 
@@ -49,15 +51,43 @@ export default function Signup() {
 
       const res = await api.post("/users/register", data);
 
+      localStorage.setItem("token", res?.data?.token);
       setUser(res?.data?.user);
 
-      toast.success("Registration successful", {
-        position: "top-right",
-        autoClose: 1000,
-      });
-      navigate("/login");
+      toast.success("Registration successful");
+      navigate("/profile");
     } catch (error) {
       toast.error("Signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Google Signup/Login
+  const handleGoogleSignup = async () => {
+    setLoading(true);
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const res = await api.post("/users/auth/google", {
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      });
+
+      localStorage.setItem("token", res?.data?.token);
+      setUser(res?.data?.user);
+
+      toast.success("Login successful", {
+        position: "top-right",
+        autoClose: 1000,
+        onClose: () => navigate("/profile"),
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Google signup failed");
     } finally {
       setLoading(false);
     }
@@ -67,9 +97,14 @@ export default function Signup() {
     <main className="st-page flex items-center justify-center">
       <div className="st-card p-8 w-full max-w-md flex flex-col gap-6">
         {/* Title */}
-        <h1 className="text-xl text-text-primary text-center">
-          Create Account
-        </h1>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-xl text-text-primary text-center">
+            Create Account
+          </h1>
+          <p className="text-text-muted text-center text-sm">
+            Start managing your trades
+          </p>
+        </div>
 
         {/* Form */}
         <form onSubmit={submitHandler} className="flex flex-col gap-4">
@@ -154,6 +189,30 @@ export default function Signup() {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
+
+        {/* OR Divider */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-gray-300"></div>
+          <span className="text-sm text-gray-500">OR</span>
+          <div className="flex-1 h-px bg-gray-300"></div>
+        </div>
+
+        {/* Google Button */}
+        <button
+          onClick={handleGoogleSignup}
+          disabled={loading}
+          className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-lg py-2.5 px-4 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-200"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="google"
+            className="w-5 h-5"
+          />
+
+          <span className="text-sm font-medium text-gray-700">
+            {loading ? "Please wait..." : "Continue with Google"}
+          </span>
+        </button>
 
         {/* Footer */}
         <p className="text-center text-text-muted text-sm">

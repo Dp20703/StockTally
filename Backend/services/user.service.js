@@ -32,6 +32,13 @@ module.exports.loginUser = async (email, password) => {
     //user from login service:
     const user = await userModel.findOne({ email }).select('+password');
 
+    // Use googleAuth prevention
+    if (user.isGoogleUser) {
+        return res.status(400).json({
+            message: "Please login using Google"
+        });
+    }
+
     //if user is not found it will return invalid email or password:
     if (!user) {
         throw new Error('Invalid email or password');

@@ -6,26 +6,27 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String
     },
+
     userName: {
         type: String,
-        required: [true, "username is required."],
         unique: true,
         trim: true,
-        minlength: [3, "username must be at least 3 characters long."],
-        maxlength: [20, "username cannot be more than 20 characters long."]
+        minlength: 3,
+        maxlength: 20
     },
+
     fullName: {
         firstName: {
             type: String,
-            required: [true, "First name is required."],
             trim: true,
-            minlength: [3, "First name must be at least 3 characters long."]
+            minlength: 3
         },
         lastName: {
             type: String,
-            trim: true,
+            trim: true
         }
     },
+
     email: {
         type: String,
         required: [true, "Email is required."],
@@ -34,24 +35,33 @@ const userSchema = new mongoose.Schema({
         trim: true,
         match: [/\S+@\S+\.\S+/, "Please enter a valid email address."]
     },
+
     password: {
         type: String,
-        required: [true, "Password is required."],
-        minlength: [6, "Password must be at least 6 characters long."],
+        minlength: 6,
         select: false
     },
+
+    isGoogleUser: {
+        type: Boolean,
+        default: false
+    },
+
     totalProfit: {
         type: Number,
         default: 0
     },
+
     trades: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'trade'
     }],
+
     watchlists: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'watchlist'
     }],
+
     createdAt: {
         type: Date,
         default: Date.now
