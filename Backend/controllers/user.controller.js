@@ -100,6 +100,12 @@ module.exports.googleAuthController = async (req, res) => {
     try {
         const { name, email, photo } = req.body;
 
+        if (!email || !name) {
+            return res.status(400).json({
+                message: "Name and Email are required",
+            });
+        }
+
         let user = await userModel.findOne({ email });
 
         // If user doesn't exist → create
@@ -108,37 +114,57 @@ module.exports.googleAuthController = async (req, res) => {
                 email,
                 profilePic: photo,
                 isGoogleUser: true,
-                userName: email.split("@")[0],
+                userName: email.split("@")[0]
                 fullName: {
                     firstName: name,
                 },
             });
+
+            // Send welcome email (safe + awaited)
+            try {
+                const fullName = user.fullName.lastName
+                    ? `${user.fullName.firstName} ${user.fullName.lastName}`
+                    : user.fullName.firstName;
+
+                await sendWelcomeEmail({
+                    to: user.email,
+                    firstName: user.fullName.firstName,
+                    fullName,
+                    userName: user.userName,
+                    email: user.email,
+                });
+            } catch (err) {
+                console.error("[Mailer] Welcome email failed:", err.message);
+            }
+
         } else {
+            // Update profile pic if changed
             user.profilePic = photo || user.profilePic;
             await user.save();
         }
 
-        // Generate token 
+        // Generate token
         const token = user.generateAuthToken();
 
-        // set cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: true,
+            sameSite: "none",
         });
 
-        // Remove password
+        // ✅ Remove sensitive data
         user.password = undefined;
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Google login successful",
             token,
             user,
         });
 
     } catch (error) {
-        res.status(500).json({
+        console.error("Google Auth Error:", error);
+
+        return res.status(500).json({
             message: error.message || "Google login failed",
         });
     }
