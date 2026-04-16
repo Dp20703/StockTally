@@ -100,28 +100,28 @@ export default {
         slow: '250ms',
       },
       keyframes: {
-        'bar-pulse': {
-          '0%, 100%': { transform: 'scaleY(0.2)' },
-          '50%': { transform: 'scaleY(1)' },
+        "bar-pulse": {
+          "0%, 100%": { transform: "scaleY(0.2)" },
+          "50%": { transform: "scaleY(1)" },
         },
         blink: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0' },
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
         },
-        'fade-in': {
-          from: { opacity: '0', transform: 'translateY(6px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
-        'slide-down': {
-          from: { opacity: '0', transform: 'translateY(-8px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+        "slide-down": {
+          "0%": { transform: "translateY(-10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
         },
       },
       animation: {
-        'bar-pulse': 'bar-pulse 1.1s ease-in-out infinite',
-        blink: 'blink 1s step-end infinite',
-        'fade-in': 'fade-in 0.2s ease-out',
-        'slide-down': 'slide-down 0.2s ease-out',
+        "bar-pulse": "bar-pulse 1.1s ease-in-out infinite",
+        blink: "blink 1s step-end infinite",
+        "fade-in": "fade-in 0.2s ease-out",
+        "slide-down": "slide-down 0.2s ease-out",
       },
     },
   },

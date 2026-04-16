@@ -114,7 +114,7 @@ module.exports.googleAuthController = async (req, res) => {
                 email,
                 profilePic: photo,
                 isGoogleUser: true,
-                userName: email.split("@")[0]
+                userName: email.split("@")[0],
                 fullName: {
                     firstName: name,
                 },

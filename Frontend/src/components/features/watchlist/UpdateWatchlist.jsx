@@ -59,75 +59,77 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <h2 className="text-lg text-text-primary">Update Watchlist</h2>
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <h2 className="text-lg text-text-primary">Update Watchlist</h2>
 
-      {/* Name */}
-      <div>
-        <label className="st-label">Watchlist Name</label>
-        <input
-          name="watchlistName"
-          value={updateWatchlist.watchlistName || ""}
-          onChange={handleChange}
-          className="st-input"
-        />
-      </div>
+        {/* Name */}
+        <div>
+          <label className="st-label">Watchlist Name</label>
+          <input
+            name="watchlistName"
+            value={updateWatchlist.watchlistName || ""}
+            onChange={handleChange}
+            className="st-input"
+          />
+        </div>
 
-      {/* Stocks */}
-      <div className="max-h-[50vh] overflow-y-auto flex flex-col gap-4">
-        {updateWatchlist.stocks?.length === 0 ? (
-          <p className="text-text-muted text-center">No stocks added</p>
-        ) : (
-          updateWatchlist.stocks?.map((stock, idx) => (
-            <div key={idx} className="st-card p-3 flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-text-muted">
-                  Stock #{idx + 1}
-                </span>
+        {/* Stocks */}
+        <div className="max-h-[50vh] overflow-y-auto flex flex-col gap-4">
+          {updateWatchlist.stocks?.length === 0 ? (
+            <p className="text-text-muted text-center">No stocks added</p>
+          ) : (
+            updateWatchlist.stocks?.map((stock, idx) => (
+              <div key={idx} className="st-card p-3 flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-text-muted">
+                    Stock #{idx + 1}
+                  </span>
 
-                <button
-                  type="button"
-                  onClick={() => handleDeleteStock(stock._id)}
-                  className="text-red-400"
-                >
-                  ✕
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteStock(stock._id)}
+                    className="text-red-400"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <input
+                  name="stockName"
+                  value={stock.stockName || ""}
+                  onChange={(e) => handleStockChange(e, idx)}
+                  className="st-input"
+                  placeholder="Stock name"
+                />
+
+                <input
+                  name="stockSymbol"
+                  value={stock.stockSymbol || ""}
+                  onChange={(e) => handleStockChange(e, idx)}
+                  className="st-input"
+                  placeholder="Stock symbol"
+                />
               </div>
+            ))
+          )}
+        </div>
 
-              <input
-                name="stockName"
-                value={stock.stockName || ""}
-                onChange={(e) => handleStockChange(e, idx)}
-                className="st-input"
-                placeholder="Stock name"
-              />
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button type="submit" className="st-btn-green flex-1">
+            Update
+          </button>
 
-              <input
-                name="stockSymbol"
-                value={stock.stockSymbol || ""}
-                onChange={(e) => handleStockChange(e, idx)}
-                className="st-input"
-                placeholder="Stock symbol"
-              />
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-3">
-        <button type="submit" className="st-btn-green flex-1">
-          Update
-        </button>
-
-        <button
-          type="button"
-          className="st-btn-ghost flex-1"
-          onClick={() => setAddStockModal(true)}
-        >
-          + Add Stocks
-        </button>
-      </div>
+          <button
+            type="button"
+            className="st-btn-ghost flex-1"
+            onClick={() => setAddStockModal(true)}
+          >
+            + Add Stocks
+          </button>
+        </div>
+      </form>
 
       {addStockModal && (
         <AddStock
@@ -136,6 +138,6 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
           setUpdateModal={setUpdateModal}
         />
       )}
-    </form>
+    </>
   );
 }

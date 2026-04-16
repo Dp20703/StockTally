@@ -9,30 +9,37 @@ export const BarLoader = () => {
     "#16a34a",
     "#15803d",
   ];
+
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-end gap-1.5" style={{ height: 44 }}>
-        {barColors.map((color, i) => (
-          <div
-            key={i}
-            className="st-bar"
-            style={{
-              height: "100%",
-              background: color,
-              animationDelay: `${i * 0.1}s`,
-            }}
-          />
-        ))}
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-lg font-medium text-text-primary tracking-tight">
-          StockTally
+    <main className="st-page flex items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center gap-5 bg-[#0d1117] px-14 py-12 rounded-2xl">
+        {/* Bars */}
+        <div className="flex items-end gap-[5px] h-[44px]">
+          {barColors.map((color, i) => (
+            <div
+              key={i}
+              className="st-bar animate-bar-pulse"
+              style={{
+                background: color,
+                animationDelay: `${i * 0.1}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Brand */}
+        <div className="flex items-baseline gap-[2px]">
+          <span className="text-[20px] font-medium text-green-50">
+            StockTally
+          </span>
+          <span className="w-[2px] h-[16px] bg-green-400 rounded-sm animate-blink ml-[1px]" />
+        </div>
+
+        {/* Status */}
+        <span className="text-[12px] text-green-400 tracking-[0.1em] uppercase animate-pulse">
+          Fetching market data
         </span>
-        <span className="inline-block w-0.5 h-4 bg-green-400 rounded-sm animate-blink ml-0.5" />
       </div>
-      <span className="text-xs text-green-400 tracking-widest uppercase animate-pulse">
-        Fetching market data
-      </span>
-    </div>
+    </main>
   );
 };

@@ -1,17 +1,12 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "context/AuthContext";
+import { BarLoader } from "components/ui";
 
 export default function Home() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <main className="st-page flex items-center justify-center">
-        <div className="st-card p-6 text-center animate-pulse">
-          <p className="text-text-muted">Loading...</p>
-        </div>
-      </main>
-    );
+    return <BarLoader />;
   }
 
   return (
