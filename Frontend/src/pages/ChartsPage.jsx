@@ -1,13 +1,10 @@
-import Navbar from "../components/layout/Navbar";
-import TradingViewWidget from "../components/features/chart/TradingViewWidget";
-import { Divider } from "../components/ui";
+import TradingViewWidget from "components/features/chart/TradingViewWidget";
+import { Divider } from "components/ui";
 
 export default function ChartsPage() {
   return (
     <main className="st-page">
-      {/* Navbar */}
-      <Navbar />
-
+     
       {/* Content */}
       <section className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6">
         <div className="flex flex-col gap-1">
@@ -26,6 +23,7 @@ export default function ChartsPage() {
       <section className="st-card mx-4 mb-10 overflow-x-auto">
         <TradingViewWidget />
       </section>
+
     </main>
   );
 }

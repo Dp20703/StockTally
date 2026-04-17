@@ -1,10 +1,9 @@
 import { useState } from "react";
-import AllTrades from "../components/features/trade/AllTrades";
-import UpdateTradeModal from "../components/features/trade/UpdateTradeModal";
-import CloseTradeModal from "../components/features/trade/CloseTradeModal";
-import CreateTradeModal from "../components/features/trade/CreateTradeModal";
-import Navbar from "../components/layout/Navbar";
-import { Divider } from "../components/ui";
+import AllTrades from "components/features/trade/AllTrades";
+import UpdateTradeModal from "components/features/trade/UpdateTradeModal";
+import CloseTradeModal from "components/features/trade/CloseTradeModal";
+import CreateTradeModal from "components/features/trade/CreateTradeModal";
+import { Divider } from "components/ui";
 
 export default function Dashboard() {
   const [modal, setModal] = useState(false);
@@ -22,8 +21,6 @@ export default function Dashboard() {
 
   return (
     <main className="st-page">
-      {/* Navbar */}
-      <Navbar />
       {/* Controls */}
       <section className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6">
         {/* Title */}

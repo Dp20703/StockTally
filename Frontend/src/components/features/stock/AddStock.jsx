@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useWatchlists } from "../../../context/WatchlistContext";
+import { useWatchlists } from "context/WatchlistContext";
 import api from "services/apiClient";
 import { useNavigate } from "react-router-dom";
 import AddStockModal from "./AddStockModal";

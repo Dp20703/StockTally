@@ -1,6 +1,6 @@
 import { deleteWatchlist } from "./DeleteWatchlist";
-import { useWatchlists } from "../../../context/WatchlistContext";
-import GetStockPrice from "../../../utils/GetStockPrice";
+import { useWatchlists } from "context/WatchlistContext";
+import GetStockPrice from "utils/GetStockPrice";
 
 export default function WatchListCard({
   setUpdateModal,

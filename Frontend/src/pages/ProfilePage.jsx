@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth } from "../context/AuthContext";
-import Navbar from "../components/layout/Navbar";
+import { useAuth } from "context/AuthContext";
 import api from "services/apiClient";
-import ProfileCard from "../components/features/profile/ProfileCard";
-import { UpdateProfileModal } from "../components/features/profile/UpdateProfileModal";
+import ProfileCard from "components/features/profile/ProfileCard";
+import { UpdateProfileModal } from "components/features/profile/UpdateProfileModal";
 
 export default function Profile() {
   const { user, setUser } = useAuth();
@@ -52,8 +51,6 @@ export default function Profile() {
 
   return (
     <main className="st-page">
-      <Navbar />
-
       <section className="p-6 flex justify-center">
         <ProfileCard
           user={user}

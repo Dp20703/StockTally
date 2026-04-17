@@ -1,5 +1,7 @@
 import React from "react";
 import GetStockPrice from "../../../utils/GetStockPrice";
+import { StatusBadge } from "components/ui";
+import { profitColor } from "theme/theme";
 
 function TradeCard({
   trade,
@@ -48,16 +50,12 @@ function TradeCard({
 
       {/* Type */}
       <td className="px-4 py-3">
-        <span className="px-2 py-1 rounded-full text-xs bg-green-900 text-green-400 border border-green-border">
-          {trade.type}
-        </span>
+        <StatusBadge status={trade.type} />
       </td>
 
       {/* Entry */}
       <td className="px-4 py-3">
-        <span className="px-2 py-1 rounded-full text-xs bg-blue-900 text-blue-400 border border-blue-border">
-          {trade.entryType}
-        </span>
+        <StatusBadge status={trade.entryType} />
       </td>
 
       {/* Live Price */}
@@ -73,9 +71,7 @@ function TradeCard({
       {/* Current P&L */}
       {trade.status === "open" && (
         <td className="px-4 py-3 font-mono">
-          <span
-            className={isProfitNegative ? "text-red-400" : "text-green-400"}
-          >
+          <span className={profitColor(isProfitNegative)}>
             {isProfitNegative ? "▼" : "▲"} ₹ {trade.profit?.toFixed(2)}
           </span>
         </td>
@@ -83,22 +79,14 @@ function TradeCard({
 
       {/* Final P&L */}
       <td className="px-4 py-3 font-mono">
-        <span className={isFinalNegative ? "text-red-400" : "text-green-400"}>
+        <span className={profitColor(isFinalNegative)}>
           {isFinalNegative ? "▼" : "▲"} ₹ {trade.finalProfit?.toFixed(2)}
         </span>
       </td>
 
       {/* Status */}
       <td className="px-4 py-3">
-        <span
-          className={`px-2 py-1 rounded-full text-xs border ${
-            trade.status === "open"
-              ? "bg-green-900 text-green-400 border-green-border"
-              : "bg-red-900 text-red-400 border-red-border"
-          }`}
-        >
-          {trade.status}
-        </span>
+        <StatusBadge status={trade.status} />
       </td>
 
       {/* Actions */}

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import AllWatchlist from "../components/features/watchlist/AllWatchlist";
-import CreateWatchlistModal from "../components/features/watchlist/CreateWatchlistModal";
-import UpdateWatchlistModal from "../components/features/watchlist/UpdateWatchlistModal";
-import Navbar from "../components/layout/Navbar";
-import { Divider } from "../components/ui";
+import AllWatchlist from "components/features/watchlist/AllWatchlist";
+import CreateWatchlistModal from "components/features/watchlist/CreateWatchlistModal";
+import UpdateWatchlistModal from "components/features/watchlist/UpdateWatchlistModal";
+import { Divider } from "components/ui";
 
 export default function WatchlistPage() {
   const [watchlistId, setWatchlistId] = useState(null);
@@ -12,18 +11,12 @@ export default function WatchlistPage() {
 
   return (
     <main className="st-page">
-
-      {/* Navbar */}
-      <Navbar />
-
+    
       {/* Controls */}
       <section className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6">
-
         {/* Title */}
         <div className="flex flex-col gap-1">
-          <h1 className="text-xl text-text-primary">
-            Watchlist
-          </h1>
+          <h1 className="text-xl text-text-primary">Watchlist</h1>
 
           <span className="px-3 py-1 rounded-full text-xs border bg-blue-900 text-blue-400 border-blue-border">
             Your Stocks
@@ -39,7 +32,6 @@ export default function WatchlistPage() {
             + New Watchlist
           </button>
         </div>
-
       </section>
 
       {/* Divider */}
@@ -63,7 +55,7 @@ export default function WatchlistPage() {
           watchlistId={watchlistId}
         />
       )}
-
+  
     </main>
   );
 }

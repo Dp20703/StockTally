@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase";
 import api from "services/apiClient";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "context/AuthContext";
 
 export default function Signup() {
   const navigate = useNavigate();

@@ -25,7 +25,7 @@ function TradingViewWidget() {
 
     script.innerHTML = JSON.stringify({
       autosize: true,
-      symbol: "NASDAQ:AAPL",
+      symbol: "BSE:NSDL",
       interval: "D",
       timezone: "Etc/UTC",
       theme: "dark",

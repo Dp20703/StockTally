@@ -4,11 +4,7 @@ import { deleteTrade } from "./DeleteTrade";
 import Swal from "sweetalert2";
 import TradesTable from "./TradesTable";
 import { useTrades } from "../../../context/TradeContext";
-
-const capitalize = (str) => {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-};
+import { capitalize } from "theme/theme";
 
 export default function AllTrades({
   setUpdateModal,

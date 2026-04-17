@@ -6,6 +6,7 @@ const links = [
   { label: "Watchlist", to: "/trade/watchlist" },
   { label: "Charts", to: "/chart/showchart" },
   { label: "Top Stories", to: "/chart/topstories" },
+  { label: "About", to: "/about" },
   { label: "Profile", to: "/profile" },
 ];
 

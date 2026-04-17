@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { BarLoader } from "../components/ui";
+import { useAuth } from "context/AuthContext";
+import { BarLoader } from "components/ui";
 
 const UserProtectWrapper = ({ children }) => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "services/apiClient";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "context/AuthContext";
 
 const Logout = () => {
   const { setUser } = useAuth();

@@ -6,7 +6,11 @@ export default function Home() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <BarLoader />;
+    return (
+      <div className="st-loader-screen">
+        <BarLoader />
+      </div>
+    );
   }
 
   return (
