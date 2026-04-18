@@ -1,17 +1,30 @@
 # 📊 StockTally
 
-**StockTally** is a stock trade and watchlist management app built using **React** (via Create React App) and the **MERN stack**. It allows users to track trades, organize stock watchlists, and analyze portfolio activity with a clean, responsive interface.
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Node](https://img.shields.io/badge/Backend-Node.js-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+**StockTally** is a stock trade and watchlist management app built using the **MERN stack**. It allows users to track trades, manage watchlists, and analyze portfolio activity with a clean and responsive UI.
+
+---
+
+## 🌐 Live Demo
+
+🔗 https://stock-tally.vercel.app
 
 ---
 
 ## 🚀 Features
 
-- ✅ Create, Read, Update, Delete (CRUD) operations for:
-  - **Trades** – manage your stock buying/selling records
-  - **Watchlists** – keep an eye on stocks you're interested in
-- 🔐 User Authentication (Sign Up / Login)
-- 📱 Responsive UI using Bootstrap
-- 🌍 Backend API built with Node.js, Express, MongoDB (MongoDB Atlas)
+* ✅ CRUD operations for:
+
+  * **Trades** – manage stock buy/sell records
+  * **Watchlists** – track stocks of interest
+* 🔐 User Authentication (Sign Up / Login)
+* 📱 Fully responsive UI (Bootstrap)
+* 🌍 REST API with Node.js & Express
+* ☁️ MongoDB Atlas integration
 
 ---
 
@@ -19,44 +32,42 @@
 
 ### 🏠 Home
 
-![Home](./Frontend/public/images/Screenshots/home.png)
-
+<p align="center">
+  <img src="./screenshots/home.png" width="800"/>
+</p>
 
 ### 📝 Login
 
-![Login](./Frontend/public/images/Screenshots/login.png)
+<p align="center">
+  <img src="./screenshots/login.png" width="800"/>
+</p>
 
 ### 📝 Register
 
-![Register](./Frontend/public/images/Screenshots/register.png)
+<p align="center">
+  <img src="./screenshots/signup.png" width="800"/>
+</p>
 
-### 💼 Trade Management
+### 💼 Trade Dashboard
 
-![Dashboard/Trades](./Frontend/public/images/Screenshots/dashboard.png)
+<p align="center">
+  <img src="./screenshots/dashboard.png" width="800"/>
+</p>
 
-### 📋 Watchlist Page
+### 📋 Watchlist
 
-![Watchlist](./Frontend/public/images/Screenshots/watchlist.png)
-
-
-## 🧰 Tech Stack
-
-- **Frontend:** React.js (CRA), Bootstrap, Context API
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB (Atlas)
-- **Deployment:** Vercel (Frontend), Render (Backend)
+<p align="center">
+  <img src="./screenshots/watchlist.png" width="800"/>
+</p>
 
 ---
 
-## 📦 Getting Started with Create React App
+## 🧰 Tech Stack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-### Prerequisites
-
-- Node.js and npm
-- MongoDB Atlas connection URI
-- (Optional) Postman for API testing
+* **Frontend:** React.js (CRA), Bootstrap, Context API
+* **Backend:** Node.js, Express.js
+* **Database:** MongoDB (Atlas)
+* **Deployment:** Vercel (Frontend), Render (Backend)
 
 ---
 
@@ -64,52 +75,58 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ```
 stocktally/
-├── Frontend/           # React frontend (CRA)
+├── Frontend/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── Middleware/
-│   │   ├── pages/
-│   │   ├── Utils/
 │   │   ├── context/
-│   │   └── App.js
-├── Backend/           # Express backend
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── App.jsx
+├── Backend/
 │   ├── config/
 │   ├── controllers/
 │   ├── middlewares/
 │   ├── models/
-│   ├── public/
-│   ├── Routes/
-│   ├── services/
+│   ├── routes/
 │   ├── utils/
 │   ├── .env
-│   ├── .app.js
 │   └── server.js
+├── screenshots/
+│   ├── home.png
+│   ├── login.png
+│   ├── signup.png
+│   ├── dashboard.png
+│   └── watchlist.png
 ```
 
 ---
 
 ## 🔧 Installation
 
-### 1. Clone the repo
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Dp20703/stocktally.git
 cd stocktally
 ```
 
-### 2. Setup the backend
+---
+
+### 2. Setup Backend
 
 ```bash
-cd server
+cd Backend
 npm install
 npm run dev
 ```
 
-### 3. Setup the frontend
+---
+
+### 3. Setup Frontend
 
 ```bash
-cd ../client
+cd ../Frontend
 npm install
 npm start
 ```
@@ -118,40 +135,37 @@ npm start
 
 ## 🖥 Available Scripts (Frontend)
 
-In the `client/` directory:
+Inside `Frontend/`:
 
-### `npm start`
+* `npm start` → Run app in development mode
+* `npm run build` → Build for production
+* `npm test` → Run tests
+* `npm run eject` → Eject CRA config (irreversible)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-### `npm test`
+## ✨ Future Improvements
 
-Launches the test runner in the interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.
-
-### `npm run eject`
-
-**Note:** This is a one-way operation. Once you eject, you can’t go back!
+* 📊 Profit/Loss analytics dashboard
+* 🔔 Real-time stock price integration
+* 📱 Mobile app version
+* 🧠 AI-based stock suggestions
 
 ---
 
 ## 📚 Learn More
 
-- [React Docs](https://reactjs.org/)
-- [Create React App Docs](https://facebook.github.io/create-react-app/)
-- [MongoDB Docs](https://www.mongodb.com/docs/)
-- [Express.js Guide](https://expressjs.com/)
+* https://reactjs.org/
+* https://expressjs.com/
+* https://www.mongodb.com/docs/
 
 ---
 
 ## 👤 Author
 
-**Darshan Prajapati**  
-[LinkedIn](https://www.linkedin.com/in/darshan-prajapati-523202282) | [GitHub](https://github.com/Dp20703)
+**Darshan Prajapati**
+🔗 https://www.linkedin.com/in/darshan-prajapati-523202282
+🔗 https://github.com/Dp20703
 
 ---
 

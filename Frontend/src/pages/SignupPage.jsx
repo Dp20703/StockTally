@@ -129,6 +129,7 @@ export default function Signup() {
                 value={data.fullName.firstName}
                 onChange={handleChange}
                 className="st-input"
+                placeholder="Enter firstname"
               />
             </div>
 
@@ -139,6 +140,7 @@ export default function Signup() {
                 value={data.fullName.lastName}
                 onChange={handleChange}
                 className="st-input"
+                placeholder="Enter lastname"
               />
             </div>
           </div>

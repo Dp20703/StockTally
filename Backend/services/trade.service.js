@@ -1,96 +1,98 @@
 const tradeModel = require('../models/trade.model');
 const userModel = require('../models/user.model');
-const axios = require('axios')
+const axios = require('axios');
 
-// Create a new trade
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function httpError(status, message) {
+    const err = new Error(message);
+    err.status = status;
+    return err;
+}
+
+// ─── createTrade ──────────────────────────────────────────────────────────────
+
 module.exports.createTrade = async (user, tradeData) => {
-    try {
-        const { stockName, stockSymbol, buyPrice, buyDate, sellPrice, sellDate, originalQuantity, entryType, type } = tradeData;
+    const {
+        stockName, stockSymbol,
+        buyPrice, buyDate,
+        sellPrice, sellDate,
+        originalQuantity, entryType, type,
+    } = tradeData;
 
-        // Prepare the data to save
-        let tradeDataToSave = {
-            user: user._id,
-            stockName,
-            stockSymbol,
-            quantity: originalQuantity,
-            originalQuantity,
-            type, // 'long' or 'short'
-            entryType, // 'buy' or 'sell'
-            status: 'open', // Mark trade as open initially
-        };
+    const dataToSave = {
+        user: user._id,
+        stockName,
+        stockSymbol,
+        quantity: originalQuantity,
+        originalQuantity,
+        type,
+        entryType,
+        status: 'open',
+    };
 
-        // Set prices and dates based on entry type
-        if (entryType === 'buy') {
-            tradeDataToSave.buyPrice = buyPrice;
-            tradeDataToSave.buyDate = buyDate;
-        } else if (entryType === 'sell') {
-            tradeDataToSave.sellPrice = sellPrice;
-            tradeDataToSave.sellDate = sellDate;
-        }
-
-        // Create and save the new trade
-        const newTrade = await tradeModel.create(tradeDataToSave);
-        user.trades.push(newTrade._id);
-        await user.save();
-        return newTrade;
-
-    } catch (error) {
-        // console.log("Error in createTrade service:", error);
-        throw error;
+    if (entryType === 'buy') {
+        dataToSave.buyPrice = buyPrice;
+        dataToSave.buyDate = buyDate;
+    } else {
+        dataToSave.sellPrice = sellPrice;
+        dataToSave.sellDate = sellDate;
     }
+
+    const newTrade = await tradeModel.create(dataToSave);
+
+    user.trades.push(newTrade._id);
+    await user.save();
+
+    return newTrade;
 };
 
-// close a trade
+// ─── getAllTrades ─────────────────────────────────────────────────────────────
+
+module.exports.getAllTrades = async (userId) => {
+    return tradeModel
+        .find({ user: userId })
+        .sort({ createdAt: -1 })
+        .lean();
+};
+
+// ─── getTrade ─────────────────────────────────────────────────────────────────
+
+module.exports.getTrade = async (tradeId, userId) => {
+    const trade = await tradeModel.findOne({ _id: tradeId, user: userId }).lean();
+    if (!trade) throw httpError(404, 'Trade not found');
+    return trade;
+};
+
+// ─── closeTrade ───────────────────────────────────────────────────────────────
+
 module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity, userId) => {
 
+    // Ownership check built into the query
     const trade = await tradeModel.findOne({ _id: tradeId, user: userId });
-    if (!trade) {
-        throw { message: 'Trade not found' };
-    }
+    if (!trade) throw httpError(404, 'Trade not found');
 
     if (trade.status === 'closed') {
-        throw { message: 'Trade already closed' };
+        throw httpError(400, 'Trade is already closed');
     }
 
     if (closeQuantity > trade.quantity) {
-        throw { message: 'Close quantity is greater than trade quantity' };
+        throw httpError(400, 'Close quantity exceeds remaining trade quantity');
     }
 
+    // Set the closing price/date on the opposite side of the entry
     if (trade.entryType === 'buy') {
-        if (trade.buyPrice === null) {
-            throw { message: 'Buy price not set' };
-        }
-
-        if (['long', 'short'].includes(trade.type)) {
-            trade.sellPrice = closePrice;
-            trade.sellDate = closeDate;
-        } else {
-            throw { message: 'Invalid trade type. Must be "long" or "short".' };
-        }
-
-    }
-    else if (trade.entryType === 'sell') {
-        if (trade.sellPrice === null) {
-            throw { message: 'Sell price not set' };
-        }
-
-        if (['long', 'short'].includes(trade.type)) {
-            trade.buyPrice = closePrice;
-            trade.buyDate = closeDate;
-        } else {
-            throw { message: 'Invalid trade type. Must be "long" or "short".' };
-        }
-
-    }
-    else {
-        throw { message: 'Invalid entry type. Must be "buy" or "sell".' };
+        trade.sellPrice = closePrice;
+        trade.sellDate = closeDate;
+    } else {
+        trade.buyPrice = closePrice;
+        trade.buyDate = closeDate;
     }
 
     if (closeQuantity < trade.quantity) {
         trade.quantity -= closeQuantity;
         trade.status = 'open';
-    }
-    else {
+    } else {
         trade.quantity = 0;
         trade.status = 'closed';
     }
@@ -98,75 +100,77 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
     trade.calculateProfit(closeQuantity);
     await trade.save();
 
-    await userModel.findByIdAndUpdate(trade.user, {
-        $pull: { trades: trade._id },
-        $inc: { totalProfit: trade.finalProfit }
-    });
+    // Update user's total profit and remove trade reference if fully closed
+    if (trade.status === 'closed') {
+        await userModel.findByIdAndUpdate(trade.user, {
+            $pull: { trades: trade._id },
+            $inc: { totalProfit: trade.finalProfit },
+        });
+    }
 
     return trade;
-
 };
 
-// update a trade
+// ─── updateTrade ──────────────────────────────────────────────────────────────
+
 module.exports.updateTrade = async (tradeId, tradeData, userId) => {
 
-    try {
-        const trade = await tradeModel.findOne({ _id: tradeId, user: userId });
-        if (!trade) {
-            throw new Error('Trade not found');
+    const trade = await tradeModel.findOne({ _id: tradeId, user: userId });
+    if (!trade) throw httpError(404, 'Trade not found');
+
+    // Strip fields that must never be manually overwritten
+    const { profit, finalProfit, user, status, ...safeData } = tradeData;
+
+    Object.keys(safeData).forEach(key => {
+        if (trade[key] !== undefined) {
+            trade[key] = safeData[key];
         }
-        // console.log("in service tradeData:", tradeData);
-        const { profit, finalProfit, ...restOfTradeData } = tradeData;
+    });
 
-        // Update the trade
-        Object.keys(restOfTradeData).forEach(key => {
-            if (trade[key] !== undefined) {
-                trade[key] = restOfTradeData[key];
-            }
-        });
-        // Save the updated trade
-        await trade.save();
-        return trade;
-
-    } catch (error) {
-        console.error(error);
-        throw new Error(error.message || 'Error updating trade');
-    }
-}
-
-// get stock price
-module.exports.getStockPrice = async (symbol) => {
-    const headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json",
-        "Referer": `https://www.nseindia.com/get-quotes/equity?symbol=${symbol}`,
-    };
-
-    const url = `https://www.nseindia.com/api/quote-equity?symbol=${symbol.toUpperCase()}`;
-
-    try {
-        const session = axios.create({
-            headers,
-            withCredentials: true,
-            timeout: 5000 // 5 seconds timeout to avoid hanging requests
-        });
-
-        // First request to initiate session and set cookies
-        await session.get("https://www.nseindia.com");
-
-        // Second request to fetch the stock price
-        const response = await session.get(url);
-
-        // Check if we got a valid response and price info
-        if (response.status === 200 && response.data.priceInfo && typeof response.data.priceInfo.lastPrice === 'number') {
-            const price = response.data.priceInfo.lastPrice;
-            // console.log(`${symbol} current price is:`, price);
-            return price;
-        } else {
-            throw new Error(`Failed to fetch price for ${symbol}. Response doesn't contain valid data. URL: ${url}`);
-        }
-    } catch (err) {
-        throw err;
-    }
+    await trade.save();
+    return trade;
 };
 
+// ─── deleteTrade ──────────────────────────────────────────────────────────────
+
+module.exports.deleteTrade = async (tradeId, userId) => {
+
+    // Ownership check built into the query — only deletes if it belongs to this user
+    const deleted = await tradeModel.findOneAndDelete({ _id: tradeId, user: userId });
+    if (!deleted) throw httpError(404, 'Trade not found');
+
+    await userModel.findByIdAndUpdate(userId, {
+        $pull: { trades: tradeId },
+    });
+
+    return deleted;
+};
+
+// ─── getStockPrice ────────────────────────────────────────────────────────────
+
+module.exports.getStockPrice = async (symbol) => {
+    const upperSymbol = symbol.toUpperCase();
+    const url = `https://www.nseindia.com/api/quote-equity?symbol=${upperSymbol}`;
+
+    const session = axios.create({
+        headers: {
+            'User-Agent': 'Mozilla/5.0',
+            'Accept': 'application/json',
+            'Referer': `https://www.nseindia.com/get-quotes/equity?symbol=${upperSymbol}`,
+        },
+        withCredentials: true,
+        timeout: 5000,
+    });
+
+    // First request sets the session cookie NSE requires
+    await session.get('https://www.nseindia.com');
+
+    const response = await session.get(url);
+
+    const lastPrice = response.data?.priceInfo?.lastPrice;
+    if (typeof lastPrice !== 'number') {
+        throw httpError(502, `Could not fetch price for symbol "${upperSymbol}"`);
+    }
+
+    return lastPrice;
+};

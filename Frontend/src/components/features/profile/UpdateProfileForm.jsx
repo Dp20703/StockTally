@@ -136,7 +136,7 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
       {/* First Name */}
       <input
         name="firstName"
-        value={data.fullName.firstName || ""}
+        value={data?.fullName?.firstName || ""}
         onChange={handleChange}
         placeholder="First Name"
         className="st-input"
@@ -148,7 +148,7 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
       {/* Last Name */}
       <input
         name="lastName"
-        value={data.fullName.lastName || ""}
+        value={data?.fullName?.lastName || ""}
         onChange={handleChange}
         placeholder="Last Name"
         className="st-input"
@@ -157,7 +157,7 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
       {/* Username */}
       <input
         name="userName"
-        value={data.userName || ""}
+        value={data?.userName || ""}
         onChange={handleChange}
         placeholder="Username"
         className="st-input"
@@ -169,7 +169,7 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
       {/* Email */}
       <input
         name="email"
-        value={data.email || ""}
+        value={data?.email || ""}
         onChange={handleChange}
         placeholder="Email"
         className="st-input"

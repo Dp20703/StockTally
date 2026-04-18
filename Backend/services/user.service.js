@@ -79,7 +79,7 @@ module.exports.googleAuth = async ({ name, email, photo }) => {
             profilePic: photo || '',
             isGoogleUser: true,
             userName: email.split('@')[0],
-            fullName: { firstName: name },
+            fullName: { firstName: name, lastName: "" },
         });
         isNewUser = true;
     } else {

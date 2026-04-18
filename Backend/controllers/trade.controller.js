@@ -1,156 +1,117 @@
-const tradeService = require("../services/trade.service");
-const tradeModel = require("../models/trade.model");
+const tradeService = require('../services/trade.service');
 
-// this controller function will create a trade:
+// Forwards typed httpError statuses; falls back to 500
+function handleError(res, err, fallbackMessage) {
+    if (err.status) {
+        return res.status(err.status).json({ message: err.message });
+    }
+    console.error(fallbackMessage, err);
+    return res.status(500).json({ message: 'Internal server error.' });
+}
+
+// ─── createTrade ──────────────────────────────────────────────────────────────
+
 module.exports.createTrade = async (req, res) => {
     try {
         const { stockName, stockSymbol, originalQuantity, type, entryType, price, date } = req.body;
 
-        // Create the trade data object
         const tradeData = { stockName, stockSymbol, originalQuantity, type, entryType };
 
-        // Validate entryType and type in the controller
-        if (!['buy', 'sell'].includes(entryType)) {
-            return res.status(400).json({ error: 'Invalid entry type. Must be "buy" or "sell".' });
-        }
-
-        if (!['long', 'short'].includes(type)) {
-            return res.status(400).json({ error: 'Invalid type. Must be "long" or "short".' });
-        }
-
-        // Based on entryType, set either buy or sell price and date
         if (entryType === 'buy') {
             tradeData.buyPrice = price;
             tradeData.buyDate = date;
-        } else if (entryType === 'sell') {
+        } else {
             tradeData.sellPrice = price;
             tradeData.sellDate = date;
         }
 
-        // Call service to create the trade
         const trade = await tradeService.createTrade(req.user, tradeData);
+        return res.status(201).json({ success: true, message: 'Trade created successfully', trade });
 
-        // Return success response
-        res.status(201).json({ success: true, message: 'Trade created successfully', trade });
-
-    } catch (error) {
-        // // console.log("Error in createTrade controller:", error);
-        res.status(500).json({ error: error.message });
+    } catch (err) {
+        return handleError(res, err, 'createTrade error:');
     }
 };
 
-// this controller function will fetch all trades of a user:
+// ─── getAllTrades ─────────────────────────────────────────────────────────────
+
 module.exports.getAllTrades = async (req, res) => {
     try {
-        const trades = await tradeModel
-            .find({ user: req.user._id })
-            .sort({ createdAt: -1 })
-            .lean();
+        const trades = await tradeService.getAllTrades(req.user._id);
+        return res.status(200).json({ success: true, message: 'Fetched trades', trades });
 
-        res.status(200).json({
-            success: true,
-            message: 'Fetched trades for the logged-in user',
-            trades
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    } catch (err) {
+        return handleError(res, err, 'getAllTrades error:');
     }
-}
+};
 
-// this controller function will fetch the trade of a user using tradeid:
+// ─── getTrade ─────────────────────────────────────────────────────────────────
+
 module.exports.getTrade = async (req, res) => {
     try {
-        const { tradeId } = req.params;
-        const trade = await tradeModel.findOne({ _id: tradeId, user: req.user._id });
+        const trade = await tradeService.getTrade(req.params.tradeId, req.user._id);
+        return res.status(200).json({ success: true, message: 'Fetched trade', trade });
 
-        res.status(200).json({
-            success: true,
-            message: 'Fetched trade for the logged-in user',
-            user: req.user,
-            trade
-        });
-    } catch (error) {
-        // console.log("Error is get_trade controller:", error);
-        res.status(500).json({ error: error.message });
+    } catch (err) {
+        return handleError(res, err, 'getTrade error:');
     }
-}
+};
 
-// this controller function will close a trade:
+// ─── closeTrade ───────────────────────────────────────────────────────────────
+
 module.exports.closeTrade = async (req, res) => {
     try {
         const { closePrice, closeDate, closeQuantity } = req.body;
-        const userId = req.user._id;
-        const { tradeId } = req.params;
+        const trade = await tradeService.closeTrade(
+            req.params.tradeId,
+            closePrice,
+            closeDate,
+            closeQuantity,
+            req.user._id
+        );
+        return res.status(200).json({ message: 'Trade closed successfully', trade });
 
-        const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity, userId);
-
-        res.status(200).json({
-            message: "Trade closed successfully",
-            trade: closeTrade
-        })
-
-    } catch (error) {
-        // console.log("Error in closeTrade controller:", error);
-        res.status(500).json({ error: error.message });
-
+    } catch (err) {
+        return handleError(res, err, 'closeTrade error:');
     }
-}
+};
 
-// this controller function will udpate a trade:
+// ─── updateTrade ──────────────────────────────────────────────────────────────
+
 module.exports.updateTrade = async (req, res) => {
     try {
-        const { tradeId } = req.params;
-        const tradeData = req.body;
-        const userId = req.user._id;
-        const updatedTrade = await tradeService.updateTrade(tradeId, tradeData, userId);
-        return res.status(200).json({
-            success: true,
-            message: 'Trade updated successfully',
-            data: updatedTrade,
-        });
+        const updatedTrade = await tradeService.updateTrade(
+            req.params.tradeId,
+            req.body,
+            req.user._id
+        );
+        return res.status(200).json({ success: true, message: 'Trade updated successfully', data: updatedTrade });
 
+    } catch (err) {
+        return handleError(res, err, 'updateTrade error:');
     }
-    catch (error) {
-        // console.log("Error in updateTrade controller:", error);
-        res.status(500).json({ error: error.message });
-    }
-}
+};
 
-// this controller function will delete a trade:
+// ─── deleteTrade ──────────────────────────────────────────────────────────────
+
 module.exports.deleteTrade = async (req, res) => {
-    const { tradeId } = req.params;
-
     try {
-        // Use tradeId in the condition to delete the trade
-        const deletedTrade = await tradeModel.deleteOne({ _id: tradeId });
+        await tradeService.deleteTrade(req.params.tradeId, req.user._id);
+        return res.status(200).json({ message: 'Trade deleted successfully' });
 
-        if (!deletedTrade.deletedCount) {
-            return res.status(404).json({ message: "Trade not found" });
-        }
-
-        // Remove the trade ID from user's trades
-        req.user.trades.pull(tradeId);
-        await req.user.save();
-
-        res.status(200).json({ message: "Trade deleted successfully", deletedTrade: deletedTrade });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message || 'Error deleting trade' });
+    } catch (err) {
+        return handleError(res, err, 'deleteTrade error:');
     }
-}
+};
 
-// this controller function will fetch realtime price of a stock:
+// ─── getStockPrice ────────────────────────────────────────────────────────────
+
 module.exports.getStockPrice = async (req, res) => {
     try {
-        const { stockSymbol } = req.params;
-        const stockPrice = await tradeService.getStockPrice(stockSymbol);
-        res.status(200).json({
-            success: true,
-            message: 'Fetched stock price',
-            'price': stockPrice
-        });
-    } catch (error) {
-        // // console.log("Error in getStockPrice controller:", error);
-        res.status(500).json({ error: error.message });
+        const price = await tradeService.getStockPrice(req.params.stockSymbol);
+        return res.status(200).json({ success: true, message: 'Fetched stock price', price });
+
+    } catch (err) {
+        return handleError(res, err, 'getStockPrice error:');
     }
-}
+};

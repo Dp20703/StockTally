@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       .get("/users/profile")
       .then((res) => {
         setUser(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         localStorage.removeItem("token");

@@ -31,7 +31,10 @@ export default function Profile() {
       setUser(res?.data?.user);
       setUpdateModal(false);
 
-      toast.success("Profile updated");
+      toast.success("Profile updated", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } catch (err) {
       toast.error(err?.response?.data?.message || "Update failed");
     } finally {
@@ -43,7 +46,10 @@ export default function Profile() {
     try {
       const res = await api.delete("/users/delete_profile_pic");
       setUser(res?.data?.user);
-      toast.success("Profile picture removed");
+      toast.success("Profile picture removed", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } catch {
       toast.error("Failed to delete profile picture");
     }
