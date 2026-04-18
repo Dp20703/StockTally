@@ -57,7 +57,7 @@
 ### 📋 Watchlist
 
 <p align="center">
-  <img src="./screenshots/watchlist.png" width="800"/>
+  <img src="./Frontend/public/images/screenshots/watchlist.png" width="800"/>
 </p>
 
 ---
