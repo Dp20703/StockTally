@@ -1,39 +1,44 @@
 const userService = require('../services/user.service');
 const userModel = require('../models/user.model');
 const BlacklistTokenModel = require('../models/blacklistToken.model');
-const { cloudinary } = require('../middlewares/cloudinary');
 const { sendWelcomeEmail } = require('../utils/mailer');
 
-//this controller function will register the user using required fields:
+const COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+};
+
+function handleError(res, err, fallbackMessage) {
+    if (err.status) {
+        return res.status(err.status).json({ message: err.message });
+    }
+    console.error(fallbackMessage, err);
+    return res.status(500).json({ message: 'Internal server error.' });
+}
+
+// ─── registerUser ─────────────────────────────────────────────────────────────
+
 module.exports.registerUser = async (req, res) => {
     try {
-        // Extract user details
         const { userName, fullName, email, password } = req.body;
 
-        // Check if user already exist
         const [existingEmail, existingUsername] = await Promise.all([
             userModel.findOne({ email }),
             userModel.findOne({ userName }),
         ]);
 
-        if (existingEmail) {
-            return res.status(409).json({ message: 'Email already exists' });
-        }
+        if (existingEmail) return res.status(409).json({ message: 'Email already exists' });
+        if (existingUsername) return res.status(409).json({ message: 'Username already exists' });
 
-        if (existingUsername) {
-            return res.status(410).json({ message: 'Username already exists' });
-        }
-
-        //converting the password into hashPassword:
         const hashPassword = await userModel.hashPassword(password);
 
-        //creating user using userService:
         const user = await userService.createUser({
             userName,
             firstName: fullName.firstName,
             lastName: fullName.lastName,
             email,
-            password: hashPassword
+            password: hashPassword,
         });
 
         sendWelcomeEmail({
@@ -42,154 +47,80 @@ module.exports.registerUser = async (req, res) => {
             fullName: `${user.fullName.firstName} ${user.fullName.lastName}`,
             userName: user.userName,
             email: user.email,
-        }).catch((err) =>
-            console.error("[Mailer] Welcome email failed:", err.message)
-        );
+        }).catch(err => console.error('[Mailer] Welcome email failed:', err.message));
 
-        // console.log("user:", user);
+        const token = user.generateAuthToken();
+        res.cookie('token', token, COOKIE_OPTIONS);
 
-        //generating a token using user's id: 
-        const token = await user.generateAuthToken();
-
-        //set the token as a cookie
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "strict"
-        });
-
-        /* ── Strip password before sending ── */
         const { password: _pw, ...safeUser } = user.toObject();
-
         return res.status(201).json({
-            message: "Registration successful! Welcome to StockTally.",
+            message: 'Registration successful! Welcome to StockTally.',
             token,
             user: safeUser,
         });
 
-    } catch (error) {
-        console.error("Registration error:", error);
-        return res.status(500).json({ message: "Internal server error." });
-    }
-
-}
-
-// this controller function will login the user using email and password:
-module.exports.loginUser = async (req, res) => {
-    try {  //extracting email and password from the request body:
-        const { email, password } = req.body;
-        //login user using userService:
-        const { user, token } = await userService.loginUser(email, password);
-
-        //set the token as a cookie
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-        });
-
-        //remove the password from the response
-        user.password = undefined;
-
-        //return the response
-        res.status(200).json({ message: "Login successful", token, user });
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message || "Login failed"
-        });
-    }
-}
-// this controller function will login the user using googleAuth:
-module.exports.googleAuthController = async (req, res) => {
-    try {
-        const { name, email, photo } = req.body;
-
-        if (!email || !name) {
-            return res.status(400).json({
-                message: "Name and Email are required",
-            });
-        }
-
-        let user = await userModel.findOne({ email });
-
-        // If user doesn't exist → create
-        if (!user) {
-            user = await userModel.create({
-                email,
-                profilePic: photo,
-                isGoogleUser: true,
-                userName: email.split("@")[0],
-                fullName: {
-                    firstName: name,
-                },
-            });
-
-            // Send welcome email (safe + awaited)
-            try {
-                const fullName = user.fullName.lastName
-                    ? `${user.fullName.firstName} ${user.fullName.lastName}`
-                    : user.fullName.firstName;
-
-                await sendWelcomeEmail({
-                    to: user.email,
-                    firstName: user.fullName.firstName,
-                    fullName,
-                    userName: user.userName,
-                    email: user.email,
-                });
-            } catch (err) {
-                console.error("[Mailer] Welcome email failed:", err.message);
-            }
-
-        } else {
-            // Update profile pic if changed
-            user.profilePic = photo || user.profilePic;
-            await user.save();
-        }
-
-        // Generate token
-        const token = user.generateAuthToken();
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-        });
-
-        // ✅ Remove sensitive data
-        user.password = undefined;
-
-        return res.status(200).json({
-            message: "Google login successful",
-            token,
-            user,
-        });
-
-    } catch (error) {
-        console.error("Google Auth Error:", error);
-
-        return res.status(500).json({
-            message: error.message || "Google login failed",
-        });
+    } catch (err) {
+        return handleError(res, err, 'Registration error:');
     }
 };
 
-//this controller function will get the user profile using user's id:
-module.exports.getUserProfile = async (req, res) => {
-    const user = req.user;
-    return res.status(200).json(user);
-}
+// ─── loginUser ────────────────────────────────────────────────────────────────
 
-//this controller function will update the user profile:
+module.exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const { user, token } = await userService.loginUser(email, password);
+
+        res.cookie('token', token, COOKIE_OPTIONS);
+        user.password = undefined;
+
+        return res.status(200).json({ message: 'Login successful', token, user });
+
+    } catch (err) {
+        return handleError(res, err, 'Login error:');
+    }
+};
+
+// ─── googleAuthController ─────────────────────────────────────────────────────
+
+module.exports.googleAuthController = async (req, res) => {
+    try {
+        const { name, email, photo } = req.body;
+        const { user, token, isNewUser } = await userService.googleAuth({ name, email, photo });
+
+        if (isNewUser) {
+            const fullName = user.fullName.lastName
+                ? `${user.fullName.firstName} ${user.fullName.lastName}`
+                : user.fullName.firstName;
+
+            sendWelcomeEmail({
+                to: user.email,
+                firstName: user.fullName.firstName,
+                fullName,
+                userName: user.userName,
+                email: user.email,
+            }).catch(err => console.error('[Mailer] Welcome email failed:', err.message));
+        }
+
+        res.cookie('token', token, COOKIE_OPTIONS);
+        return res.status(200).json({ message: 'Google login successful', token, user });
+
+    } catch (err) {
+        return handleError(res, err, 'Google auth error:');
+    }
+};
+
+// ─── getUserProfile ───────────────────────────────────────────────────────────
+
+module.exports.getUserProfile = (req, res) => {
+    return res.status(200).json(req.user);
+};
+
+// ─── updateProfile ────────────────────────────────────────────────────────────
+
 module.exports.updateProfile = async (req, res) => {
     try {
         const { userName, email, fullName } = req.body;
-
-        if (!userName || !email || !fullName?.firstName) {
-            return res.status(400).json({
-                message: "Username, email, and first name are required",
-            });
-        }
 
         const updatedUser = await userService.updateProfile({
             userId: req.user._id,
@@ -200,41 +131,35 @@ module.exports.updateProfile = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: "Profile updated successfully",
+            message: 'Profile updated successfully',
             user: updatedUser,
         });
 
     } catch (err) {
-        // Surface known conflict errors as 409, everything else as 500
-        if (err.status) {
-            return res.status(err.status).json({ message: err.message });
-        }
-        console.error("Update profile error:", err);
-        return res.status(500).json({ message: "Something went wrong" });
+        return handleError(res, err, 'Update profile error:');
     }
-}
-// this controller function will delete the user profile pic:
+};
+
+// ─── deleteProfilePic ─────────────────────────────────────────────────────────
+
 module.exports.deleteProfilePic = async (req, res) => {
     try {
         const user = await userService.deleteProfilePic(req.user._id);
 
         return res.status(200).json({
-            message: "Profile picture deleted successfully",
+            message: 'Profile picture deleted successfully',
             user,
         });
 
     } catch (err) {
-        if (err.status) {
-            return res.status(err.status).json({ message: err.message });
-        }
-        console.error("Delete profile pic error:", err);
-        return res.status(500).json({ message: "Failed to delete profile picture" });
+        return handleError(res, err, 'Delete profile pic error:');
     }
 };
 
-//this controller function will logout the user:
+// ─── logoutUser ───────────────────────────────────────────────────────────────
+
 module.exports.logoutUser = async (req, res) => {
-    const token = req.cookies?.token || req.headers?.authorization?.split(" ")[1];
+    const token = req.cookies?.token || req.headers?.authorization?.split(' ')[1];
 
     try {
         if (token) {
@@ -242,11 +167,11 @@ module.exports.logoutUser = async (req, res) => {
             if (!exists) await BlacklistTokenModel.create({ token });
         }
 
-        res.clearCookie("token");
-        return res.status(200).json({ message: "User logout successful" });
+        res.clearCookie('token', COOKIE_OPTIONS);
+        return res.status(200).json({ message: 'Logout successful' });
 
-    } catch (error) {
-        console.error("[Auth] Logout error:", error);
-        return res.status(500).json({ message: "Error logging out" });
+    } catch (err) {
+        console.error('[Auth] Logout error:', err);
+        return res.status(500).json({ message: 'Error logging out' });
     }
 };
