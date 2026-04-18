@@ -33,25 +33,25 @@
 ### 🏠 Home
 
 <p align="center">
-  <img src="./screenshots/home.png" width="800"/>
+  <img src="./Frontend/public/images/screenshots/home.png" width="800"/>
 </p>
 
 ### 📝 Login
 
 <p align="center">
-  <img src="./screenshots/login.png" width="800"/>
+  <img src="./Frontend/public/images/screenshots/login.png" width="800"/>
 </p>
 
 ### 📝 Register
 
 <p align="center">
-  <img src="./screenshots/signup.png" width="800"/>
+  <img src="./Frontend/public/images/screenshots/signup.png" width="800"/>
 </p>
 
 ### 💼 Trade Dashboard
 
 <p align="center">
-  <img src="./screenshots/dashboard.png" width="800"/>
+  <img src="./Frontend/public/images/screenshots/dashboard.png" width="800"/>
 </p>
 
 ### 📋 Watchlist
