@@ -11,12 +11,15 @@ module.exports.registerUser = async (req, res) => {
         const { userName, fullName, email, password } = req.body;
 
         // Check if user already exist
-        const existingEmail = await userModel.findOne({ email });
+        const [existingEmail, existingUsername] = await Promise.all([
+            userModel.findOne({ email }),
+            userModel.findOne({ userName }),
+        ]);
+
         if (existingEmail) {
             return res.status(409).json({ message: 'Email already exists' });
         }
 
-        const existingUsername = await userModel.findOne({ userName });
         if (existingUsername) {
             return res.status(410).json({ message: 'Username already exists' });
         }
@@ -65,7 +68,7 @@ module.exports.registerUser = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Registration error:", err);
+        console.error("Registration error:", error);
         return res.status(500).json({ message: "Internal server error." });
     }
 
@@ -77,11 +80,12 @@ module.exports.loginUser = async (req, res) => {
         const { email, password } = req.body;
         //login user using userService:
         const { user, token } = await userService.loginUser(email, password);
+
         //set the token as a cookie
-        res.cookie('token', token, {
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict"
+            secure: true,
+            sameSite: "none",
         });
 
         //remove the password from the response
@@ -181,89 +185,19 @@ module.exports.updateProfile = async (req, res) => {
     try {
         const { userName, email, fullName } = req.body;
 
-        // ✅ Validate required fields
         if (!userName || !email || !fullName?.firstName) {
             return res.status(400).json({
                 message: "Username, email, and first name are required",
             });
         }
 
-        // ✅ Normalize input (IMPORTANT)
-        const normalizedEmail = email.toLowerCase().trim();
-        const normalizedUsername = userName.trim();
-
-        const updateData = {
-            userName: normalizedUsername,
-            email: normalizedEmail,
-            fullName: {
-                firstName: fullName.firstName.trim(),
-                lastName: fullName?.lastName?.trim() || "",
-            },
-        };
-
-        // ✅ Get current user
-        const existingUser = await userModel.findById(req.user._id);
-
-        if (!existingUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        // 🖼️ PROFILE PIC HANDLING
-        if (req.file && existingUser.profilePic) {
-            try {
-                const urlParts = existingUser.profilePic.split("/");
-                const publicIdWithExt = urlParts[urlParts.length - 1];
-                const publicId =
-                    "profile_pics/" + publicIdWithExt.split(".")[0];
-
-                await cloudinary.uploader.destroy(publicId);
-                console.log("Old profile pic deleted:", publicId);
-            } catch (err) {
-                console.error("Cloudinary delete error:", err.message);
-            }
-        }
-
-        if (req.file) {
-            updateData.profilePic = req.file.path;
-        }
-
-        // 🔍 DUPLICATE CHECKS
-
-        // ✅ Check email ONLY if changed
-        if (normalizedEmail !== existingUser.email) {
-            const existingEmail = await userModel.findOne({
-                email: normalizedEmail,
-                _id: { $ne: req.user._id },
-            });
-
-            if (existingEmail) {
-                return res.status(409).json({
-                    message: "Email already exists",
-                });
-            }
-        }
-
-        // ✅ Check username ONLY if changed
-        if (normalizedUsername !== existingUser.userName) {
-            const existingUsername = await userModel.findOne({
-                userName: normalizedUsername,
-                _id: { $ne: req.user._id },
-            });
-
-            if (existingUsername) {
-                return res.status(409).json({
-                    message: "Username already exists",
-                });
-            }
-        }
-
-        // ✅ UPDATE USER
-
-        const updatedUser = await userModel.findByIdAndUpdate(
-            req.user._id,
-            updateData,
-            { new: true }
-        );
+        const updatedUser = await userService.updateProfile({
+            userId: req.user._id,
+            userName,
+            email,
+            fullName,
+            file: req.file ?? null,
+        });
 
         return res.status(200).json({
             message: "Profile updated successfully",
@@ -271,34 +205,18 @@ module.exports.updateProfile = async (req, res) => {
         });
 
     } catch (err) {
+        // Surface known conflict errors as 409, everything else as 500
+        if (err.status) {
+            return res.status(err.status).json({ message: err.message });
+        }
         console.error("Update profile error:", err);
-
-        return res.status(500).json({
-            message: "Something went wrong",
-            error: err.message,
-        });
+        return res.status(500).json({ message: "Something went wrong" });
     }
 }
 // this controller function will delete the user profile pic:
 module.exports.deleteProfilePic = async (req, res) => {
     try {
-        const user = await userModel.findById(req.user._id);
-
-        if (!user || !user.profilePic) {
-            return res.status(400).json({ message: "No profile picture to delete" });
-        }
-
-        // Extract public_id from Cloudinary URL
-        const urlParts = user.profilePic.split('/');
-        const publicIdWithExt = urlParts[urlParts.length - 1]; // e.g. abc123.jpg
-        const publicId = 'profile_pics/' + publicIdWithExt.split('.')[0];
-
-        // Delete from Cloudinary
-        await cloudinary.uploader.destroy(publicId);
-
-        // Remove profilePic from DB
-        user.profilePic = '';
-        await user.save();
+        const user = await userService.deleteProfilePic(req.user._id);
 
         return res.status(200).json({
             message: "Profile picture deleted successfully",
@@ -306,8 +224,11 @@ module.exports.deleteProfilePic = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Failed to delete profile picture", error: err.message });
+        if (err.status) {
+            return res.status(err.status).json({ message: err.message });
+        }
+        console.error("Delete profile pic error:", err);
+        return res.status(500).json({ message: "Failed to delete profile picture" });
     }
 };
 

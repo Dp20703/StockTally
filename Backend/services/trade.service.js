@@ -41,9 +41,9 @@ module.exports.createTrade = async (user, tradeData) => {
 };
 
 // close a trade
-module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity) => {
+module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity, userId) => {
 
-    const trade = await tradeModel.findById(tradeId);
+    const trade = await tradeModel.findOne({ _id: tradeId, user: userId });
     if (!trade) {
         throw { message: 'Trade not found' };
     }
@@ -108,10 +108,10 @@ module.exports.closeTrade = async (tradeId, closePrice, closeDate, closeQuantity
 };
 
 // update a trade
-module.exports.updateTrade = async (tradeId, tradeData) => {
+module.exports.updateTrade = async (tradeId, tradeData, userId) => {
 
     try {
-        const trade = await tradeModel.findById(tradeId);
+        const trade = await tradeModel.findOne({ _id: tradeId, user: userId });
         if (!trade) {
             throw new Error('Trade not found');
         }

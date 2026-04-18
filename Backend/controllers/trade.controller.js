@@ -61,7 +61,7 @@ module.exports.getAllTrades = async (req, res) => {
 module.exports.getTrade = async (req, res) => {
     try {
         const { tradeId } = req.params;
-        const trade = await tradeModel.find({ _id: tradeId });
+        const trade = await tradeModel.findOne({ _id: tradeId, user: req.user._id });
 
         res.status(200).json({
             success: true,
@@ -79,9 +79,10 @@ module.exports.getTrade = async (req, res) => {
 module.exports.closeTrade = async (req, res) => {
     try {
         const { closePrice, closeDate, closeQuantity } = req.body;
+        const userId = req.user._id;
         const { tradeId } = req.params;
 
-        const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity);
+        const closeTrade = await tradeService.closeTrade(tradeId, closePrice, closeDate, closeQuantity, userId);
 
         res.status(200).json({
             message: "Trade closed successfully",
@@ -100,7 +101,8 @@ module.exports.updateTrade = async (req, res) => {
     try {
         const { tradeId } = req.params;
         const tradeData = req.body;
-        const updatedTrade = await tradeService.updateTrade(tradeId, tradeData);
+        const userId = req.user._id;
+        const updatedTrade = await tradeService.updateTrade(tradeId, tradeData, userId);
         return res.status(200).json({
             success: true,
             message: 'Trade updated successfully',
@@ -122,13 +124,13 @@ module.exports.deleteTrade = async (req, res) => {
         // Use tradeId in the condition to delete the trade
         const deletedTrade = await tradeModel.deleteOne({ _id: tradeId });
 
-        // Remove the trade ID from user's trades
-        req.user.trades.pull(tradeId);
-        await req.user.save();
-
         if (!deletedTrade.deletedCount) {
             return res.status(404).json({ message: "Trade not found" });
         }
+
+        // Remove the trade ID from user's trades
+        req.user.trades.pull(tradeId);
+        await req.user.save();
 
         res.status(200).json({ message: "Trade deleted successfully", deletedTrade: deletedTrade });
     } catch (error) {

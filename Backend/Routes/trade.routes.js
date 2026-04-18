@@ -88,8 +88,8 @@ router.put('/update/:tradeId', authMiddleware.authUser,
 
 // trades/delete/:tradeId
 router.delete('/delete/:tradeId', authMiddleware.authUser, tradeController.deleteTrade);
-module.exports = router;
-
 
 // trades/price/:stockSymbol
 router.get('/price/:stockSymbol', authMiddleware.authUser, tradeController.getStockPrice);
+
+module.exports = router;

@@ -8,9 +8,9 @@ const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const userRoutes = require('./Routes/user.routes');
-const tradeRoutes = require('./Routes/trade.routes');
-const watchlistRoutes = require('./Routes/watchlist.routes');
+const userRoutes = require('./routes/user.routes');
+const tradeRoutes = require('./routes/trade.routes');
+const watchlistRoutes = require('./routes/watchlist.routes');
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,

@@ -19,7 +19,7 @@ module.exports.createWatchlist = async (req, res) => {
 
         const watchlist = await watchlistService.createWatchlist({ watchlistName, user: req.user });
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: 'Watchlist created successfully',
             watchlist
@@ -35,8 +35,7 @@ module.exports.createWatchlist = async (req, res) => {
 
 // get watchlist
 module.exports.getWatchlist = async (req, res) => {
-    const user = await userModel.findById(req.user._id);
-    const items = await watchlistModel.find({ _id: { $in: user.watchlists } }).lean();
+    const items = await watchlistModel.find({ _id: { $in: req.user.watchlists } });
     return res.json(items)
 }
 
@@ -63,7 +62,7 @@ module.exports.deleteWatchlist = async (req, res) => {
             return res.status(404).json({ error: 'Watchlist not found!' });
         }
 
-        res.json({ message: 'Watchlist deleted', deleted: result });
+        return res.json({ message: 'Watchlist deleted', deleted: result });
 
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -76,11 +75,11 @@ module.exports.addStocks = async (req, res) => {
     const { stocks, watchlistId } = req.body;
 
     if (!Array.isArray(stocks) || stocks.length === 0) {
-        res.status(400).json({ error: 'Stocks must be a not-empty array.' })
+        return res.status(400).json({ error: 'Stocks must be a not-empty array.' })
     }
 
     if (!watchlistId || typeof watchlistId !== 'string' || watchlistId.trim() === '') {
-        res.status(400).json({ error: 'WatchlistId is required and cannot be empty.' })
+        return res.status(400).json({ error: 'WatchlistId is required and cannot be empty.' })
     }
     try {
         const updatedWatchlist = await watchlistService.addStocks({
@@ -88,7 +87,7 @@ module.exports.addStocks = async (req, res) => {
             stocks,
             user: req.user
         })
-        res.status(200).json({ success: true, message: 'stocks added to watchlist successfully', watchlist: updatedWatchlist })
+        return res.status(200).json({ success: true, message: 'stocks added to watchlist successfully', watchlist: updatedWatchlist })
     }
     catch (error) {
         console.log("Error is adding stocks to watchlist:", error);
@@ -114,7 +113,7 @@ module.exports.deleteStock = async (req, res) => {
             return res.status(404).json({ error: 'Stock not found in watchlist' });
         }
 
-        res.json({ success: true, message: 'Stock removed successfully.', watchlist: result });
+        return res.json({ success: true, message: 'Stock removed successfully.', watchlist: result });
 
     } catch (error) {
         console.error("Error removing stock:", error);
