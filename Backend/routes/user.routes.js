@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const { validateRequest } = require('../middlewares/validateRequest');
+const multer = require('multer');
 const upload = require('../middlewares/multer');
 const { validateRegister, validateLogin, validateGoogleAuth, validateUpdateProfile, } = require('../validators/user.validators');
 
