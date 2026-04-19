@@ -324,9 +324,6 @@ const AboutPage = () => {
               </p>
 
               <div className="flex gap-3 justify-center flex-wrap">
-                <Link to="/signup" className="st-btn-green px-8 py-2.5 text-md">
-                  Create Free Account
-                </Link>
                 <Link
                   to="/trade/dashboard"
                   className="st-btn-ghost px-8 py-2.5 text-md"

@@ -15,9 +15,9 @@ const Footer = () => {
 
         {/* Text */}
         <p className="text-text-muted text-xs text-center">
-          Built with the MERN stack. Designed for traders.
+          Designed for traders.
         </p>
-
+        
         {/* Links */}
         <div className="flex gap-4 flex-wrap justify-center">
           <Link

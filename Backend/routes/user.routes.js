@@ -4,7 +4,7 @@ const userController = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const { validateRequest } = require('../middlewares/validateRequest');
 const upload = require('../middlewares/multer');
-const { validateRegister, validateLogin, validateGoogleAuth, validateUpdateProfile, } = require('../middlewares/user.validators');
+const { validateRegister, validateLogin, validateGoogleAuth, validateUpdateProfile, } = require('../validators/user.validators');
 
 // POST /users/register
 router.post('/register',
@@ -36,7 +36,16 @@ router.get('/profile',
 // PUT /users/update_profile
 router.put('/update_profile',
     authMiddleware.authUser,
-    upload.single('profilePic'),
+    (req, res, next) => {
+        upload.single('profilePic')(req, res, (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(400).json({ error: 'File too large. Max 5MB allowed.' });
+            } else if (err) {
+                return res.status(400).json({ error: err.message });
+            }
+            next();
+        });
+    },
     validateUpdateProfile,
     validateRequest,
     userController.updateProfile

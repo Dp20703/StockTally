@@ -10,10 +10,16 @@ function httpError(status, message) {
 }
 
 function extractPublicId(url) {
-    const parts = url.split('/');
-    const fileWithExt = parts[parts.length - 1];
-    return 'profile_pics/' + fileWithExt.split('.')[0];
+    if (!url || typeof url !== 'string') return null;
+
+    try {
+        const fileName = url.split('/').pop().split('.')[0];
+        return `stocktally/profile_pics/${fileName}`;
+    } catch {
+        return null;
+    }
 }
+
 
 async function destroyCloudinaryImage(url) {
     try {

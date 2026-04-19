@@ -1,5 +1,3 @@
-// ─── Routes/trade.routes.js ───────────────────────────────────────────────────
-
 const express = require('express');
 const router = express.Router();
 const tradeController = require('../controllers/trade.controller');
@@ -9,7 +7,7 @@ const {
   validateCreateTrade,
   validateCloseTrade,
   validateUpdateTrade,
-} = require('../middlewares/trade.validators');
+} = require('../validators/trade.validators');
 
 // POST /trades/create
 router.post('/create',

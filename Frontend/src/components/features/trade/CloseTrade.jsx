@@ -20,7 +20,7 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
     const fetchData = async () => {
       try {
         const { data } = await api.get(`/trades/get_trade/${tradeId}`);
-        setTradeData(data?.trade[0]);
+        setTradeData(data?.trade);
       } catch (err) {
         toast.error("Failed to fetch trade data");
       }

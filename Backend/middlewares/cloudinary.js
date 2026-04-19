@@ -10,8 +10,13 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: 'profile_pics',
-        allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+        folder: 'stocktally/profile_pics',
+        resource_type: 'image',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [
+            { width: 400, height: 400, crop: 'fill', gravity: 'face' },
+            { quality: 'auto', fetch_format: 'auto' },
+        ],
     },
 });
 

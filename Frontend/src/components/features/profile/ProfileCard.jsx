@@ -25,7 +25,7 @@ const ProfileCard = ({ user, onEdit, onDeletePic }) => {
       <div className="text-center">
         <p className="text-lg">{user?.userName}</p>
         <p className="text-sm text-gray-500">
-          {user?.fullName?.firstName} {user?.fullName?.lastName || "hello "}
+          {user?.fullName?.firstName} {user?.fullName?.lastName || ""}
         </p>
         <p className="text-sm text-gray-400">{user?.email}</p>
       </div>
