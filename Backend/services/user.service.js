@@ -1,5 +1,5 @@
 const userModel = require('../models/user.model');
-const { cloudinary } = require('../middlewares/cloudinary');
+const { cloudinary } = require('../config/cloudinary');
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
