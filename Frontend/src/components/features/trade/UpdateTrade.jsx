@@ -12,8 +12,8 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await api.get(`/trades/get_trade/${tradeId}`);
-      setTradeData(res?.data?.trade[0]);
+      const { data } = await api.get(`/trades/get_trade/${tradeId}`);
+      setTradeData(data?.trade);
     };
     fetchData();
   }, [tradeId]);

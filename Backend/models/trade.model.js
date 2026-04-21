@@ -15,6 +15,7 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: [true, "Stock symbol is required."],
         trim: true,
+        uppercase: true,
     },
     quantity: {
         type: Number,

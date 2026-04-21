@@ -79,7 +79,7 @@ export default function CreateTrade({ setModal }) {
           <input
             type="text"
             name="stockSymbol"
-            value={tradeData.stockSymbol}
+            value={tradeData.stockSymbol.toUpperCase()}
             onChange={handleChange}
             className="st-input"
             placeholder="Ex: RELIANCE"
