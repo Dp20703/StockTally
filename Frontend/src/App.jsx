@@ -12,12 +12,14 @@ import TopStories from "pages/TopStoriesPage";
 import Watchlist from "pages/WatchlistPage";
 import AboutPage from "pages/AboutPage";
 import ProtectedLayout from "components/layout/ProtectedLayout";
+import AnalyticsTracker from "utils/AnalyticsTracker";
 
 const App = () => {
   return (
     <>
       <ToastContainer />
       <BrowserRouter>
+        <AnalyticsTracker />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

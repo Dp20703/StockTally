@@ -1,5 +1,5 @@
 import React from "react";
-import GetStockPrice from "../../../utils/GetStockPrice";
+import GetStockPrice from "utils/GetStockPrice";
 import { StatusBadge } from "components/ui";
 import { profitColor } from "theme/theme";
 

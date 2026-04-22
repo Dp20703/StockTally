@@ -3,7 +3,6 @@ import CalUnRealProfit from './CalUnRealProfit';
 import api from 'services/apiClient';
 import { DotLoader } from '../components/ui';
 
-
 const GetStockPrice = ({ stockSymbol, quantity = 0, buyPrice = 0, sellPrice = 0 }) => {
     const [stockPrice, setStockPrice] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -25,27 +24,38 @@ const GetStockPrice = ({ stockSymbol, quantity = 0, buyPrice = 0, sellPrice = 0 
 
     useEffect(() => {
         fetchStockPrice();
-    }, [fetchStockPrice])
-
+    }, [fetchStockPrice]);
 
     if (loading) return <DotLoader />;
 
-    if (error) return <span style={styles.muted}>Failed to fetch</span>;
+    if (error) return <span className="text-xs text-text-muted">Failed to fetch</span>;
 
-    if (!stockPrice) return <span style={styles.muted}>N/A</span>;
+    if (!stockPrice) return <span className="text-xs text-text-muted">N/A</span>;
 
+    const isProfit = stockPrice > buyPrice;
     return (
         buyPrice === 0 ? (
-            <span style={styles.value}>₹ {stockPrice}</span>
+            <span className="st-mono text-text-primary">
+                ₹ {stockPrice}
+            </span>
         ) : (
-            <div style={styles.wrapper}>
-                <div style={styles.item}>
-                    <span style={styles.label}>Current</span>
-                    <span style={styles.value}>₹ {stockPrice}</span>
+            <div className="flex items-center gap-2.5">
+
+                <div className="flex flex-col gap-0.5">
+                    <span className="text-2xs uppercase tracking-wider text-text-hint">
+                        Current
+                    </span>
+                    <span className={`st-mono ${isProfit ? 'st-profit' : 'st-loss'}`}>
+                        ₹ {stockPrice}
+                    </span>
                 </div>
-                <div style={styles.divider} />
-                <div style={styles.item}>
-                    <span style={styles.label}>Unrealized</span>
+
+                <div className="w-px h-7 bg-bg-border" />
+
+                <div className="flex flex-col gap-0.5">
+                    <span className="text-2xs uppercase tracking-wider text-text-hint">
+                        Unrealized
+                    </span>
                     <CalUnRealProfit
                         stockPrice={stockPrice}
                         quantity={quantity}
@@ -53,42 +63,10 @@ const GetStockPrice = ({ stockSymbol, quantity = 0, buyPrice = 0, sellPrice = 0 
                         sellPrice={sellPrice}
                     />
                 </div>
-            </div >
+
+            </div>
         )
     );
-};
-
-const styles = {
-    wrapper: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-    },
-    item: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-    },
-    label: {
-        fontSize: 10,
-        color: '#475569',
-        letterSpacing: '0.06em',
-        textTransform: 'uppercase',
-    },
-    value: {
-        fontSize: 13,
-        color: '#f0fdf4',
-        fontFamily: "'Courier New', monospace",
-    },
-    divider: {
-        width: 1,
-        height: 28,
-        background: '#1e2d3d',
-    },
-    muted: {
-        fontSize: 12,
-        color: '#475569',
-    },
 };
 
 export default GetStockPrice;
