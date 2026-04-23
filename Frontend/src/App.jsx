@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import AnalyticsTracker from "utils/AnalyticsTracker";
 import Home from "pages/HomePage";
 import Signup from "pages/SignupPage";
 import NotFound from "pages/NotFoundPage";
@@ -12,7 +13,10 @@ import TopStories from "pages/TopStoriesPage";
 import Watchlist from "pages/WatchlistPage";
 import AboutPage from "pages/AboutPage";
 import ProtectedLayout from "components/layout/ProtectedLayout";
-import AnalyticsTracker from "utils/AnalyticsTracker";
+import PrivacyPolicy from "pages/PrivacyPolicyPage";
+import Terms from "pages/TermsAndConditionsPage";
+import Disclaimer from "pages/DisclaimerPage";
+import Contact from "pages/ContactPage";
 
 const App = () => {
   return (
@@ -34,6 +38,11 @@ const App = () => {
             <Route path="/trade/watchlist" element={<Watchlist />} />
             <Route path="/chart/showchart" element={<ChartsPage />} />
             <Route path="/chart/topstories" element={<TopStories />} />
+
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/contact" element={<Contact />} />
           </Route>
         </Routes>
       </BrowserRouter>
