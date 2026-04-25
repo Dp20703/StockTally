@@ -7,6 +7,7 @@ const links = [
   { label: "Charts", to: "/chart/showchart" },
   { label: "Top Stories", to: "/chart/topstories" },
   { label: "About", to: "/about" },
+  { label: "Blog", to: "/blog" },
   { label: "Profile", to: "/profile" },
 ];
 

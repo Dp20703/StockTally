@@ -17,6 +17,8 @@ import PrivacyPolicy from "pages/PrivacyPolicyPage";
 import Terms from "pages/TermsAndConditionsPage";
 import Disclaimer from "pages/DisclaimerPage";
 import Contact from "pages/ContactPage";
+import BlogPage from "pages/BlogPage";
+import BlogArticlePage from "pages/BlogArticlePage";
 
 const App = () => {
   return (
@@ -43,6 +45,8 @@ const App = () => {
             <Route path="/terms" element={<Terms />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogArticlePage />} />
           </Route>
         </Routes>
       </BrowserRouter>

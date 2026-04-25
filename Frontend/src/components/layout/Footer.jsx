@@ -1,3 +1,4 @@
+import { Divider } from "components/ui";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -36,6 +37,12 @@ const Footer = () => {
               Watchlist
             </Link>
             <Link
+              to="/blog"
+              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
+            >
+              Blog
+            </Link>
+            <Link
               to="/profile"
               className="text-text-muted hover:text-text-primary transition-colors duration-fast"
             >
@@ -45,7 +52,7 @@ const Footer = () => {
         </div>
 
         {/* Middle Divider */}
-        <div className="w-full h-px bg-bg-border" />
+        <Divider />
 
         {/* Bottom Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
