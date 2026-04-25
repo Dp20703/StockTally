@@ -1,3 +1,4 @@
+import { Divider } from "components/ui";
 import { Link } from "react-router-dom";
 
 /* ── Static data ─────────────────────────────────────────── */
@@ -123,18 +124,6 @@ const AboutPage = () => {
           manage watchlists, and review performance — all in one clean,
           distraction-free dashboard.
         </p>
-
-        <div
-          className="flex gap-3 flex-wrap justify-center animate-fade-in"
-          style={{ animationDelay: "0.15s" }}
-        >
-          <Link to="/signup" className="st-btn-green px-6 py-2.5 text-md">
-            Get Started Free
-          </Link>
-          <Link to="/login" className="st-btn-ghost px-6 py-2.5 text-md">
-            Sign In
-          </Link>
-        </div>
       </section>
 
       {/* ── STATS ───────────────────────────────────────────── */}
@@ -159,7 +148,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <div className="st-divider max-w-5xl mx-auto mb-16" />
+      <Divider className="max-w-5xl mx-auto mb-16" />
 
       {/* ── FEATURES ────────────────────────────────────────── */}
       <section className="px-4 pb-20">
@@ -202,7 +191,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <div className="st-divider max-w-5xl mx-auto mb-16" />
+      <Divider className="max-w-5xl mx-auto mb-16" />
 
       {/* ── HOW IT HELPS ────────────────────────────────────── */}
       <section className="px-4 pb-20">
@@ -244,7 +233,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <div className="st-divider max-w-5xl mx-auto mb-16" />
+      <Divider className="max-w-5xl mx-auto mb-16" />
 
       {/* ── TECH STACK ──────────────────────────────────────── */}
       <section className="px-4 pb-20">
