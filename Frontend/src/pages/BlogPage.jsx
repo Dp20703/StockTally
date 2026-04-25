@@ -169,7 +169,6 @@ const BlogPage = () => {
 
   return (
     <main className="st-page">
-      
       {/* ── HERO ──────────────────────────────────────────── */}
       <section className="relative px-4 pt-16 pb-12 overflow-hidden">
         <div

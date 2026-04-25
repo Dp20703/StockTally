@@ -1,5 +1,5 @@
 import { Divider } from "components/ui";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { blogs } from "utils/blogData";
 
 /* ── Color maps ──────────────────────────────────────────── */
