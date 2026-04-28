@@ -1,6 +1,8 @@
 const tradeModel = require('../models/trade.model');
 const userModel = require('../models/user.model');
 const axios = require('axios');
+const { wrapper } = require("axios-cookiejar-support");
+const tough = require("tough-cookie");
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -150,26 +152,36 @@ module.exports.deleteTrade = async (tradeId, userId) => {
 
 module.exports.getStockPrice = async (symbol) => {
     const upperSymbol = symbol.toUpperCase();
+    if (!/^[A-Z0-9]+$/.test(upperSymbol)) {
+        throw httpError(404, 'Trade not found');
+    }
     const url = `https://www.nseindia.com/api/quote-equity?symbol=${upperSymbol}`;
 
-    const session = axios.create({
-        headers: {
-            'User-Agent': 'Mozilla/5.0',
-            'Accept': 'application/json',
-            'Referer': `https://www.nseindia.com/get-quotes/equity?symbol=${upperSymbol}`,
-        },
+    const cookieJar = new tough.CookieJar();
+
+    const client = wrapper(axios.create({
+        jar: cookieJar,
         withCredentials: true,
         timeout: 5000,
-    });
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+            "Accept": "application/json",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Referer": `https://www.nseindia.com/get-quotes/equity?symbol=${upperSymbol}`,
+            "Connection": "keep-alive",
+        }
+    }));
 
-    // First request sets the session cookie NSE requires
-    await session.get('https://www.nseindia.com');
+    // Step 1: Get cookies
+    await client.get("https://www.nseindia.com");
 
-    const response = await session.get(url);
+    // Step 2: Fetch data
+    const response = await client.get(url);
 
     const lastPrice = response.data?.priceInfo?.lastPrice;
-    if (typeof lastPrice !== 'number') {
-        throw httpError(502, `Could not fetch price for symbol "${upperSymbol}"`);
+
+    if (typeof lastPrice !== "number") {
+        throw new Error(`Invalid symbol or data not found: ${upperSymbol}`);
     }
 
     return lastPrice;
