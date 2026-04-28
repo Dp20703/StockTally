@@ -12,6 +12,16 @@ function httpError(status, message) {
     return err;
 }
 
+async function fetchWithRetry(fn, retries = 2) {
+    try {
+        return await fn();
+    } catch (err) {
+        if (retries === 0) throw err;
+        await new Promise(r => setTimeout(r, 500));
+        return fetchWithRetry(fn, retries - 1);
+    }
+}
+
 // ─── createTrade ──────────────────────────────────────────────────────────────
 
 module.exports.createTrade = async (user, tradeData) => {
@@ -157,6 +167,8 @@ module.exports.getStockPrice = async (symbol) => {
     }
     const url = `https://www.nseindia.com/api/quote-equity?symbol=${upperSymbol}`;
 
+    return await fetchWithRetry(() => client.get(url));
+    
     const cookieJar = new tough.CookieJar();
 
     const client = wrapper(axios.create({
