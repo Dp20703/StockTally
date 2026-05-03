@@ -1,6 +1,5 @@
 import { StatusBadge } from "components/ui";
 import { useState } from "react";
-import { profitColor } from "theme/theme";
 import GetStockPrice from "utils/GetStockPrice";
 
 export default function TradeMobileCard({
@@ -11,7 +10,7 @@ export default function TradeMobileCard({
   handleDelete,
 }) {
   const [expanded, setExpanded] = useState(false);
-
+  console.log(trade);
   return (
     <div className="st-card p-4 flex flex-col gap-3">
       {/* HEADER */}
@@ -24,7 +23,9 @@ export default function TradeMobileCard({
           <span className="text-text-primary text-sm">{trade.stockName}</span>
         </div>
 
-        <span className={`font-mono text-sm ${profitColor(trade.finalProfit)}`}>
+        <span
+          className={`font-mono text-sm ${trade.finalProfit >= 0 ? "st-profit" : "st-loss"}`}
+        >
           {trade.finalProfit >= 0 ? "+" : ""}₹ {trade.finalProfit?.toFixed(2)}
         </span>
       </div>

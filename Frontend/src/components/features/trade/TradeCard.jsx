@@ -1,7 +1,6 @@
 import { useState } from "react";
 import GetStockPrice from "utils/GetStockPrice";
 import { StatusBadge } from "components/ui";
-import { profitColor } from "theme/theme";
 
 export default function TradeCard({
   trade,
@@ -34,7 +33,9 @@ export default function TradeCard({
         <td>{trade.quantity}</td>
 
         <td className="font-mono">
-          <span className={profitColor(trade.finalProfit)}>
+          <span
+            className={`${trade.finalProfit >= 0 ? "st-profit" : "st-loss"}`}
+          >
             {trade.finalProfit >= 0 ? "+" : ""}₹ {trade.finalProfit?.toFixed(2)}
           </span>
         </td>
