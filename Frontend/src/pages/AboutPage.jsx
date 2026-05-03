@@ -1,6 +1,5 @@
 import CTASection from "components/common/CTASection";
 import { Divider } from "components/ui";
-import { Link } from "react-router-dom";
 
 /* ── Static data ─────────────────────────────────────────── */
 const stats = [
