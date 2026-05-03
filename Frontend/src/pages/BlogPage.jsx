@@ -1,3 +1,4 @@
+import CTASection from "components/common/CTASection";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -151,7 +152,7 @@ const dotColors = {
 
 /* ── Blog Page ───────────────────────────────────────────── */
 const BlogPage = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
   const filtered = blogs.filter((b) => {
@@ -373,38 +374,7 @@ const BlogPage = () => {
       </section>
 
       {/* ── CTA ───────────────────────────────────────────── */}
-      <section className="px-4 pb-20">
-        <div className="max-w-2xl mx-auto st-card p-8 text-center relative overflow-hidden">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.05) 0%, transparent 70%)",
-            }}
-          />
-          <div className="relative z-10">
-            <span className="st-badge-green mb-4 inline-block">StockTally</span>
-            <h2
-              className="text-text-primary font-semibold mb-3"
-              style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)" }}
-            >
-              Put these lessons to work
-            </h2>
-            <p className="text-text-muted text-sm mb-6 max-w-sm mx-auto leading-relaxed">
-              Track your trades, monitor live P&L, and build your edge —
-              completely free.
-            </p>
-            <div className="flex gap-3 justify-center flex-wrap">
-              <Link
-                to="/trade/dashboard"
-                className="st-btn-ghost px-6 py-2.5 text-sm"
-              >
-                Go to Dashboard
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CTASection />
     </main>
   );
 };

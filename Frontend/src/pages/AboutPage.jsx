@@ -1,3 +1,4 @@
+import CTASection from "components/common/CTASection";
 import { Divider } from "components/ui";
 import { Link } from "react-router-dom";
 
@@ -281,49 +282,7 @@ const AboutPage = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────────────────── */}
-      <section className="px-4 pb-24">
-        <div className="max-w-2xl mx-auto">
-          <div className="st-card p-10 text-center relative overflow-hidden">
-            {/* Subtle glow */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.06) 0%, transparent 70%)",
-              }}
-            />
-
-            <div className="relative z-10">
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 text-xs uppercase tracking-widest font-medium">
-                  Live & Free
-                </span>
-              </div>
-
-              <h2
-                className="text-text-primary font-semibold mb-4"
-                style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}
-              >
-                Start tracking your trades today
-              </h2>
-              <p className="text-text-muted text-sm mb-8 max-w-sm mx-auto leading-relaxed">
-                No credit card. No limits. Just a clean tool built by a trader,
-                for traders.
-              </p>
-
-              <div className="flex gap-3 justify-center flex-wrap">
-                <Link
-                  to="/trade/dashboard"
-                  className="st-btn-ghost px-8 py-2.5 text-md"
-                >
-                  Go to Dashboard
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CTASection />
     </main>
   );
 };
