@@ -62,7 +62,7 @@ export default function Dashboard() {
       <Divider className="mx-4 mb-4" />
 
       {/* Trades Table */}
-      <section className="px-4 pb-10 overflow-x-auto">
+      <section className="px-4 pb-10">
         <AllTrades
           handleTradeId={handleTradeId}
           setUpdateModal={setUpdateModal}

@@ -1,87 +1,93 @@
-import { Divider } from "components/ui";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="w-full border-t border-bg-border px-4 py-8 mt-10">
-      <div className="max-w-5xl mx-auto flex flex-col gap-6">
-        {/* Top Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* Logo */}
-          <div className="flex items-center gap-2 justify-center sm:justify-start">
-            <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
-            <span className="text-text-primary font-medium text-lg">
-              StockTally
-            </span>
+    <footer className="border-t border-bg-border px-4 py-10">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+          <div className="col-span-2 sm:col-span-1">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-green-400" />
+              <span className="text-text-primary font-semibold text-lg">
+                StockTally
+              </span>
+            </div>
+            <p className="text-text-muted text-xs leading-relaxed">
+              A free trade journal and portfolio tracker for Indian stock market
+              traders.
+            </p>
           </div>
-
-          {/* Links */}
-          <div className="flex flex-wrap justify-center sm:justify-end gap-4 text-xs">
-            <Link
-              to="/"
-              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
-            >
-              Home
-            </Link>
-            <Link
-              to="/trade/dashboard"
-              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/trade/watchlist"
-              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
-            >
-              Watchlist
-            </Link>
-            <Link
-              to="/blog"
-              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
-            >
-              Blog
-            </Link>
-            <Link
-              to="/profile"
-              className="text-text-muted hover:text-text-primary transition-colors duration-fast"
-            >
-              Profile
-            </Link>
+          <div>
+            <p className="text-text-primary text-xs font-medium uppercase tracking-wider mb-3">
+              Product
+            </p>
+            <div className="flex flex-col gap-2">
+              {[
+                ["Dashboard", "/trade/dashboard"],
+                ["Watchlist", "/trade/watchlist"],
+                ["Charts", "/chart/showchart"],
+                ["Top Stories", "/chart/topstories"],
+              ].map(([l, h]) => (
+                <Link
+                  key={l}
+                  to={h}
+                  className="text-text-muted text-xs hover:text-green-400 transition-colors duration-fast"
+                >
+                  {l}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-text-primary text-xs font-medium uppercase tracking-wider mb-3">
+              Learn
+            </p>
+            <div className="flex flex-col gap-2">
+              {[
+                ["Blog", "/blog"],
+                ["About", "/about"],
+                ["Contact", "/contact"],
+              ].map(([l, h]) => (
+                <Link
+                  key={l}
+                  to={h}
+                  className="text-text-muted text-xs hover:text-green-400 transition-colors duration-fast"
+                >
+                  {l}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-text-primary text-xs font-medium uppercase tracking-wider mb-3">
+              Legal
+            </p>
+            <div className="flex flex-col gap-2">
+              {[
+                ["Privacy Policy", "/privacy"],
+                ["Terms & Conditions", "/terms"],
+                ["Disclaimer", "/disclaimer"],
+              ].map(([l, h]) => (
+                <Link
+                  key={l}
+                  to={h}
+                  className="text-text-muted text-xs hover:text-green-400 transition-colors duration-fast"
+                >
+                  {l}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-
-        {/* Middle Divider */}
-        <Divider />
-
-        {/* Bottom Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          {/* Copyright */}
-          <p className="text-text-muted text-center sm:text-left">
+        <div className="st-divider mb-6" />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-text-muted text-xs">
             © 2025 StockTally. All rights reserved.
           </p>
-
-          {/* Legal Links */}
-          <div className="flex flex-wrap justify-center sm:justify-end gap-4">
-            <Link
-              to="/privacy"
-              className="text-text-muted hover:text-green-400 transition-colors duration-fast"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              to="/terms"
-              className="text-text-muted hover:text-green-400 transition-colors duration-fast"
-            >
-              Terms & Conditions
-            </Link>
-            <Link
-              to="/disclaimer"
-              className="text-text-muted hover:text-green-400 transition-colors duration-fast"
-            >
-              Disclaimer
-            </Link>
-          </div>
+          <p className="text-text-muted text-xs">
+            Built for Indian retail traders. Not financial advice.
+          </p>
         </div>
       </div>
     </footer>
