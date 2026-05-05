@@ -4,27 +4,33 @@ import TradesTable from "./TradesTable";
 import { TradesMobile } from "./TradesMobile";
 import { useTrades } from "../../../context/TradeContext";
 import { capitalize } from "theme/theme";
+import { deleteTrade } from "./DeleteTrade";
 
 export default function AllTrades({
   setUpdateModal,
   handleTradeId,
   setCloseModal,
-  showTrades,
 }) {
   const {
     trades,
+    loading,
     page,
     totalPages,
+    search,
+    setSearch,
+    status,
     fetchTrades,
     nextPage,
     prevPage,
     goToPage,
   } = useTrades();
 
+  /* ── Initial Fetch ───────────────────── */
   useEffect(() => {
-    fetchTrades();
+    fetchTrades(1);
   }, [fetchTrades]);
 
+  /* ── Pagination range ───────────────── */
   const getPages = () => {
     const pages = [];
     for (
@@ -36,12 +42,8 @@ export default function AllTrades({
     }
     return pages;
   };
-  const tradesToDisplay = trades.filter((trade) => trade.status === showTrades);
 
-  useEffect(() => {
-    fetchTrades();
-  }, [fetchTrades]);
-
+  /* ── Delete ───────────────────────── */
   const handleDelete = async (tradeId) => {
     const result = await Swal.fire({
       title: "Delete trade?",
@@ -56,45 +58,56 @@ export default function AllTrades({
     });
 
     if (result.isConfirmed) {
-      await fetch(`/api/trades/${tradeId}`, { method: "DELETE" });
-      await fetchTrades();
+      const success = await deleteTrade(tradeId);
 
-      Swal.fire({
-        title: "Deleted!",
-        text: "Trade removed successfully.",
-        icon: "success",
-        background: "#0d1117",
-        color: "#cbd5e1",
-        confirmButtonColor: "#166534",
-      });
+      if (success) {
+        if (trades.length === 1 && page > 1) {
+          fetchTrades(page - 1);
+        } else {
+          fetchTrades(page);
+        }
+      }
     }
   };
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Header */}
-      <div className="flex items-center justify-between px-1">
+      {/* ── Header + Search ───────────────── */}
+      <div className="flex items-center justify-between gap-3 flex-wrap px-1">
         <h2 className="text-md text-text-primary">
-          {capitalize(showTrades)} Trades
+          {capitalize(status)} Trades
         </h2>
 
-        <span className="text-xs text-text-muted">
-          {tradesToDisplay.length} record
-          {tradesToDisplay.length !== 1 ? "s" : ""}
-        </span>
+        <input
+          type="text"
+          placeholder="Search trades..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="st-input max-w-xs"
+        />
       </div>
 
-      {/* Empty State */}
-      {tradesToDisplay.length === 0 ? (
+      {/* Record count */}
+      <span className="text-xs text-text-muted px-1">
+        {trades.length} record
+        {trades.length !== 1 ? "s" : ""}
+      </span>
+
+      {/* ── Loading ───────────────── */}
+      {loading ? (
+        <div className="st-card p-6 text-center text-text-muted">
+          Loading...
+        </div>
+      ) : trades.length === 0 ? (
         <div className="st-card p-6 text-center text-text-muted">
           No trades found
         </div>
       ) : (
         <div className="overflow-hidden">
-          {/* Desktop Table */}
+          {/* Desktop */}
           <div className="st-card hidden md:block">
             <TradesTable
-              trades={tradesToDisplay}
+              trades={trades}
               handleTradeId={handleTradeId}
               setUpdateModal={setUpdateModal}
               setCloseModal={setCloseModal}
@@ -102,10 +115,10 @@ export default function AllTrades({
             />
           </div>
 
-          {/* Mobile Cards */}
+          {/* Mobile */}
           <div className="md:hidden p-3">
             <TradesMobile
-              trades={tradesToDisplay}
+              trades={trades}
               handleTradeId={handleTradeId}
               setUpdateModal={setUpdateModal}
               setCloseModal={setCloseModal}
@@ -115,7 +128,7 @@ export default function AllTrades({
         </div>
       )}
 
-      {/* ── Pagination ───────────────────────── */}
+      {/* ── Pagination ───────────────── */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-3 mt-6 flex-wrap">
           {/* Prev */}
@@ -127,7 +140,7 @@ export default function AllTrades({
             Prev
           </button>
 
-          {/* Page numbers */}
+          {/* Numbers */}
           <div className="flex gap-1 flex-wrap">
             {getPages().map((p) => (
               <button

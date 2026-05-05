@@ -61,13 +61,30 @@ module.exports.createTrade = async (user, tradeData) => {
 
 // ─── getAllTrades ─────────────────────────────────────────────────────────────
 
-module.exports.getAllTrades = async (userId, page = 1, limit = 10) => {
+module.exports.getAllTrades = async (
+  userId,
+  page = 1,
+  limit = 10,
+  search = "",
+  status = "open"
+) => {
   const skip = (page - 1) * limit;
 
-  const total = await tradeModel.countDocuments({ user: userId });
+  const query = {
+    user: userId,
+    ...(status && { status }),
+    ...(search && {
+      $or: [
+        { stockName: { $regex: search, $options: "i" } },
+        { symbol: { $regex: search, $options: "i" } },
+      ],
+    }),
+  };
+
+  const total = await tradeModel.countDocuments(query);
 
   const trades = await tradeModel
-    .find({ user: userId })
+    .find(query)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)

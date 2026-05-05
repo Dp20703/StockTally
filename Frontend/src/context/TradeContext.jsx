@@ -1,4 +1,10 @@
-import { useContext, useState, createContext, useCallback } from "react";
+import {
+  useContext,
+  useState,
+  createContext,
+  useCallback,
+  useEffect,
+} from "react";
 import api from "services/apiClient";
 
 const TradeContext = createContext();
@@ -9,43 +15,57 @@ export const TradeProvider = ({ children }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const fetchTrades = useCallback(async (customPage = 1) => {
-    try {
-      setLoading(true);
+  // 🔍 Search + Status
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("open");
 
-      const response = await api.get(
-        `/trades/get_all_trades?page=${customPage}&limit=10`,
-      );
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-      setTrades(response?.data?.trades || []);
-      setTotalPages(response?.data?.totalPages || 1);
-      setPage(customPage);
-    } catch (error) {
-      console.error(error?.response?.data?.message || "Error fetching trades");
-      setTrades([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  /* ── Pagination helpers ───────────────────── */
+  const fetchTrades = useCallback(
+    async (customPage = 1) => {
+      try {
+        setLoading(true);
+
+        const response = await api.get(
+          `/trades/get_all_trades?page=${customPage}&limit=10&search=${debouncedSearch}&status=${status}`,
+        );
+
+        setTrades(response?.data?.trades || []);
+        setTotalPages(response?.data?.totalPages || 1);
+        setPage(customPage);
+      } catch (error) {
+        console.error(
+          error?.response?.data?.message || "Error fetching trades",
+        );
+        setTrades([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [debouncedSearch, status],
+  );
+
+  useEffect(() => {
+    fetchTrades(1);
+  }, [debouncedSearch, status, fetchTrades]);
 
   const nextPage = () => {
-    if (page < totalPages) {
-      fetchTrades(page + 1);
-    }
+    if (page < totalPages) fetchTrades(page + 1);
   };
 
   const prevPage = () => {
-    if (page > 1) {
-      fetchTrades(page - 1);
-    }
+    if (page > 1) fetchTrades(page - 1);
   };
 
   const goToPage = (p) => {
-    if (p >= 1 && p <= totalPages) {
-      fetchTrades(p);
-    }
+    if (p >= 1 && p <= totalPages) fetchTrades(p);
   };
 
   return (
@@ -55,6 +75,10 @@ export const TradeProvider = ({ children }) => {
         loading,
         page,
         totalPages,
+        search,
+        setSearch,
+        status,
+        setStatus,
         fetchTrades,
         nextPage,
         prevPage,

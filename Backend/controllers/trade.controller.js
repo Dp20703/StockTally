@@ -38,12 +38,17 @@ module.exports.createTrade = async (req, res) => {
 module.exports.getAllTrades = async (req, res) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
-const limit = Math.min(50, Number(req.query.limit) || 10);
+    const limit = Math.min(50, Number(req.query.limit) || 10);
+
+    const search = req.query.search || "";
+    const status = req.query.status || "open";
 
     const data = await tradeService.getAllTrades(
       req.user._id,
       page,
-      limit
+      limit,
+      search,
+      status
     );
 
     return res.status(200).json({

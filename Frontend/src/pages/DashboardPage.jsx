@@ -4,20 +4,23 @@ import UpdateTradeModal from "components/features/trade/UpdateTradeModal";
 import CloseTradeModal from "components/features/trade/CloseTradeModal";
 import CreateTradeModal from "components/features/trade/CreateTradeModal";
 import { Divider } from "components/ui";
+import { useTrades } from "context/TradeContext";
 
 export default function Dashboard() {
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [closeModal, setCloseModal] = useState(false);
   const [tradeId, setTradeId] = useState(null);
-  const [showTrades, setShowTrades] = useState("open");
+
+  const { status, setStatus } = useTrades(); 
 
   const handleTradeId = (id) => setTradeId(id);
 
-  const toggleTrades = () =>
-    setShowTrades((prev) => (prev === "open" ? "closed" : "open"));
+  const toggleTrades = () => {
+    setStatus((prev) => (prev === "open" ? "closed" : "open"));
+  };
 
-  const isClosed = showTrades === "closed";
+  const isClosed = status === "closed";
 
   return (
     <main className="st-page">
@@ -67,14 +70,16 @@ export default function Dashboard() {
           handleTradeId={handleTradeId}
           setUpdateModal={setUpdateModal}
           setCloseModal={setCloseModal}
-          showTrades={showTrades}
         />
       </section>
+
       {/* Modals */}
       {modal && <CreateTradeModal setModal={setModal} />}
+
       {updateModal && (
         <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />
       )}
+
       {closeModal && (
         <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />
       )}
