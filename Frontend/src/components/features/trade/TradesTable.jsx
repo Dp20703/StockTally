@@ -1,5 +1,4 @@
 import TradeCard from "./TradeCard";
-// import TradeRow from "./TradeRow";
 
 export default function TradesTable({
   trades,

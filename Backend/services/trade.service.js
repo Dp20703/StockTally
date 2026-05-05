@@ -61,11 +61,24 @@ module.exports.createTrade = async (user, tradeData) => {
 
 // ─── getAllTrades ─────────────────────────────────────────────────────────────
 
-module.exports.getAllTrades = async (userId) => {
-    return tradeModel
-        .find({ user: userId })
-        .sort({ createdAt: -1 })
-        .lean();
+module.exports.getAllTrades = async (userId, page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
+  const total = await tradeModel.countDocuments({ user: userId });
+
+  const trades = await tradeModel
+    .find({ user: userId })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean();
+
+  return {
+    trades,
+    currentPage: page,
+    totalPages: Math.ceil(total / limit),
+    totalItems: total,
+  };
 };
 
 // ─── getTrade ─────────────────────────────────────────────────────────────────

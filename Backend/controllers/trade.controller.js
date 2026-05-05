@@ -36,13 +36,25 @@ module.exports.createTrade = async (req, res) => {
 // ─── getAllTrades ─────────────────────────────────────────────────────────────
 
 module.exports.getAllTrades = async (req, res) => {
-    try {
-        const trades = await tradeService.getAllTrades(req.user._id);
-        return res.status(200).json({ success: true, message: 'Fetched trades', trades });
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+const limit = Math.min(50, Number(req.query.limit) || 10);
 
-    } catch (err) {
-        return handleError(res, err, 'getAllTrades error:');
-    }
+    const data = await tradeService.getAllTrades(
+      req.user._id,
+      page,
+      limit
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Fetched trades",
+      ...data,
+    });
+
+  } catch (err) {
+    return handleError(res, err, "getAllTrades error:");
+  }
 };
 
 // ─── getTrade ─────────────────────────────────────────────────────────────────

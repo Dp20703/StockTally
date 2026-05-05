@@ -11,8 +11,31 @@ export default function AllTrades({
   setCloseModal,
   showTrades,
 }) {
-  const { trades, fetchTrades } = useTrades();
+  const {
+    trades,
+    page,
+    totalPages,
+    fetchTrades,
+    nextPage,
+    prevPage,
+    goToPage,
+  } = useTrades();
 
+  useEffect(() => {
+    fetchTrades();
+  }, [fetchTrades]);
+
+  const getPages = () => {
+    const pages = [];
+    for (
+      let i = Math.max(1, page - 2);
+      i <= Math.min(totalPages, page + 2);
+      i++
+    ) {
+      pages.push(i);
+    }
+    return pages;
+  };
   const tradesToDisplay = trades.filter((trade) => trade.status === showTrades);
 
   useEffect(() => {
@@ -67,9 +90,9 @@ export default function AllTrades({
           No trades found
         </div>
       ) : (
-        <div className="st-card overflow-hidden">
+        <div className="overflow-hidden">
           {/* Desktop Table */}
-          <div className="hidden md:block">
+          <div className="st-card hidden md:block">
             <TradesTable
               trades={tradesToDisplay}
               handleTradeId={handleTradeId}
@@ -89,6 +112,46 @@ export default function AllTrades({
               handleDelete={handleDelete}
             />
           </div>
+        </div>
+      )}
+
+      {/* ── Pagination ───────────────────────── */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-3 mt-6 flex-wrap">
+          {/* Prev */}
+          <button
+            onClick={prevPage}
+            disabled={page === 1}
+            className="st-btn-ghost px-3 py-1 text-sm"
+          >
+            Prev
+          </button>
+
+          {/* Page numbers */}
+          <div className="flex gap-1 flex-wrap">
+            {getPages().map((p) => (
+              <button
+                key={p}
+                onClick={() => goToPage(p)}
+                className={`px-3 py-1 text-sm rounded-md border ${
+                  page === p
+                    ? "border-green-border text-green-400"
+                    : "border-bg-border text-text-muted"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          {/* Next */}
+          <button
+            onClick={nextPage}
+            disabled={page === totalPages}
+            className="st-btn-ghost px-3 py-1 text-sm"
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
