@@ -17,7 +17,7 @@ const Logout = () => {
           autoClose: 1000,
         });
       } catch (error) {
-        console.log("Logout error:", error); // just log
+        console.log("Logout error:", error);
       } finally {
         localStorage.removeItem("token");
         setUser(null);

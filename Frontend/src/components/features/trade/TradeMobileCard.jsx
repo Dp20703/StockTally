@@ -10,7 +10,6 @@ export default function TradeMobileCard({
   handleDelete,
 }) {
   const [expanded, setExpanded] = useState(false);
-  console.log(trade);
   return (
     <div className="st-card p-4 flex flex-col gap-3">
       {/* HEADER */}
