@@ -83,7 +83,7 @@ const Footer = () => {
         <div className="st-divider mb-6" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-text-muted text-xs">
-            © 2025 StockTally. All rights reserved.
+            © 2026 StockTally. All rights reserved.
           </p>
           <p className="text-text-muted text-xs">
             Built for Indian retail traders. Not financial advice.

@@ -76,7 +76,7 @@ const TermsAndConditions = () => {
           </h1>
           <p className="text-text-muted text-sm">
             Last updated:{" "}
-            <span className="text-text-secondary">January 1, 2025</span>
+            <span className="text-text-secondary">January 1, 2026</span>
           </p>
           <div className="st-divider mt-6" />
         </div>

@@ -227,7 +227,7 @@ items: [
 },
 {
 type: "heading",
-text: "Understanding Accumulation and Distribution"
+text: "Understanding Accumulation and Distribution",
 },
 {
 type: "paragraph",
@@ -425,7 +425,6 @@ text: "Many traders also jump into low-quality setups because they believe insti
 },
 {
 type: "heading",
-text: "Final Thoughts",
 "text": "Final Thoughts"
 },
 {
