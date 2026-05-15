@@ -60,7 +60,10 @@ export default function Signup() {
       localStorage.setItem("token", res?.data?.token);
       setUser(res?.data?.user);
 
-      toast.success("Registration successful");
+      toast.success("Registration successful", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       navigate("/profile");
     } catch (error) {
       toast.error("Signup failed", {

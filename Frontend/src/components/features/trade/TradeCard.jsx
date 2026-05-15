@@ -29,14 +29,17 @@ export default function TradeCard({
         </td>
 
         <td className="font-mono">₹ {trade?.entryPrice}</td>
-        <td className="font-mono">₹ {trade?.avgExitPrice?.toFixed(2) || "—"}</td>
-        <td>{trade?.openQty}</td>
+        <td className="font-mono">
+          ₹ {trade?.avgExitPrice?.toFixed(2) || "—"}
+        </td>
+        <td>{trade?.remainingQty}</td>
 
         <td className="font-mono">
           <span
             className={`${trade?.realizedPnL >= 0 ? "st-profit" : "st-loss"}`}
           >
-            {trade?.realizedPnL >= 0 ? "+" : ""}₹ {trade?.realizedPnL?.toFixed(2)}
+            {trade?.realizedPnL >= 0 ? "+" : ""}₹{" "}
+            {trade?.realizedPnL?.toFixed(2)}
           </span>
         </td>
 
@@ -113,7 +116,7 @@ export default function TradeCard({
 
                 <div className="flex flex-col gap-1 items-start">
                   <p className="text-xs text-text-muted">Original Qty</p>
-                  <p>{trade?.remainingQty}</p>
+                  <p>{trade?.openQty}</p>
                 </div>
 
                 <div className="flex flex-col gap-1 items-start">
