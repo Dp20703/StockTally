@@ -5,6 +5,7 @@ export const StatusBadge = ({ status }) => {
   const statusMap = {
     open: "green",
     closed: "red",
+    partial: "amber",
     pending: "amber",
     long: "blue",
     short: "blue",

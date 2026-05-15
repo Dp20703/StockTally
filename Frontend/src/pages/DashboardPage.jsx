@@ -12,36 +12,31 @@ export default function Dashboard() {
   const [closeModal, setCloseModal] = useState(false);
   const [tradeId, setTradeId] = useState(null);
 
-  const { status, setStatus } = useTrades(); 
+  const { status, setStatus } = useTrades();
 
   const handleTradeId = (id) => setTradeId(id);
 
-  const toggleTrades = () => {
-    setStatus((prev) => (prev === "open" ? "closed" : "open"));
-  };
+  // ✅ Only two sections: active (open+partial) and closed
+  const isActive = status !== "closed";
 
-  const isClosed = status === "closed";
+  const toggle = () => setStatus(isActive ? "closed" : "open");
 
   return (
     <main className="st-page">
-      {/* Controls */}
       <section className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6">
-        {/* Title */}
         <div className="flex flex-col gap-1">
           <h1 className="text-xl text-text-primary">Dashboard</h1>
-
           <span
             className={`px-3 py-1 rounded-full text-xs border ${
-              isClosed
-                ? "bg-red-900 text-red-400 border-red-border"
-                : "bg-green-900 text-green-400 border-green-border"
+              isActive
+                ? "bg-green-900 text-green-400 border-green-border"
+                : "bg-red-900 text-red-400 border-red-border"
             }`}
           >
-            {isClosed ? "Closed Trades" : "Open Trades"}
+            {isActive ? "Open & Partial Trades" : "Closed Trades"}
           </span>
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-3 w-full md:w-auto">
           <button
             className="st-btn-green flex-1 md:flex-none"
@@ -49,22 +44,17 @@ export default function Dashboard() {
           >
             + New Trade
           </button>
-
           <button
-            className={`flex-1 md:flex-none ${
-              isClosed ? "st-btn-green" : "st-btn-red"
-            }`}
-            onClick={toggleTrades}
+            className={`flex-1 md:flex-none ${isActive ? "st-btn-red" : "st-btn-green"}`}
+            onClick={toggle}
           >
-            {isClosed ? "View Open" : "View Closed"}
+            {isActive ? "View Closed" : "View Open"}
           </button>
         </div>
       </section>
 
-      {/* Divider */}
       <Divider className="mx-4 mb-4" />
 
-      {/* Trades Table */}
       <section className="px-4 pb-10">
         <AllTrades
           handleTradeId={handleTradeId}
@@ -73,13 +63,10 @@ export default function Dashboard() {
         />
       </section>
 
-      {/* Modals */}
       {modal && <CreateTradeModal setModal={setModal} />}
-
       {updateModal && (
         <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />
       )}
-
       {closeModal && (
         <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />
       )}

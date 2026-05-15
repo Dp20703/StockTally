@@ -10,3 +10,4 @@ export { BarLoader } from "./BarLoader";
 export { DotLoader } from "./DotLoader";
 export { Divider } from "./Divider";
 export { Modal } from "./Modal";
+export { PartialBadge } from "./PartialBadge";

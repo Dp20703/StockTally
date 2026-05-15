@@ -24,7 +24,7 @@ export default function AllTrades({
     prevPage,
     goToPage,
   } = useTrades();
-
+  
   /* ── Initial Fetch ───────────────────── */
   useEffect(() => {
     fetchTrades(1);

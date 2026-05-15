@@ -9,14 +9,14 @@ export const WatchlistProvider = ({ children }) => {
   const fetchWatchlist = useCallback(async () => {
     try {
       const res = await api.get("/watchlist/get");
-      setWatchlists(res?.data || []);
+      setWatchlists(res?.data?.watchlists || []);
     } catch (error) {
       console.error(
         error?.response?.data?.message || "Failed to fetch watchlists",
       );
     }
   }, []);
-
+  
   return (
     <WatchlistContext.Provider value={{ fetchWatchlist, watchlists }}>
       {children}

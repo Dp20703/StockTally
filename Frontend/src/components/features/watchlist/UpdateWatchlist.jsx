@@ -25,7 +25,7 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
   useEffect(() => {
     api
       .get(`/watchlist/get/${watchlistId}`)
-      .then((res) => setUpdateWatchlist(res.data))
+      .then((res) => setUpdateWatchlist(res?.data?.watchlist))
       .catch(() =>
         toast.error("Failed to fetch watchlist", {
           position: "top-right",

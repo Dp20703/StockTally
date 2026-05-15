@@ -28,7 +28,7 @@ export default function AllWatchlist({
         </div>
       ) : (
         <div className="flex flex-wrap gap-4 justify-center">
-          {watchlists.map((watchlist, idx) => (
+          {watchlists?.map((watchlist, idx) => (
             <WatchListCard
               key={watchlist._id}
               watchlist={watchlist}

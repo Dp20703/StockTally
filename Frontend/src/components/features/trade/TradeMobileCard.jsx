@@ -1,6 +1,6 @@
-import { StatusBadge } from "components/ui";
+import { StatusBadge, PartialBadge } from "components/ui";
 import { useState } from "react";
-import GetStockPrice from "utils/GetStockPrice";
+import { GetStockPrice } from "utils/GetStockPrice";
 
 export default function TradeMobileCard({
   trade,
@@ -10,18 +10,19 @@ export default function TradeMobileCard({
   handleDelete,
 }) {
   const [expanded, setExpanded] = useState(false);
+  const isActive = trade?.status === "open" || trade?.status === "partial";
+
   return (
     <div className="st-card p-4 flex flex-col gap-3">
-      {/* HEADER */}
       <div
         className="flex justify-between items-center cursor-pointer"
-        onClick={() => setExpanded((prev) => !prev)}
+        onClick={() => setExpanded((p) => !p)}
       >
         <div className="flex items-center gap-2">
           <span className="st-badge-green">{trade?.stockSymbol}</span>
           <span className="text-text-primary text-sm">{trade?.stockName}</span>
+          {trade?.status === "partial" && <PartialBadge />}
         </div>
-
         <span
           className={`font-mono text-sm ${trade?.realizedPnL >= 0 ? "st-profit" : "st-loss"}`}
         >
@@ -29,60 +30,70 @@ export default function TradeMobileCard({
         </span>
       </div>
 
-      {/* BASIC INFO */}
       <div className="flex justify-between text-xs text-text-muted">
         <span>Buy: ₹{trade?.entryPrice}</span>
-        <span>Sell: ₹{trade?.avgExitPrice|| "—"}</span>
-        <span>Qty: {trade?.remainingQty}</span>
+        <span>Sell: ₹{trade?.avgExitPrice?.toFixed(2) || "—"}</span>
+        {/* ✅ Show remaining/total for partial */}
+        <span>
+          Qty:{" "}
+          {trade?.status === "partial"
+            ? `${trade?.remainingQty}/${trade?.openQty}`
+            : trade?.remainingQty}
+        </span>
       </div>
 
-      {/* STATUS */}
       <div className="flex justify-between items-center">
         <StatusBadge status={trade?.status} />
         <span className="text-xs text-text-muted">Tap for details</span>
       </div>
 
-      {/* EXPANDED */}
       {expanded && (
         <div className="border-t border-bg-border pt-3 flex flex-col gap-3 animate-fade-in">
-          {/* Dates */}
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div>
-              <p className="text-text-muted">Buy Date</p>
+              <p className="text-text-muted">Entry Date</p>
               <p>{trade?.entryDate?.split("T")[0]}</p>
             </div>
-
             <div>
-              <p className="text-text-muted">Sell Date</p>
+              <p className="text-text-muted">Last Exit Date</p>
               <p>{trade?.lastExitDate?.split("T")[0] || "—"}</p>
             </div>
           </div>
 
-          {/* Type + Entry */}
+          {/* ✅ Qty breakdown — useful for partial trades */}
+          <div className="grid grid-cols-3 gap-2 text-xs">
+            <div>
+              <p className="text-text-muted">Original</p>
+              <p>{trade?.openQty}</p>
+            </div>
+            <div>
+              <p className="text-text-muted">Closed</p>
+              <p>{trade?.closedQty}</p>
+            </div>
+            <div>
+              <p className="text-text-muted">Remaining</p>
+              <p>{trade?.remainingQty}</p>
+            </div>
+          </div>
+
+          {trade?.closedQty > 0 && (
+            <div className="text-xs">
+              <p className="text-text-muted">Avg Exit Price</p>
+              <p>₹ {trade?.avgExitPrice?.toFixed(2)}</p>
+            </div>
+          )}
+
           <div className="flex justify-between">
             <StatusBadge status={trade?.type} />
             <StatusBadge status={trade?.entryType} />
           </div>
 
-          {/* Live Price */}
           <div>
-            <p className="text-xs text-text-muted">Live Price</p>
-            <GetStockPrice
-              stockSymbol={trade?.stockSymbol}
-              quantity={trade?.remainingQty}
-              buyPrice={trade?.entryPrice}
-              sellPrice={trade?.avgExitPrice}
-            />
+            <GetStockPrice trade={trade} />
           </div>
 
-          {/* Quantity */}
-          <div className="text-xs text-text-muted">
-            Original Qty: {trade?.openQty}
-          </div>
-
-          {/* ACTIONS */}
           <div className="flex gap-2 pt-2">
-            {trade?.status === "open" && (
+            {isActive && (
               <>
                 <button
                   className="st-btn-amber text-xs flex-1"
@@ -94,7 +105,6 @@ export default function TradeMobileCard({
                 >
                   Update
                 </button>
-
                 <button
                   className="st-btn-ghost text-xs flex-1"
                   onClick={(e) => {
@@ -103,11 +113,10 @@ export default function TradeMobileCard({
                     setCloseModal(true);
                   }}
                 >
-                  Close
+                  {trade?.status === "partial" ? "Close More" : "Close"}
                 </button>
               </>
             )}
-
             <button
               className="st-btn-red text-xs flex-1"
               onClick={(e) => {

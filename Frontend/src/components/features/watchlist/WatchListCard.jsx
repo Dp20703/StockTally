@@ -1,6 +1,5 @@
 import { deleteWatchlist } from "./DeleteWatchlist";
 import { useWatchlists } from "context/WatchlistContext";
-import GetStockPrice from "utils/GetStockPrice";
 
 export default function WatchListCard({
   setUpdateModal,
@@ -11,12 +10,12 @@ export default function WatchListCard({
   const { fetchWatchlist } = useWatchlists();
 
   const handleDelete = async (id) => {
-    await deleteWatchlist(id);
+    deleteWatchlist(id);
     fetchWatchlist();
   };
 
   return (
-    <div className="st-card p-4 hover:shadow-lg transition p-4 w-full md:w-[420px] flex flex-col gap-4">
+    <div className="st-card p-4 hover:shadow-lg transition w-full md:w-[420px] flex flex-col gap-4">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
@@ -66,7 +65,13 @@ export default function WatchListCard({
               </div>
 
               <span className="text-green-400 text-sm">
-                <GetStockPrice stockSymbol={stock.stockSymbol} />
+                {stock?.currentPrice ? (
+                  <span className="st-mono text-text-primary">
+                    ₹ {stock?.currentPrice}
+                  </span>
+                ) : (
+                  <span className="text-xs text-text-muted">N/A</span>
+                )}
               </span>
             </div>
           ))

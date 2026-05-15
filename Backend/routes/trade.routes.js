@@ -3,11 +3,7 @@ const router = express.Router();
 const tradeController = require('../controllers/trade.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const { validateRequest } = require('../middlewares/validateRequest');
-const {
-  validateCreateTrade,
-  validateCloseTrade,
-  validateUpdateTrade,
-} = require('../validators/trade.validators');
+const {validateCreateTrade,validateCloseTrade,validateUpdateTrade,} = require('../validators/trade.validators');
 
 // POST /trades/create
 router.post('/create',
