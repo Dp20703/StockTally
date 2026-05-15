@@ -36,7 +36,10 @@ export default function Profile() {
         autoClose: 1000,
       });
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Update failed");
+      toast.error(err?.response?.data?.message || "Update failed", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } finally {
       setLoading(false);
     }
@@ -51,7 +54,10 @@ export default function Profile() {
         autoClose: 1000,
       });
     } catch {
-      toast.error("Failed to delete profile picture");
+      toast.error("Failed to delete profile picture", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
   };
 

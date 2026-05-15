@@ -20,39 +20,39 @@ export default function TradeCard({
       >
         {/* Asset */}
         <td className="flex items-center gap-3 px-4 py-3">
-          <span className="st-badge-green">{trade.stockSymbol}</span>
+          <span className="st-badge-green">{trade?.stockSymbol}</span>
 
           <div>
-            <p className="text-text-primary">{trade.stockName}</p>
+            <p className="text-text-primary">{trade?.stockName}</p>
             <p className="text-xs text-text-muted">Stock</p>
           </div>
         </td>
 
-        <td className="font-mono">₹ {trade.buyPrice}</td>
-        <td className="font-mono">{trade.sellPrice || "—"}</td>
-        <td>{trade.quantity}</td>
+        <td className="font-mono">₹ {trade?.entryPrice}</td>
+        <td className="font-mono">₹ {trade?.avgExitPrice?.toFixed(2) || "—"}</td>
+        <td>{trade?.openQty}</td>
 
         <td className="font-mono">
           <span
-            className={`${trade.finalProfit >= 0 ? "st-profit" : "st-loss"}`}
+            className={`${trade?.realizedPnL >= 0 ? "st-profit" : "st-loss"}`}
           >
-            {trade.finalProfit >= 0 ? "+" : ""}₹ {trade.finalProfit?.toFixed(2)}
+            {trade?.realizedPnL >= 0 ? "+" : ""}₹ {trade?.realizedPnL?.toFixed(2)}
           </span>
         </td>
 
         <td>
-          <StatusBadge status={trade.status} />
+          <StatusBadge status={trade?.status} />
         </td>
 
         <td>
           <div className="flex gap-2">
-            {trade.status === "open" && (
+            {trade?.status === "open" && (
               <>
                 <button
                   className="st-btn-ghost text-xs"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade._id);
+                    handleTradeId(trade?._id);
                     setUpdateModal(true);
                   }}
                 >
@@ -63,7 +63,7 @@ export default function TradeCard({
                   className="st-btn-red text-xs"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade._id);
+                    handleTradeId(trade?._id);
                     setCloseModal(true);
                   }}
                 >
@@ -76,7 +76,7 @@ export default function TradeCard({
               className="st-btn-red text-xs"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(trade._id);
+                handleDelete(trade?._id);
               }}
             >
               Delete
@@ -93,36 +93,36 @@ export default function TradeCard({
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex flex-col gap-1">
                   <p className="text-xs text-text-muted">Buy Date</p>
-                  <p>{trade.buyDate?.split("T")[0]}</p>
+                  <p>{trade?.entryDate?.split("T")[0]}</p>
                 </div>
 
                 <div className="flex flex-col gap-1 items-center">
                   <p className="text-xs text-text-muted">Sell Date</p>
-                  <p>{trade.sellDate?.split("T")[0] || "—"}</p>
+                  <p>{trade?.lastExitDate?.split("T")[0] || "—"}</p>
                 </div>
 
                 <div className="flex flex-col gap-1 items-center">
                   <p className="text-xs text-text-muted">Type</p>
-                  <StatusBadge status={trade.type} />
+                  <StatusBadge status={trade?.type} />
                 </div>
 
                 <div className="flex flex-col gap-1 items-center">
                   <p className="text-xs text-text-muted">Entry</p>
-                  <StatusBadge status={trade.entryType} />
+                  <StatusBadge status={trade?.entryType} />
                 </div>
 
                 <div className="flex flex-col gap-1 items-start">
                   <p className="text-xs text-text-muted">Original Qty</p>
-                  <p>{trade.originalQuantity}</p>
+                  <p>{trade?.remainingQty}</p>
                 </div>
 
                 <div className="flex flex-col gap-1 items-start">
                   <p className="text-xs text-text-muted">Live Price</p>
                   <GetStockPrice
-                    stockSymbol={trade.stockSymbol}
-                    quantity={trade.quantity}
-                    buyPrice={trade.buyPrice}
-                    sellPrice={trade.sellPrice}
+                    stockSymbol={trade?.stockSymbol}
+                    quantity={trade?.openQty}
+                    buyPrice={trade?.entryPrice}
+                    sellPrice={trade?.avgExitPrice}
                   />
                 </div>
               </div>

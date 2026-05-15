@@ -43,7 +43,10 @@ export default function CreateWatchlist({ setModal }) {
           ? "Watchlist already exists"
           : "Failed to create watchlist";
 
-      toast.error(message);
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
   };
 

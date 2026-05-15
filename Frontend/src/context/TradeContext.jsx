@@ -15,7 +15,7 @@ export const TradeProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-
+  
   // Search + Status
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("open");

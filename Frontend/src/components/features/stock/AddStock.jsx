@@ -46,7 +46,10 @@ export default function AddStock({
 
       navigate("/trade/watchlist");
     } catch {
-      toast.error("Failed to add stocks");
+      toast.error("Failed to add stocks", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       setAddStockModal(false);
     }
   };

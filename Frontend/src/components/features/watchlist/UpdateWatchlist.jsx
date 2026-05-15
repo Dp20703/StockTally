@@ -26,7 +26,12 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
     api
       .get(`/watchlist/get/${watchlistId}`)
       .then((res) => setUpdateWatchlist(res.data))
-      .catch(() => toast.error("Failed to fetch watchlist"));
+      .catch(() =>
+        toast.error("Failed to fetch watchlist", {
+          position: "top-right",
+          autoClose: 1000,
+        }),
+      );
   }, [watchlistId]);
 
   const handleDeleteStock = (stockId) => {
@@ -54,7 +59,10 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
       setUpdateModal(false);
       fetchWatchlist();
     } catch {
-      toast.error("Failed to update watchlist");
+      toast.error("Failed to update watchlist", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
   };
 

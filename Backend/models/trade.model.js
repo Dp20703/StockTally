@@ -4,27 +4,18 @@ const tradeSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: true,
     },
     stockName: {
         type: String,
-        required: [true, "Stock name is required."],
+        required: [true, 'Stock name is required.'],
         trim: true,
     },
     stockSymbol: {
         type: String,
-        required: [true, "Stock symbol is required."],
+        required: [true, 'Stock symbol is required.'],
         trim: true,
         uppercase: true,
-    },
-    quantity: {
-        type: Number,
-
-    },
-    originalQuantity: {
-        type: Number,
-        required: [true, "Quantity is required."],
-        min: [1, "Quantity must be at least 1."],
     },
     type: {
         type: String,
@@ -36,90 +27,75 @@ const tradeSchema = new mongoose.Schema({
         enum: ['buy', 'sell'],
         required: true,
     },
-    buyPrice: {
+
+    // ─── Quantity fields ──────────────────────────────────────────────────────
+    openQty: {
         type: Number,
-        default: null,
-        min: 0,
+        required: true,
+        min: [1, 'Quantity must be at least 1.'],
     },
-    buyDate: {
-        type: Date,
-        default: null,
-    },
-    sellPrice: {
+    closedQty: {
         type: Number,
-        default: null,
-        min: 0,
+        default: 0,
     },
-    sellDate: {
-        type: Date,
-        default: null,
+    remainingQty: {
+        type: Number,
+        default: 0,
     },
+
+    // ─── Price fields ─────────────────────────────────────────────────────────
+    entryPrice:   { type: Number, required: true, min: 0.01 },
+    entryDate:    { type: Date, required: true },
+    avgExitPrice: { type: Number, default: null },
+    lastExitDate: { type: Date, default: null },
+
+    // ─── P&L ──────────────────────────────────────────────────────────────────
+    realizedPnL: { type: Number, default: 0 },
+
+    // ─── Status ───────────────────────────────────────────────────────────────
     status: {
         type: String,
-        enum: ['open', 'closed'], // "open" means the trade is still active, "closed" means the trade has been completed
+        enum: ['open', 'closed'],
         default: 'open',
     },
-    profit: {
-        type: Number,
-        default: 0, // Profit will be calculated when trade is closed
-    },
-    finalProfit: {
-        type: Number,
-        default: 0
-    }, // Final profit for closed trades
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
+    closedAt: { type: Date, default: null },
+
+}, {
+    timestamps: true,                  // createdAt + updatedAt auto-managed
+    toJSON:   { virtuals: true },      // virtuals appear in res.json()
+    toObject: { virtuals: true },
 });
 
-// Update updatedAt before save
+// ─── Pre-save: always derive remainingQty — can never be out of sync ──────────
 tradeSchema.pre('save', function (next) {
-    this.updatedAt = Date.now();
+    this.remainingQty = this.openQty - this.closedQty;
     next();
 });
 
-// Instance method to calculate profit when the trade is closed
-tradeSchema.methods.calculateProfit = function (closeQuantity) {
-    if (this.buyPrice !== null && this.sellPrice !== null) {
-        let quantitySold = closeQuantity || this.quantity;  // Use passed quantity or full trade quantity
+// ─── Virtual: unrealizedPnL — computed on read, never stored ──────────────────
+// _currentMarketPrice is injected temporarily by the service layer
+tradeSchema.virtual('unrealizedPnL').get(function () {
+    if (this.status === 'closed' || this.remainingQty <= 0) return 0;
+    if (!this._currentMarketPrice) return null;
 
-        // Validate numeric inputs
-        if (isNaN(this.buyPrice) || isNaN(this.sellPrice) || isNaN(quantitySold)) {
-            this.profit = 0;
-            this.finalProfit = 0;
-            return;
-        }
-
-
-        // Calculate profit based on the price difference and quantity sold
-        let profit = (this.sellPrice - this.buyPrice) * quantitySold;
-
-        // Reverse the profit/loss calculation for short trades
-        if (this.type === 'short' && this.entryType === 'sell') {
-            profit *= -1;  // Profit is reversed in short trades
-        }
-
-        // Assign profit
-        this.profit = profit;
-
-        // If trade is fully closed, finalize the profit calculation
-        if (this.status === 'closed' && this.quantity === 0) {
-            // Finalize the profit calculation when the trade is fully closed
-            this.finalProfit = profit;
-            this.profit = 0;
-        }
+    if (this.type === 'long') {
+        // gain when price rises
+        return (this._currentMarketPrice - this.entryPrice) * this.remainingQty;
     }
-    else {
-        // Missing required values — set defaults safely
-        this.profit = 0;
-        this.finalProfit = 0;
+
+    if (this.entryType === 'sell') {
+        // classic short: gain when price falls
+        return (this.entryPrice - this._currentMarketPrice) * this.remainingQty;
     }
-};
+
+    // short/buy: gain when price rises
+    return (this._currentMarketPrice - this.entryPrice) * this.remainingQty;
+});
+
+// ─── Virtual: currentMarketPrice — expose injected price in JSON output ───────
+tradeSchema.virtual('currentMarketPrice').get(function () {
+    return this._currentMarketPrice ?? null;
+});
 
 const Trade = mongoose.model('Trade', tradeSchema);
 module.exports = Trade;

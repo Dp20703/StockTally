@@ -37,10 +37,16 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
         setUpdateModal(false);
         navigate("/trade/dashboard");
       } else {
-        toast.error("Unexpected error occurred");
+        toast.error("Unexpected error occurred", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       }
     } catch (error) {
-      toast.error("Failed to update trade");
+      toast.error("Failed to update trade", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } finally {
       fetchTrades();
     }
@@ -68,7 +74,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <label className="st-label">Stock Name</label>
           <input
             name="stockName"
-            value={tradeData.stockName}
+            value={tradeData?.stockName}
             onChange={handleChange}
             className="st-input"
           />
@@ -78,7 +84,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <label className="st-label">Stock Symbol</label>
           <input
             name="stockSymbol"
-            value={tradeData.stockSymbol}
+            value={tradeData?.stockSymbol}
             onChange={handleChange}
             className="st-input"
           />
@@ -92,10 +98,10 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <input
             type="number"
             name="buyPrice"
-            value={tradeData.buyPrice || ""}
+            value={tradeData?.entryPrice || ""}
             onChange={handleChange}
             className="st-input"
-            disabled={tradeData.buyPrice === null}
+            disabled={tradeData?.entryPrice === null}
           />
         </div>
 
@@ -104,10 +110,10 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <input
             type="number"
             name="sellPrice"
-            value={tradeData.sellPrice || ""}
+            value={tradeData?.avgExitPrice || ""}
             onChange={handleChange}
             className="st-input"
-            disabled={tradeData.sellPrice === null}
+            disabled={tradeData?.avgExitPrice === null}
           />
         </div>
 
@@ -116,7 +122,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <input
             type="number"
             name="quantity"
-            value={tradeData.quantity || ""}
+            value={tradeData?.remainingQty || ""}
             onChange={handleChange}
             className="st-input"
           />
@@ -127,7 +133,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <input
             type="number"
             name="originalQuantity"
-            value={tradeData.originalQuantity || ""}
+            value={tradeData?.openQty || ""}
             onChange={handleChange}
             className="st-input"
           />
@@ -136,45 +142,58 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
 
       {/* Row 3 */}
       <div className="grid md:grid-cols-4 gap-4">
-        <select
-          name="entryType"
-          value={tradeData.entryType}
-          onChange={handleChange}
-          className="st-select"
-        >
-          <option value="">Select Entry</option>
-          <option value="buy">Buy</option>
-          <option value="sell">Sell</option>
-        </select>
+        <div>
+          <label className="st-label">Entry Type</label>
+          <select
+            name="entryType"
+            value={tradeData?.entryType}
+            onChange={handleChange}
+            className="st-select"
+          >
+            <option value="">Select Entry</option>
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+          </select>
+        </div>
 
-        <select
-          name="type"
-          value={tradeData.type}
-          onChange={handleChange}
-          className="st-select"
-        >
-          <option value="">Select Type</option>
-          <option value="long">Long</option>
-          <option value="short">Short</option>
-        </select>
+        <div>
+          <label className="st-label">Type</label>
 
-        <input
-          type="date"
-          name="buyDate"
-          value={(tradeData.buyDate || "").slice(0, 10)}
-          onChange={handleChange}
-          className="st-input"
-          disabled={!tradeData.buyDate}
-        />
+          <select
+            name="type"
+            value={tradeData?.type}
+            onChange={handleChange}
+            className="st-select"
+          >
+            <option value="">Select Type</option>
+            <option value="long">Long</option>
+            <option value="short">Short</option>
+          </select>
+        </div>
 
-        <input
-          type="date"
-          name="sellDate"
-          value={(tradeData.sellDate || "").slice(0, 10)}
-          onChange={handleChange}
-          className="st-input"
-          disabled={!tradeData.sellDate}
-        />
+        <div>
+          <label className="st-label">Buy Date</label>
+          <input
+            type="date"
+            name="buyDate"
+            value={(tradeData?.entryDate || "").slice(0, 10)}
+            onChange={handleChange}
+            className="st-input"
+            disabled={!tradeData?.entryDate}
+          />
+        </div>
+
+        <div>
+          <label className="st-label">Sell Date</label>
+          <input
+            type="date"
+            name="sellDate"
+            value={(tradeData?.lastExitDate || "").slice(0, 10)}
+            onChange={handleChange}
+            className="st-input"
+            disabled={!tradeData?.lastExitDate}
+          />
+        </div>
       </div>
 
       {/* Submit */}

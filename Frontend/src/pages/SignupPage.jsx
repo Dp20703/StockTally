@@ -39,11 +39,17 @@ export default function Signup() {
     const { userName, fullName, email, password } = data;
 
     if (!userName || !fullName.firstName || !email || !password) {
-      return toast.error("Please fill all fields");
+      return toast.error("Please fill all fields", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
 
     if (password.length < 6) {
-      return toast.error("Password must be at least 6 characters");
+      return toast.error("Password must be at least 6 characters", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
 
     try {
@@ -57,7 +63,10 @@ export default function Signup() {
       toast.success("Registration successful");
       navigate("/profile");
     } catch (error) {
-      toast.error("Signup failed");
+      toast.error("Signup failed", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } finally {
       setLoading(false);
     }
@@ -87,7 +96,10 @@ export default function Signup() {
       });
     } catch (error) {
       console.log(error);
-      toast.error("Google signup failed");
+      toast.error("Google signup failed", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     } finally {
       setLoading(false);
     }

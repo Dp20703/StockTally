@@ -22,7 +22,10 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
         const { data } = await api.get(`/trades/get_trade/${tradeId}`);
         setTradeData(data?.trade);
       } catch (err) {
-        toast.error("Failed to fetch trade data");
+        toast.error("Failed to fetch trade data", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       }
     };
     fetchData();
@@ -48,10 +51,16 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
         setCloseModal(false);
         navigate("/trade/dashboard");
       } else {
-        toast.error("Unexpected error occurred");
+        toast.error("Unexpected error occurred", {
+        position: "top-right",
+        autoClose: 1000,
+      });
       }
     } catch (error) {
-      toast.error("Failed to close trade");
+      toast.error("Failed to close trade", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
   };
 
@@ -64,24 +73,24 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
         <h3 className="text-green-400 font-medium mb-2">Open Trade</h3>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <input className="st-input" readOnly value={tradeData.stockName} />
-          <input className="st-input" readOnly value={tradeData.stockSymbol} />
+          <input className="st-input" readOnly value={tradeData?.stockName} />
+          <input className="st-input" readOnly value={tradeData?.stockSymbol} />
 
           <input
             className="st-input"
             readOnly
-            value={tradeData.buyPrice || ""}
+            value={tradeData?.entryPrice || ""}
           />
           <input
             className="st-input"
             readOnly
-            value={(tradeData.buyDate || "").slice(0, 10)}
+            value={(tradeData?.entryDate || "").slice(0, 10)}
           />
 
           <input
             className="st-input"
             readOnly
-            value={tradeData.originalQuantity || ""}
+            value={tradeData?.remainingQty || ""}
           />
         </div>
       </div>
@@ -101,7 +110,7 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
                 <input
                   type="number"
                   name="closePrice"
-                  value={closeData.closePrice}
+                  value={closeData?.closePrice}
                   onChange={handleChange}
                   placeholder="Enter close price"
                   className="st-input"
@@ -113,7 +122,7 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
                 <input
                   type="date"
                   name="closeDate"
-                  value={closeData.closeDate}
+                  value={closeData?.closeDate}
                   onChange={handleChange}
                   className="st-input"
                 />
@@ -124,7 +133,7 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
                 <input
                   type="number"
                   name="closeQuantity"
-                  value={closeData.closeQuantity}
+                  value={closeData?.closeQuantity}
                   onChange={handleChange}
                   placeholder="Enter close quantity"
                   className="st-input"

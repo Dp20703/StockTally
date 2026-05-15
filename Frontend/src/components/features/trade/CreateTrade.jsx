@@ -11,7 +11,7 @@ export default function CreateTrade({ setModal }) {
   const [tradeData, setTradeData] = useState({
     stockName: "",
     stockSymbol: "",
-    originalQuantity: "",
+    quantity: "",
     entryType: "",
     type: "",
     price: "",
@@ -42,14 +42,17 @@ export default function CreateTrade({ setModal }) {
       setTradeData({
         stockName: "",
         stockSymbol: "",
-        originalQuantity: "",
+        quantity: "",
         entryType: "",
         type: "",
         price: "",
         date: "",
       });
     } catch (error) {
-      toast.error("Failed to create trade");
+      toast.error("Failed to create trade", {
+        position: "top-right",
+        autoClose: 1000,
+      });
     }
   };
 
@@ -105,8 +108,8 @@ export default function CreateTrade({ setModal }) {
           <label className="st-label">Quantity</label>
           <input
             type="number"
-            name="originalQuantity"
-            value={tradeData.originalQuantity}
+            name="quantity"
+            value={tradeData.quantity}
             onChange={handleChange}
             placeholder="Enter stock quantity"
             className="st-input"
