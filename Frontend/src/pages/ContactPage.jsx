@@ -10,8 +10,8 @@ const contactItems = [
     icon: "ri-global-line",
     color: "blue",
     label: "Website",
-    value: "stock-tally.vercel.app",
-    href: "https://stock-tally.vercel.app",
+    value: "stocktally.site",
+    href: "https://stocktally.site",
   },
 ];
 

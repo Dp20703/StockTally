@@ -11,7 +11,7 @@
 
 ## 🌐 Live Demo
 
-🔗 https://stock-tally.vercel.app
+🔗 https://stocktally.site
 
 ---
 

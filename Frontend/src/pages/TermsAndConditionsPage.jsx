@@ -57,7 +57,7 @@ const sections = [
   },
   {
     title: "15. Contact Us",
-    text: "If you have any questions about these Terms and Conditions, please contact us at:\n\nStockTally\nEmail: codewithdp2073@gmail.com\nWebsite: stock-tally.vercel.app",
+    text: "If you have any questions about these Terms and Conditions, please contact us at:\n\nStockTally\nEmail: codewithdp2073@gmail.com\nWebsite: stocktally.site",
   },
 ];
 

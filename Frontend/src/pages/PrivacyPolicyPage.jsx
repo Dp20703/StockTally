@@ -126,7 +126,7 @@ const sections = [
     content: [
       {
         subtitle: null,
-        text: "If you have any questions about this Privacy Policy, please contact us at:\n\nStockTally\nEmail: codewithdp2073@gmail.com\nWebsite: stock-tally.vercel.app",
+        text: "If you have any questions about this Privacy Policy, please contact us at:\n\nStockTally\nEmail: codewithdp2073@gmail.com\nWebsite: stocktally.site",
       },
     ],
   },
