@@ -10,6 +10,7 @@ export default function AllTrades({
   setUpdateModal,
   handleTradeId,
   setCloseModal,
+  setAddPosition,
 }) {
   const {
     trades,
@@ -24,7 +25,7 @@ export default function AllTrades({
     prevPage,
     goToPage,
   } = useTrades();
-  
+
   /* ── Initial Fetch ───────────────────── */
   useEffect(() => {
     fetchTrades(1);
@@ -112,6 +113,7 @@ export default function AllTrades({
               setUpdateModal={setUpdateModal}
               setCloseModal={setCloseModal}
               handleDelete={handleDelete}
+              setAddPosition={setAddPosition}
             />
           </div>
 
@@ -123,6 +125,7 @@ export default function AllTrades({
               setUpdateModal={setUpdateModal}
               setCloseModal={setCloseModal}
               handleDelete={handleDelete}
+              setAddPosition={setAddPosition}
             />
           </div>
         </div>

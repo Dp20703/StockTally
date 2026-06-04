@@ -8,6 +8,7 @@ export default function TradeCard({
   setUpdateModal,
   setCloseModal,
   handleDelete,
+  setAddPosition,
 }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -67,17 +68,7 @@ export default function TradeCard({
             {isActive && (
               <>
                 <button
-                  className="st-btn-ghost text-xs"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setUpdateModal(true);
-                  }}
-                >
-                  Update
-                </button>
-                <button
-                  className="st-btn-red text-xs"
+                  className="st-btn-ghost text-xs border-gray-500"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleTradeId(trade?._id);
@@ -85,6 +76,27 @@ export default function TradeCard({
                   }}
                 >
                   {trade?.status === "partial" ? "Close More" : "Close"}
+                </button>
+                <button
+                  className="st-btn-green text-xs"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTradeId(trade?._id);
+                    setAddPosition(true);
+                  }}
+                >
+                  Add
+                </button>
+
+                <button
+                  className="st-btn-amber text-xs"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTradeId(trade?._id);
+                    setUpdateModal(true);
+                  }}
+                >
+                  Update
                 </button>
               </>
             )}

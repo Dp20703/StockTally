@@ -5,11 +5,13 @@ import CloseTradeModal from "components/features/trade/CloseTradeModal";
 import CreateTradeModal from "components/features/trade/CreateTradeModal";
 import { Divider } from "components/ui";
 import { useTrades } from "context/TradeContext";
+import AddPositionModal from "../components/features/trade/AddPositionModal";
 
 export default function Dashboard() {
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [closeModal, setCloseModal] = useState(false);
+  const [addPosition, setAddPosition] = useState(false);
   const [tradeId, setTradeId] = useState(null);
 
   const { status, setStatus } = useTrades();
@@ -60,6 +62,7 @@ export default function Dashboard() {
           handleTradeId={handleTradeId}
           setUpdateModal={setUpdateModal}
           setCloseModal={setCloseModal}
+          setAddPosition={setAddPosition}
         />
       </section>
 
@@ -69,6 +72,9 @@ export default function Dashboard() {
       )}
       {closeModal && (
         <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />
+      )}
+      {addPosition && (
+        <AddPositionModal tradeId={tradeId} setAddPosition={setAddPosition} />
       )}
     </main>
   );

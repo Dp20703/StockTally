@@ -6,6 +6,7 @@ export function TradesMobile({
   setUpdateModal,
   setCloseModal,
   handleDelete,
+  setAddPosition,
 }) {
   return (
     <div className="flex flex-col gap-3">
@@ -17,6 +18,7 @@ export function TradesMobile({
           setUpdateModal={setUpdateModal}
           setCloseModal={setCloseModal}
           handleDelete={handleDelete}
+          setAddPosition={setAddPosition}
         />
       ))}
     </div>

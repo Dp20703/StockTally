@@ -6,6 +6,7 @@ export default function TradesTable({
   handleTradeId,
   setCloseModal,
   handleDelete,
+  setAddPosition
 }) {
   return (
     <div className="st-table-wrapper">
@@ -23,7 +24,7 @@ export default function TradesTable({
         </thead>
 
         <tbody>
-          {trades.map((trade) => (
+          {trades?.map((trade) => (
             <TradeCard
               key={trade._id}
               trade={trade}
@@ -31,6 +32,7 @@ export default function TradesTable({
               setUpdateModal={setUpdateModal}
               setCloseModal={setCloseModal}
               handleDelete={handleDelete}
+              setAddPosition={setAddPosition}
             />
           ))}
         </tbody>

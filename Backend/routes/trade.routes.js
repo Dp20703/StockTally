@@ -1,56 +1,77 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const tradeController = require('../controllers/trade.controller');
-const authMiddleware = require('../middlewares/auth.middleware');
-const { validateRequest } = require('../middlewares/validateRequest');
-const {validateCreateTrade,validateCloseTrade,validateUpdateTrade,} = require('../validators/trade.validators');
+const tradeController = require("../controllers/trade.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
+const { validateRequest } = require("../middlewares/validateRequest");
+const {
+  validateCreateTrade,
+  validateCloseTrade,
+  validateUpdateTrade,
+  validateAddPosition,
+} = require("../validators/trade.validators");
 
 // POST /trades/create
-router.post('/create',
+router.post(
+  "/create",
   authMiddleware.authUser,
   validateCreateTrade,
   validateRequest,
-  tradeController.createTrade
+  tradeController.createTrade,
 );
 
 // GET /trades/get_all_trades
-router.get('/get_all_trades',
+router.get(
+  "/get_all_trades",
   authMiddleware.authUser,
-  tradeController.getAllTrades
+  tradeController.getAllTrades,
 );
 
 // GET /trades/get_trade/:tradeId
-router.get('/get_trade/:tradeId',
+router.get(
+  "/get_trade/:tradeId",
   authMiddleware.authUser,
-  tradeController.getTrade
+  tradeController.getTrade,
 );
 
 // POST /trades/close/:tradeId
-router.post('/close/:tradeId',
+router.post(
+  "/close/:tradeId",
   authMiddleware.authUser,
   validateCloseTrade,
   validateRequest,
-  tradeController.closeTrade
+  tradeController.closeTrade,
 );
 
 // PUT /trades/update/:tradeId
-router.put('/update/:tradeId',
+router.put(
+  "/update/:tradeId",
   authMiddleware.authUser,
   validateUpdateTrade,
   validateRequest,
-  tradeController.updateTrade
+  tradeController.updateTrade,
 );
 
 // DELETE /trades/delete/:tradeId
-router.delete('/delete/:tradeId',
+router.delete(
+  "/delete/:tradeId",
   authMiddleware.authUser,
-  tradeController.deleteTrade
+  tradeController.deleteTrade,
 );
 
 // GET /trades/price/:stockSymbol
-router.get('/price/:stockSymbol',
+router.get(
+  "/price/:stockSymbol",
   authMiddleware.authUser,
-  tradeController.getStockPrice
+  tradeController.getStockPrice,
+);
+
+// POST /trades/add-position/:tradeId
+router.post(
+  "/add-position/:tradeId",
+  authMiddleware.authUser,
+  validateAddPosition,
+  validateRequest,
+  tradeController.addPosition,
 );
 
 module.exports = router;

@@ -8,6 +8,7 @@ export default function TradeMobileCard({
   setUpdateModal,
   setCloseModal,
   handleDelete,
+  setAddPosition,
 }) {
   const [expanded, setExpanded] = useState(false);
   const isActive = trade?.status === "open" || trade?.status === "partial";
@@ -96,6 +97,26 @@ export default function TradeMobileCard({
             {isActive && (
               <>
                 <button
+                  className="st-btn-ghost border-gray-500 text-xs flex-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTradeId(trade?._id);
+                    setCloseModal(true);
+                  }}
+                >
+                  {trade?.status === "partial" ? "Close More" : "Close"}
+                </button>
+                <button
+                  className="st-btn-green text-xs flex-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTradeId(trade?._id);
+                    setAddPosition(true);
+                  }}
+                >
+                  Add
+                </button>
+                <button
                   className="st-btn-amber text-xs flex-1"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -104,16 +125,6 @@ export default function TradeMobileCard({
                   }}
                 >
                   Update
-                </button>
-                <button
-                  className="st-btn-ghost text-xs flex-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setCloseModal(true);
-                  }}
-                >
-                  {trade?.status === "partial" ? "Close More" : "Close"}
                 </button>
               </>
             )}
