@@ -38,9 +38,9 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
         navigate("/trade/dashboard");
       } else {
         toast.error("Unexpected error occurred", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+          position: "top-right",
+          autoClose: 1000,
+        });
       }
     } catch (error) {
       toast.error("Failed to update trade", {
@@ -133,7 +133,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           <input
             type="number"
             name="originalQuantity"
-            value={tradeData?.openQty || ""}
+            value={tradeData.initialQty || tradeData?.openQty || ""}
             onChange={handleChange}
             className="st-input"
           />

@@ -20,7 +20,6 @@ const tradeSchema = new mongoose.Schema(
     // ─── Quantity ─────────────────────────────────────────────────────────────
     initialQty: {
       type: Number,
-      required: true,
     },
     openQty: {
       type: Number,

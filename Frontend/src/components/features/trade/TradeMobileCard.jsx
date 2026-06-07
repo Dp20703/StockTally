@@ -65,7 +65,7 @@ export default function TradeMobileCard({
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div>
               <p className="text-text-muted">Original</p>
-              <p>{trade?.openQty}</p>
+              <p>{trade?.initialQty || trade?.openQty}</p>
             </div>
             <div>
               <p className="text-text-muted">Closed</p>

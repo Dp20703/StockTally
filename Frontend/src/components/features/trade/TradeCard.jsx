@@ -140,7 +140,7 @@ export default function TradeCard({
 
                 <div className="flex flex-col gap-1">
                   <p className="text-xs text-text-muted">Original Qty</p>
-                  <p>{trade?.openQty}</p>
+                  <p> {trade?.initialQty || trade?.openQty}</p>
                 </div>
 
                 <div className="flex flex-col gap-1">

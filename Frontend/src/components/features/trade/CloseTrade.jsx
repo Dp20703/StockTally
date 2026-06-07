@@ -126,7 +126,9 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
         <div className="grid grid-cols-3 gap-3 mt-3">
           <div className="st-card p-3 text-center">
             <p className="text-xs text-text-muted mb-1">Original Qty</p>
-            <p className="text-text-primary font-mono">{tradeData?.openQty}</p>
+            <p className="text-text-primary font-mono">
+              {tradeData?.initialQty || tradeData?.openQty}
+            </p>
           </div>
           <div className="st-card p-3 text-center">
             <p className="text-xs text-text-muted mb-1">Closed Qty</p>
