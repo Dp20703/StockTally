@@ -13,20 +13,11 @@ export const deleteTrade = async (tradeId) => {
     return true;
   } catch (err) {
     if (err.response?.status === 404) {
-      toast.error("Trade not found", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Trade not found");
     } else if (err.response?.status === 500) {
-      toast.error(err.response.data.message || "Internal Server Error", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error(err.response.data.message || "Internal Server Error");
     } else {
-      toast.error("Failed to delete trade", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to delete trade");
     }
 
     return false;

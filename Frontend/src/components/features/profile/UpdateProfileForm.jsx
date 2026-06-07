@@ -1,35 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
+import { useAuth } from "../../../context/AuthContext";
+import { useModal } from "../../../context/ModalContext";
+import { updateProfile } from "../../../services/userService";
+import { getProfileData } from "../../../utils/profileHelpers";
+import { validateProfile } from "../../../utils/profileValidation";
 
-const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
-  const [data, setData] = useState({
-    profilePic: "",
-    userName: "",
-    email: "",
-    fullName: {
-      firstName: "",
-      lastName: "",
-    },
-    ...initialData,
-  });
+const UpdateProfileForm = () => {
+  const { user, setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { closeModal } = useModal();
 
-  const [preview, setPreview] = useState(initialData?.profilePic || "");
+  const [data, setData] = useState(getProfileData(user));
+
+  const [preview, setPreview] = useState(user?.profilePic || "");
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setData({
-      profilePic: "",
-      userName: "",
-      email: "",
-      fullName: {
-        firstName: "",
-        lastName: "",
-      },
-      ...initialData,
-    });
-
-    setPreview(initialData?.profilePic || "");
+    setData(getProfileData(user));
+    setPreview(user?.profilePic || "");
     setErrors({});
-  }, [initialData]);
+  }, [user]);
 
   // Validation
   const validate = () => {
@@ -85,6 +76,7 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
         ...prev,
         profilePic: "Only image files allowed",
       }));
+
       return;
     }
 
@@ -93,34 +85,56 @@ const UpdateProfileForm = ({ initialData, onSubmit, loading }) => {
       profilePic: file,
     }));
 
-    const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result);
-    reader.readAsDataURL(file);
+    setPreview(URL.createObjectURL(file));
   };
 
-  // Submit
-  const submitHandler = (e) => {
+  // submit handler
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
+    const validationErrors = validateProfile(data);
+
+    if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
       return;
     }
 
-    onSubmit(data);
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+
+      formData.append("userName", data.userName);
+      formData.append("email", data.email);
+      formData.append("fullName[firstName]", data.fullName.firstName);
+      formData.append("fullName[lastName]", data.fullName.lastName);
+
+      if (data.profilePic instanceof File) {
+        formData.append("profilePic", data.profilePic);
+      }
+
+      const { user: updatedUser } = await updateProfile(formData);
+
+      setUser(updatedUser);
+      toast.success("Profile updated");
+      closeModal();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Update failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Check if anything changed
-  const isChanged =
-    JSON.stringify({
-      ...data,
-      profilePic: data.profilePic instanceof File ? "file" : data.profilePic,
-    }) !==
-    JSON.stringify({
-      ...initialData,
-      profilePic: initialData?.profilePic || "",
-    });
+  const isChanged = useMemo(() => {
+    return (
+      data.userName !== user?.userName ||
+      data.email !== user?.email ||
+      data.fullName.firstName !== user?.fullName?.firstName ||
+      data.fullName.lastName !== user?.fullName?.lastName ||
+      data.profilePic instanceof File
+    );
+  }, [data, user]);
 
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-4">

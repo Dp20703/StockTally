@@ -39,17 +39,11 @@ export default function AddStock({
       setAddStockModal(false);
       setUpdateModal(false);
 
-      toast.success("Stocks added successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Stocks added successfully");
 
       navigate("/trade/watchlist");
     } catch {
-      toast.error("Failed to add stocks", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to add stocks");
       setAddStockModal(false);
     }
   };

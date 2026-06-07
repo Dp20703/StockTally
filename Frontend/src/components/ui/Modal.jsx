@@ -1,4 +1,3 @@
-/* ── Modal ──────────────────────────────────────────────── */
 export const Modal = ({ title, onClose, size = "md", children, footer }) => (
   <div className="st-overlay">
     <div className={`st-modal-${size} border  border-gray-700  rounded-2xl `}>

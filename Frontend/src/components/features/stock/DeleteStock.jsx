@@ -5,15 +5,9 @@ export const deleteStock = (stockId, watchlistId) => {
   api
     .delete(`/watchlist/${watchlistId}/delete/stock/${stockId}`)
     .then(() => {
-      toast.success("Stock deleted successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Stock deleted successfully");
     })
     .catch((err) => {
-      toast.error("Failed to delete stock", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to delete stock");
     });
 };

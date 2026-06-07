@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTrades } from "../../../context/TradeContext";
+import { useModal } from "../../../context/ModalContext";
 import api from "services/apiClient";
 
-export default function UpdateTrade({ setUpdateModal, tradeId }) {
+export default function UpdateTrade() {
   const navigate = useNavigate();
-  const { fetchTrades } = useTrades();
+  const { closeModal } = useModal();
+  const { tradeId, fetchTrades } = useTrades();
 
   const [tradeData, setTradeData] = useState(null);
 
@@ -34,7 +36,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
           position: "top-right",
           autoClose: 1000,
         });
-        setUpdateModal(false);
+        closeModal();
         navigate("/trade/dashboard");
       } else {
         toast.error("Unexpected error occurred", {
@@ -43,10 +45,7 @@ export default function UpdateTrade({ setUpdateModal, tradeId }) {
         });
       }
     } catch (error) {
-      toast.error("Failed to update trade", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to update trade");
     } finally {
       fetchTrades();
     }

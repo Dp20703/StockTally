@@ -10,6 +10,7 @@ import api from "services/apiClient";
 const TradeContext = createContext();
 
 export const TradeProvider = ({ children }) => {
+  const [tradeId, setTradeId] = useState(null);
   const [trades, setTrades] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -64,15 +65,21 @@ export const TradeProvider = ({ children }) => {
   return (
     <TradeContext.Provider
       value={{
+        tradeId,
+        setTradeId,
+
         trades,
+        fetchTrades,
         loading,
-        page,
-        totalPages,
-        search,
-        setSearch,
+
         status,
         setStatus,
-        fetchTrades,
+
+        search,
+        setSearch,
+
+        page,
+        totalPages,
         nextPage,
         prevPage,
         goToPage,

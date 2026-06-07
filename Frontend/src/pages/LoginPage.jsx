@@ -27,10 +27,7 @@ export default function Login() {
     e.preventDefault();
 
     if (!data.email || !data.password) {
-      return toast.error("Please fill all fields", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      return toast.error("Please fill all fields");
     }
 
     setLoading(true);
@@ -41,16 +38,10 @@ export default function Login() {
       localStorage.setItem("token", res?.data?.token);
       setUser(res?.data?.user);
 
-      toast.success("Login successful", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Login successful");
       navigate("/profile");
     } catch (error) {
-      toast.error("Invalid email or password", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -79,10 +70,7 @@ export default function Login() {
       });
     } catch (error) {
       console.log(error);
-      toast.error("Google login failed", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Google login failed");
     } finally {
       setLoading(false);
     }

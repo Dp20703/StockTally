@@ -9,15 +9,9 @@ export const deleteWatchlist = (id) => {
   api
     .delete(`/watchlist/delete/${id}`)
     .then(() => {
-      toast.success("Watchlist deleted successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Watchlist deleted successfully");
     })
     .catch((err) => {
-      toast.error("Failed to delete watchlist", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to delete watchlist");
     });
 };

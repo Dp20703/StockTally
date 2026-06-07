@@ -29,10 +29,7 @@ export default function CreateWatchlist({ setModal }) {
       setWatchlist("");
       setModal(false);
 
-      toast.success("Watchlist created successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Watchlist created successfully");
 
       navigate("/trade/watchlist");
     } catch (err) {
@@ -43,10 +40,7 @@ export default function CreateWatchlist({ setModal }) {
           ? "Watchlist already exists"
           : "Failed to create watchlist";
 
-      toast.error(message, {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error(message);
     }
   };
 

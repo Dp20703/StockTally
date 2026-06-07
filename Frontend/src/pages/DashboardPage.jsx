@@ -1,24 +1,14 @@
-import { useState } from "react";
 import AllTrades from "components/features/trade/AllTrades";
-import UpdateTradeModal from "components/features/trade/UpdateTradeModal";
-import CloseTradeModal from "components/features/trade/CloseTradeModal";
-import CreateTradeModal from "components/features/trade/CreateTradeModal";
 import { Divider } from "components/ui";
 import { useTrades } from "context/TradeContext";
-import AddPositionModal from "../components/features/trade/AddPositionModal";
+import { useModal } from "../context/ModalContext";
 
 export default function Dashboard() {
-  const [modal, setModal] = useState(false);
-  const [updateModal, setUpdateModal] = useState(false);
-  const [closeModal, setCloseModal] = useState(false);
-  const [addPosition, setAddPosition] = useState(false);
-  const [tradeId, setTradeId] = useState(null);
+  const { openModal } = useModal();
 
   const { status, setStatus } = useTrades();
 
-  const handleTradeId = (id) => setTradeId(id);
-
-  // ✅ Only two sections: active (open+partial) and closed
+  // two sections: active (open+partial) and closed
   const isActive = status !== "closed";
 
   const toggle = () => setStatus(isActive ? "closed" : "open");
@@ -42,7 +32,7 @@ export default function Dashboard() {
         <div className="flex gap-3 w-full md:w-auto">
           <button
             className="st-btn-green flex-1 md:flex-none"
-            onClick={() => setModal(true)}
+            onClick={() => openModal("createTrade")}
           >
             + New Trade
           </button>
@@ -58,24 +48,8 @@ export default function Dashboard() {
       <Divider className="mx-4 mb-4" />
 
       <section className="px-4 pb-10">
-        <AllTrades
-          handleTradeId={handleTradeId}
-          setUpdateModal={setUpdateModal}
-          setCloseModal={setCloseModal}
-          setAddPosition={setAddPosition}
-        />
+        <AllTrades />
       </section>
-
-      {modal && <CreateTradeModal setModal={setModal} />}
-      {updateModal && (
-        <UpdateTradeModal tradeId={tradeId} setUpdateModal={setUpdateModal} />
-      )}
-      {closeModal && (
-        <CloseTradeModal tradeId={tradeId} setCloseModal={setCloseModal} />
-      )}
-      {addPosition && (
-        <AddPositionModal tradeId={tradeId} setAddPosition={setAddPosition} />
-      )}
     </main>
   );
 }

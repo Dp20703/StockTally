@@ -1,12 +1,14 @@
+import api from "services/apiClient";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "services/apiClient";
 import { useTrades } from "../../../context/TradeContext";
+import { useModal } from "../../../context/ModalContext";
 
-export default function CloseTrade({ setCloseModal, tradeId }) {
+export default function CloseTrade() {
   const navigate = useNavigate();
-  const { fetchTrades } = useTrades();
+  const { closeModal } = useModal();
+  const { tradeId, fetchTrades } = useTrades();
 
   const [tradeData, setTradeData] = useState(null);
   const [closeData, setCloseData] = useState({
@@ -83,7 +85,7 @@ export default function CloseTrade({ setCloseModal, tradeId }) {
           { position: "top-right", autoClose: 1500 },
         );
         fetchTrades();
-        setCloseModal(false);
+        closeModal();
         navigate("/trade/dashboard");
       }
     } catch (error) {

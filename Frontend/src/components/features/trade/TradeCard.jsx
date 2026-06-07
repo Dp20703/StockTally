@@ -1,16 +1,43 @@
 import { useState } from "react";
 import { StatusBadge, PartialBadge } from "components/ui";
 import { GetStockPrice } from "utils/GetStockPrice";
+import { useModal } from "../../../context/ModalContext";
+import { useTrades } from "../../../context/TradeContext";
+import Swal from "sweetalert2";
+import { deleteTrade } from "./DeleteTrade";
 
-export default function TradeCard({
-  trade,
-  handleTradeId,
-  setUpdateModal,
-  setCloseModal,
-  handleDelete,
-  setAddPosition,
-}) {
+export default function TradeCard({ trade }) {
+  const { openModal } = useModal();
+  const { setTradeId, trades, page, fetchTrades } = useTrades();
+
   const [expanded, setExpanded] = useState(false);
+
+  /* ── Delete ───────────────────────── */
+  const handleDelete = async (tradeId) => {
+    const result = await Swal.fire({
+      title: "Delete trade?",
+      text: "This trade will be permanently deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#1e2d3d",
+      confirmButtonText: "Yes, delete it",
+      background: "#0d1117",
+      color: "#cbd5e1",
+    });
+
+    if (result.isConfirmed) {
+      const success = await deleteTrade(tradeId);
+
+      if (success) {
+        if (trades.length === 1 && page > 1) {
+          fetchTrades(page - 1);
+        } else {
+          fetchTrades(page);
+        }
+      }
+    }
+  };
 
   const isActive = trade?.status === "open" || trade?.status === "partial";
 
@@ -71,8 +98,8 @@ export default function TradeCard({
                   className="st-btn-ghost text-xs border-gray-500"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setCloseModal(true);
+                    openModal("closeTrade");
+                    setTradeId(trade?._id);
                   }}
                 >
                   {trade?.status === "partial" ? "Close More" : "Close"}
@@ -81,8 +108,8 @@ export default function TradeCard({
                   className="st-btn-green text-xs"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setAddPosition(true);
+                    openModal("addPosition");
+                    setTradeId(trade?._id);
                   }}
                 >
                   Add
@@ -92,8 +119,8 @@ export default function TradeCard({
                   className="st-btn-amber text-xs"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setUpdateModal(true);
+                    openModal("updateTrade");
+                    setTradeId(trade?._id);
                   }}
                 >
                   Update

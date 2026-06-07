@@ -1,17 +1,10 @@
 import { useEffect } from "react";
-import Swal from "sweetalert2";
-import TradesTable from "./TradesTable";
-import { TradesMobile } from "./TradesMobile";
 import { useTrades } from "../../../context/TradeContext";
 import { capitalize } from "theme/theme";
-import { deleteTrade } from "./DeleteTrade";
+import { TradesMobile } from "./TradesMobile";
+import { TradesTable } from "./TradesTable";
 
-export default function AllTrades({
-  setUpdateModal,
-  handleTradeId,
-  setCloseModal,
-  setAddPosition,
-}) {
+export default function AllTrades() {
   const {
     trades,
     loading,
@@ -42,33 +35,6 @@ export default function AllTrades({
       pages.push(i);
     }
     return pages;
-  };
-
-  /* ── Delete ───────────────────────── */
-  const handleDelete = async (tradeId) => {
-    const result = await Swal.fire({
-      title: "Delete trade?",
-      text: "This trade will be permanently deleted.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#dc2626",
-      cancelButtonColor: "#1e2d3d",
-      confirmButtonText: "Yes, delete it",
-      background: "#0d1117",
-      color: "#cbd5e1",
-    });
-
-    if (result.isConfirmed) {
-      const success = await deleteTrade(tradeId);
-
-      if (success) {
-        if (trades.length === 1 && page > 1) {
-          fetchTrades(page - 1);
-        } else {
-          fetchTrades(page);
-        }
-      }
-    }
   };
 
   return (
@@ -107,26 +73,12 @@ export default function AllTrades({
         <div className="overflow-hidden">
           {/* Desktop */}
           <div className="st-card hidden md:block">
-            <TradesTable
-              trades={trades}
-              handleTradeId={handleTradeId}
-              setUpdateModal={setUpdateModal}
-              setCloseModal={setCloseModal}
-              handleDelete={handleDelete}
-              setAddPosition={setAddPosition}
-            />
+            <TradesTable trades={trades} />
           </div>
 
           {/* Mobile */}
           <div className="md:hidden p-3">
-            <TradesMobile
-              trades={trades}
-              handleTradeId={handleTradeId}
-              setUpdateModal={setUpdateModal}
-              setCloseModal={setCloseModal}
-              handleDelete={handleDelete}
-              setAddPosition={setAddPosition}
-            />
+            <TradesMobile trades={trades} />
           </div>
         </div>
       )}

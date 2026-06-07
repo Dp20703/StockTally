@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useTrades } from "../../../context/TradeContext";
 import api from "services/apiClient";
 
-export default function CreateTrade({ setModal }) {
+export default function CreateTrade({ closeModal }) {
   const { fetchTrades } = useTrades();
   const navigate = useNavigate();
 
@@ -29,13 +29,10 @@ export default function CreateTrade({ setModal }) {
     try {
       await api.post("/trades/create", tradeData);
 
-      toast.success("Trade created successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Trade created successfully");
 
       fetchTrades();
-      setModal(false);
+      closeModal();
       navigate("/trade/dashboard");
 
       // reset form
@@ -49,10 +46,7 @@ export default function CreateTrade({ setModal }) {
         date: "",
       });
     } catch (error) {
-      toast.error("Failed to create trade", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to create trade");
     }
   };
 

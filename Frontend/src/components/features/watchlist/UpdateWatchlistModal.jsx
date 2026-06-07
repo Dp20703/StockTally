@@ -1,10 +1,7 @@
 import UpdateWatchlist from "./UpdateWatchlist";
-import {Modal} from "../../ui/Modal";
+import { Modal } from "../../ui/Modal";
 
-export default function UpdateWatchlistModal({
-  setUpdateModal,
-  watchlistId,
-}) {
+export default function UpdateWatchlistModal({ setUpdateModal, watchlistId }) {
   return (
     <Modal
       title="Update Watchlist"

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTrades } from "../../../context/TradeContext";
+import { useModal } from "../../../context/ModalContext";
 import api from "services/apiClient";
 
-export const AddPosition = ({ tradeId, setAddPosition }) => {
-  const { fetchTrades } = useTrades();
+export default function AddPosition() {
+  const { closeModal } = useModal();
+  const { tradeId, fetchTrades } = useTrades();
 
   const [trade, setTrade] = useState(null);
 
@@ -77,7 +79,7 @@ export const AddPosition = ({ tradeId, setAddPosition }) => {
         });
 
         fetchTrades();
-        setAddPosition(false);
+        closeModal();
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to add position", {
@@ -223,4 +225,4 @@ export const AddPosition = ({ tradeId, setAddPosition }) => {
       </button>
     </form>
   );
-};
+}

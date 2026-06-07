@@ -1,13 +1,6 @@
 import TradeCard from "./TradeCard";
 
-export default function TradesTable({
-  trades,
-  setUpdateModal,
-  handleTradeId,
-  setCloseModal,
-  handleDelete,
-  setAddPosition
-}) {
+export function TradesTable({ trades }) {
   return (
     <div className="st-table-wrapper">
       <table className="st-table">
@@ -25,15 +18,7 @@ export default function TradesTable({
 
         <tbody>
           {trades?.map((trade) => (
-            <TradeCard
-              key={trade._id}
-              trade={trade}
-              handleTradeId={handleTradeId}
-              setUpdateModal={setUpdateModal}
-              setCloseModal={setCloseModal}
-              handleDelete={handleDelete}
-              setAddPosition={setAddPosition}
-            />
+            <TradeCard key={trade._id} trade={trade} />
           ))}
         </tbody>
       </table>

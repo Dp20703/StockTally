@@ -52,17 +52,11 @@ export default function UpdateWatchlist({ setUpdateModal, watchlistId }) {
         })),
       });
 
-      toast.success("Watchlist updated successfully", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.success("Watchlist updated successfully");
       setUpdateModal(false);
       fetchWatchlist();
     } catch {
-      toast.error("Failed to update watchlist", {
-        position: "top-right",
-        autoClose: 1000,
-      });
+      toast.error("Failed to update watchlist");
     }
   };
 

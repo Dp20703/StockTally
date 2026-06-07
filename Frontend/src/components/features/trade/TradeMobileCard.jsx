@@ -1,17 +1,44 @@
 import { StatusBadge, PartialBadge } from "components/ui";
 import { useState } from "react";
 import { GetStockPrice } from "utils/GetStockPrice";
+import { useTrades } from "../../../context/TradeContext";
+import { useModal } from "../../../context/ModalContext";
+import { deleteTrade } from "./DeleteTrade";
+import Swal from "sweetalert2";
 
-export default function TradeMobileCard({
-  trade,
-  handleTradeId,
-  setUpdateModal,
-  setCloseModal,
-  handleDelete,
-  setAddPosition,
-}) {
+export default function TradeMobileCard({ trade }) {
+  const { openModal } = useModal();
+  const { setTradeId, trades, page, fetchTrades } = useTrades();
+
   const [expanded, setExpanded] = useState(false);
   const isActive = trade?.status === "open" || trade?.status === "partial";
+
+  /* ── Delete ───────────────────────── */
+  const handleDelete = async (tradeId) => {
+    const result = await Swal.fire({
+      title: "Delete trade?",
+      text: "This trade will be permanently deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#1e2d3d",
+      confirmButtonText: "Yes, delete it",
+      background: "#0d1117",
+      color: "#cbd5e1",
+    });
+
+    if (result.isConfirmed) {
+      const success = await deleteTrade(tradeId);
+
+      if (success) {
+        if (trades.length === 1 && page > 1) {
+          fetchTrades(page - 1);
+        } else {
+          fetchTrades(page);
+        }
+      }
+    }
+  };
 
   return (
     <div className="st-card p-4 flex flex-col gap-3">
@@ -100,8 +127,8 @@ export default function TradeMobileCard({
                   className="st-btn-ghost border-gray-500 text-xs flex-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setCloseModal(true);
+                    openModal("closeTrade");
+                    setTradeId(trade?._id);
                   }}
                 >
                   {trade?.status === "partial" ? "Close More" : "Close"}
@@ -110,8 +137,8 @@ export default function TradeMobileCard({
                   className="st-btn-green text-xs flex-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setAddPosition(true);
+                    openModal("addPosition");
+                    setTradeId(trade?._id);
                   }}
                 >
                   Add
@@ -120,8 +147,8 @@ export default function TradeMobileCard({
                   className="st-btn-amber text-xs flex-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleTradeId(trade?._id);
-                    setUpdateModal(true);
+                    openModal("updateTrade");
+                    setTradeId(trade?._id);
                   }}
                 >
                   Update

@@ -4,6 +4,7 @@ import { useState, useContext, createContext, useCallback } from "react";
 const WatchlistContext = createContext();
 
 export const WatchlistProvider = ({ children }) => {
+  const [watchlistId, setWatchlistId] = useState(null);
   const [watchlists, setWatchlists] = useState([]);
 
   const fetchWatchlist = useCallback(async () => {
@@ -16,9 +17,11 @@ export const WatchlistProvider = ({ children }) => {
       );
     }
   }, []);
-  
+
   return (
-    <WatchlistContext.Provider value={{ fetchWatchlist, watchlists }}>
+    <WatchlistContext.Provider
+      value={{ watchlistId, setWatchlistId, fetchWatchlist, watchlists }}
+    >
       {children}
     </WatchlistContext.Provider>
   );

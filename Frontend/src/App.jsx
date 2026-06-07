@@ -30,7 +30,7 @@ import ProtectedLayout from "components/layout/ProtectedLayout";
 const App = () => {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={1500} />
       <BrowserRouter>
         <AnalyticsTracker />
 
