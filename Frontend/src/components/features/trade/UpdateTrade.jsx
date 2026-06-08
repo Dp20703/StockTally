@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import useTrades from "../../../hooks/useTrades";
+import useTrade from "../../../hooks/useTrade";
 import api from "services/apiClient";
 import useModal from "../../../hooks/useModal";
 
 export default function UpdateTrade() {
   const navigate = useNavigate();
   const { closeModal } = useModal();
-  const { tradeId, fetchTrades } = useTrades();
+  const { tradeId, fetchTrades } = useTrade();
 
   const [tradeData, setTradeData] = useState(null);
 

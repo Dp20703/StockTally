@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { capitalize } from "theme/theme";
 import { TradesMobile } from "./TradesMobile";
 import { TradesTable } from "./TradesTable";
-import useTrades from "../../../hooks/useTrades";
+import useTrade from "../../../hooks/useTrade";
 
 export default function AllTrades() {
   const {
@@ -17,7 +17,7 @@ export default function AllTrades() {
     nextPage,
     prevPage,
     goToPage,
-  } = useTrades();
+  } = useTrade();
 
   /* ── Initial Fetch ───────────────────── */
   useEffect(() => {

@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { WatchlistContext } from "../context/WatchlistContext";
 
-export default function useWatchlists() {
+export default function useWatchlist() {
   const context = useContext(WatchlistContext);
 
   if (!context) {
-    throw new Error("useWatchlists must be used within WatchlistProvider");
+    throw new Error("useWatchlist must be used inside WatchlistProvider");
   }
 
   return context;

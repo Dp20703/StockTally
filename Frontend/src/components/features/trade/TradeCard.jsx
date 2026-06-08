@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { StatusBadge, PartialBadge } from "components/ui";
 import { GetStockPrice } from "utils/GetStockPrice";
-import useTrades from "../../../hooks/useTrades";
+import useTrade from "../../../hooks/useTrade";
 import Swal from "sweetalert2";
 import useModal from "../../../hooks/useModal";
 import { deleteTrade } from "./DeleteTrade";
 
 export default function TradeCard({ trade }) {
   const { openModal } = useModal();
-  const { setTradeId, trades, page, fetchTrades } = useTrades();
+  const { setTradeId, trades, page, fetchTrades } = useTrade();
 
   const [expanded, setExpanded] = useState(false);
 

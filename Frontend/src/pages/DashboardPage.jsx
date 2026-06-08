@@ -1,12 +1,12 @@
 import AllTrades from "components/features/trade/AllTrades";
 import { Divider } from "components/ui";
 import useModal from "../hooks/useModal";
-import useTrades from "../hooks/useTrades";
+import useTrade from "../hooks/useTrade";
 
 export default function Dashboard() {
   const { openModal } = useModal();
 
-  const { status, setStatus } = useTrades();
+  const { status, setStatus } = useTrade();
 
   // two sections: active (open+partial) and closed
   const isActive = status !== "closed";

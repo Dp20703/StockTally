@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "services/apiClient";
 import useModal from "../../../hooks/useModal";
-import useTrades from "../../../hooks/useTrades";
+import useTrade from "../../../hooks/useTrade";
 
 export default function AddPosition() {
   const { closeModal } = useModal();
-  const { tradeId, fetchTrades } = useTrades();
+  const { tradeId, fetchTrades } = useTrade();
 
   const [trade, setTrade] = useState(null);
 

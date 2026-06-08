@@ -2,9 +2,9 @@ import CreateTrade from "../trade/CreateTrade";
 import UpdateTrade from "../trade/UpdateTrade";
 import CloseTrade from "../trade/CloseTrade";
 import AddPosition from "../trade/AddPosition";
-import AddStockForm from "../stock/AddStockForm";
 import UpdateProfileForm from "../profile/UpdateProfileForm";
-import CreateWatchlist from "../watchlist/CreateWatchlist";
+import CreateWatchlistForm from "../watchlist/CreateWatchlistForm";
+import AddStockForm from "../stock/AddStockForm";
 import UpdateWatchlist from "../watchlist/UpdateWatchlist";
 
 export const modalConfig = {
@@ -34,20 +34,20 @@ export const modalConfig = {
   },
 
   // watchlist
-  
+
   createWatchlist: {
-    title: "Add Stocks",
-    component: CreateWatchlist,
+    title: "Create Watchlist",
+    component: CreateWatchlistForm,
     size: "lg",
   },
 
   updateWatchlist: {
-    title: "Add Stocks",
+    title: "Update Watchlist",
     component: UpdateWatchlist,
     size: "lg",
   },
-  
-  addStock: {
+
+  addStocks: {
     title: "Add Stocks",
     component: AddStockForm,
     size: "lg",
