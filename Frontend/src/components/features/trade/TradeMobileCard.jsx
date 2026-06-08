@@ -1,9 +1,9 @@
 import { StatusBadge, PartialBadge } from "components/ui";
 import { useState } from "react";
 import { GetStockPrice } from "utils/GetStockPrice";
-import { useTrades } from "../../../context/TradeContext";
-import { useModal } from "../../../context/ModalContext";
+import useTrades from "../../../hooks/useTrades";
 import { deleteTrade } from "./DeleteTrade";
+import useModal from "../../../hooks/useModal";
 import Swal from "sweetalert2";
 
 export default function TradeMobileCard({ trade }) {

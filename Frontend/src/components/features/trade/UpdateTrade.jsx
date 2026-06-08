@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useTrades } from "../../../context/TradeContext";
-import { useModal } from "../../../context/ModalContext";
+import useTrades from "../../../hooks/useTrades";
 import api from "services/apiClient";
+import useModal from "../../../hooks/useModal";
 
 export default function UpdateTrade() {
   const navigate = useNavigate();

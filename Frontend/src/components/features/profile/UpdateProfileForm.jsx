@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../context/AuthContext";
-import { useModal } from "../../../context/ModalContext";
 import { updateProfile } from "../../../services/userService";
 import { getProfileData } from "../../../utils/profileHelpers";
 import { validateProfile } from "../../../utils/profileValidation";
+import useAuth from "../../../hooks/useAuth";
+import useModal from "../../../hooks/useModal";
 
 const UpdateProfileForm = () => {
   const { user, setUser } = useAuth();
-  const [loading, setLoading] = useState(false);
   const { closeModal } = useModal();
+
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState(getProfileData(user));
 
@@ -21,29 +22,6 @@ const UpdateProfileForm = () => {
     setPreview(user?.profilePic || "");
     setErrors({});
   }, [user]);
-
-  // Validation
-  const validate = () => {
-    const newErrors = {};
-
-    if (!data.fullName.firstName?.trim()) {
-      newErrors.firstName = "First name is required";
-    }
-
-    if (!data.userName?.trim()) {
-      newErrors.userName = "Username is required";
-    } else if (data.userName.length < 3) {
-      newErrors.userName = "Username must be at least 3 characters";
-    }
-
-    if (!data.email?.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^\S+@\S+\.\S+$/.test(data.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    return newErrors;
-  };
 
   // Handle input change
   const handleChange = (e) => {

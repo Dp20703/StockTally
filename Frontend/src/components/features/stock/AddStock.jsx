@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useWatchlists } from "context/WatchlistContext";
 import api from "services/apiClient";
 import { useNavigate } from "react-router-dom";
 import AddStockModal from "./AddStockModal";
+import useWatchlists from "../../../hooks/useWatchlists";
 
 export default function AddStock({
   setAddStockModal,

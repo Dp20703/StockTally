@@ -1,13 +1,7 @@
-import {
-  useContext,
-  useState,
-  createContext,
-  useCallback,
-  useEffect,
-} from "react";
+import { useState, createContext, useCallback, useEffect } from "react";
 import api from "services/apiClient";
 
-const TradeContext = createContext();
+export const TradeContext = createContext();
 
 export const TradeProvider = ({ children }) => {
   const [tradeId, setTradeId] = useState(null);
@@ -89,5 +83,3 @@ export const TradeProvider = ({ children }) => {
     </TradeContext.Provider>
   );
 };
-
-export const useTrades = () => useContext(TradeContext);

@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
-import { useAuth } from "../../../context/AuthContext";
-import { useModal } from "../../../context/ModalContext";
 import { deleteProfilePic } from "../../../services/userService";
+import useAuth from "../../../hooks/useAuth";
+import useModal from "../../../hooks/useModal";
 
 const ProfileCard = () => {
   const { openModal } = useModal();

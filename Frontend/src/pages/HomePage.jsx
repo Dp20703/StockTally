@@ -1,5 +1,5 @@
-import { useAuth } from "context/AuthContext";
 import { BarLoader } from "components/ui";
+import useAuth from "../hooks/useAuth";
 
 /* Home Components */
 import HeroSection from "../components/features/home/HeroSection";

@@ -1,7 +1,7 @@
 import api from "services/apiClient";
 import { useState, useContext, createContext, useCallback } from "react";
 
-const WatchlistContext = createContext();
+export const WatchlistContext = createContext();
 
 export const WatchlistProvider = ({ children }) => {
   const [watchlistId, setWatchlistId] = useState(null);

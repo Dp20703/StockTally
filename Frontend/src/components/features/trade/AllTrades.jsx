@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useTrades } from "../../../context/TradeContext";
 import { capitalize } from "theme/theme";
 import { TradesMobile } from "./TradesMobile";
 import { TradesTable } from "./TradesTable";
+import useTrades from "../../../hooks/useTrades";
 
 export default function AllTrades() {
   const {

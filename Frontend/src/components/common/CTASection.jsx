@@ -1,5 +1,5 @@
-import { useAuth } from "context/AuthContext";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 export default function CTASection() {
   const { user } = useAuth();

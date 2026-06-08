@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useTrades } from "../../../context/TradeContext";
-import { useModal } from "../../../context/ModalContext";
 import api from "services/apiClient";
+import useModal from "../../../hooks/useModal";
+import useTrades from "../../../hooks/useTrades";
 
 export default function AddPosition() {
   const { closeModal } = useModal();

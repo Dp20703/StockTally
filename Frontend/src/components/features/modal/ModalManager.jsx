@@ -1,6 +1,6 @@
-import { useModal } from "../../../context/ModalContext";
 import { modalConfig } from "./modalConfig";
 import { Modal } from "../../ui";
+import useModal from "../../../hooks/useModal";
 
 export default function ModalManager() {
   const { modal, closeModal } = useModal();

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import WatchListCard from "./WatchListCard";
-import { useWatchlists } from "../../../context/WatchlistContext";
+import useWatchlists from "../../../hooks/useWatchlists";
 
 export default function AllWatchlist({
   setUpdateModal,

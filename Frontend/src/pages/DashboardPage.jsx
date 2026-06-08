@@ -1,7 +1,7 @@
 import AllTrades from "components/features/trade/AllTrades";
 import { Divider } from "components/ui";
-import { useTrades } from "context/TradeContext";
-import { useModal } from "../context/ModalContext";
+import useModal from "../hooks/useModal";
+import useTrades from "../hooks/useTrades";
 
 export default function Dashboard() {
   const { openModal } = useModal();

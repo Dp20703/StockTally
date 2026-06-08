@@ -1,5 +1,5 @@
+import useWatchlists from "../../../hooks/useWatchlists";
 import { deleteWatchlist } from "./DeleteWatchlist";
-import { useWatchlists } from "context/WatchlistContext";
 
 export default function WatchListCard({
   setUpdateModal,
